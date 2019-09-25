@@ -6,12 +6,24 @@ public class CharacterController : MonoBehaviour
 {
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private Transform closestPlanetoid;
 
     const float groundedRadius = 0.2f;
 
+    private Rigidbody2D rb2D;
+    private float gravityStrengh = 10.0f;
+    private float jumpForce = 400f;
     private bool isGrounded;
+    // For velocity smooth damp
+    private float smoothTime = .05f;
+    private Vector3 acceleration = Vector3.zero;
 
-    void FixedUpdate()
+    private void Awake()
+    {
+        rb2D = GetComponent<Rigidbody2D>();
+    }
+
+    private void FixedUpdate()
     {
         bool wasGrounded = isGrounded;
         isGrounded = false;
@@ -27,8 +39,25 @@ public class CharacterController : MonoBehaviour
                 if (!wasGrounded)
                     Debug.Log("Character has grounded");
             }
+
         }
 
+        Move(0, false);
+    }
 
+    public void Move(float move, bool jump)
+    {
+        rb2D.AddForce((closestPlanetoid.position - transform.position) * gravityStrengh);
+        transform.Rotate(new Vector3(0, 0, -Vector3.Angle(-transform.up, closestPlanetoid.position - transform.position)));
+
+        if (isGrounded && jump)
+        {
+            rb2D.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        }
+
+        // Move the character by finding the target velocity
+        Vector3 targetVelocity = new Vector2(move * 10f, rb2D.velocity.y);
+        // And then smoothing it out and applying it to the character
+        rb2D.velocity = Vector3.SmoothDamp(rb2D.velocity, targetVelocity, ref acceleration, smoothTime);
     }
 }
