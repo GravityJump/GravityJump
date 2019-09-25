@@ -9,21 +9,24 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private Transform closestPlanetoid;
 
     const float groundedRadius = 0.2f;
+    private float gravityStrengh = 10.0f;
+    private float jumpForce = 40f;
 
     private Rigidbody2D rb2D;
-    private float gravityStrengh = 10.0f;
-    private float jumpForce = 400f;
+    protected float horizontalMove;
+    protected bool jump;
     private bool isGrounded;
     // For velocity smooth damp
     private float smoothTime = .05f;
     private Vector3 acceleration = Vector3.zero;
+
 
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
         bool wasGrounded = isGrounded;
         isGrounded = false;
@@ -42,10 +45,11 @@ public class CharacterController : MonoBehaviour
 
         }
 
-        Move(0, false);
+        Move(horizontalMove * Time.fixedDeltaTime, jump);
+        jump = false;
     }
 
-    public void Move(float move, bool jump)
+    protected void Move(float move, bool jump)
     {
         rb2D.AddForce((closestPlanetoid.position - transform.position) * gravityStrengh);
         transform.Rotate(new Vector3(0, 0, -Vector3.Angle(-transform.up, closestPlanetoid.position - transform.position)));
