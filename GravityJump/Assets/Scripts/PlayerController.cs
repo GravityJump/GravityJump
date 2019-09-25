@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : CharacterController
 {
-    [SerializeField] private float runSpeed = 40f;
+    [SerializeField] private float runSpeed = 100f;
 
     // Update is called once per frame
     void Update()

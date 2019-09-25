@@ -9,8 +9,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private Transform closestPlanetoid;
 
     const float groundedRadius = 0.2f;
-    private float gravityStrengh = 10.0f;
-    private float jumpForce = 40f;
+    private float gravityStrengh = 50.0f;
+    private float jumpForce = 100f;
 
     private Rigidbody2D rb2D;
     protected float horizontalMove;
@@ -51,7 +51,10 @@ public class CharacterController : MonoBehaviour
 
     protected void Move(float move, bool jump)
     {
-        rb2D.AddForce((closestPlanetoid.position - transform.position) * gravityStrengh);
+        if(!isGrounded)
+        {
+            rb2D.AddForce((closestPlanetoid.position - transform.position) * gravityStrengh);
+        }
         transform.Rotate(new Vector3(0, 0, -Vector3.Angle(-transform.up, closestPlanetoid.position - transform.position)));
 
         if (isGrounded && jump)
@@ -62,6 +65,6 @@ public class CharacterController : MonoBehaviour
         // Move the character by finding the target velocity
         Vector3 targetVelocity = new Vector2(move * 10f, rb2D.velocity.y);
         // And then smoothing it out and applying it to the character
-        rb2D.velocity = Vector3.SmoothDamp(rb2D.velocity, targetVelocity, ref acceleration, smoothTime);
+        rb2D.velocity = transform.TransformVector(Vector3.SmoothDamp(rb2D.velocity, targetVelocity, ref acceleration, smoothTime));
     }
 }

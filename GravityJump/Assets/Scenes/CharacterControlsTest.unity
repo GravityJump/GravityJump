@@ -431,7 +431,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   closestPlanetoid: {fileID: 986726244}
-  runSpeed: 40
+  runSpeed: 100
 --- !u!70 &1065759081
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
