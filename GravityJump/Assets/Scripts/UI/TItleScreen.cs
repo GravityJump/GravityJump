@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class TItleScreen : MonoBehaviour
 {
-    public Text press_start_text;
+    public Text PressStart;
     void Start()
     {
         StartCoroutine(this.ToggleVisibility());
@@ -15,9 +15,9 @@ public class TItleScreen : MonoBehaviour
     {
         while (true)
         {
-            this.press_start_text.enabled = false;
+            this.PressStart.enabled = false;
             yield return new WaitForSeconds(0.7f);
-            this.press_start_text.enabled = true;
+            this.PressStart.enabled = true;
             yield return new WaitForSeconds(0.7f);
         }
     }
