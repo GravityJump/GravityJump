@@ -6,7 +6,8 @@ public class CharacterController : MonoBehaviour
 {
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private Transform closestPlanetoid;
+    [SerializeField] private Collider2D closestPlanetoid;
+    [SerializeField] private Collider2D characterCollider;
 
     const float groundedRadius = 0.2f;
     private float gravityStrengh = 50.0f;
@@ -45,17 +46,20 @@ public class CharacterController : MonoBehaviour
 
         }
 
-        Move(horizontalMove * Time.fixedDeltaTime, jump);
+        Move(horizontalMove, jump, Time.fixedDeltaTime);
         jump = false;
     }
 
-    protected void Move(float move, bool jump)
+    protected void Move(float move, bool jump, float time)
     {
-        if(!isGrounded)
+        ColliderDistance2D characterPlanetoidDistance = characterCollider.Distance(closestPlanetoid);
+        if (!isGrounded)
         {
-            rb2D.AddForce((closestPlanetoid.position - transform.position) * gravityStrengh);
+            rb2D.AddForce(-characterPlanetoidDistance.normal * gravityStrengh);
         }
-        transform.Rotate(new Vector3(0, 0, -Vector3.Angle(-transform.up, closestPlanetoid.position - transform.position)));
+        //transform.Rotate(new Vector3(0, 0, -Vector3.Angle(transform.up, characterPlanetoidDistance.normal)));
+        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.FromToRotation(transform.up, characterPlanetoidDistance.normal), 0.1f);
+        transform.up = characterPlanetoidDistance.normal.normalized;
 
         if (isGrounded && jump)
         {
@@ -63,7 +67,7 @@ public class CharacterController : MonoBehaviour
         }
 
         // Move the character by finding the target velocity
-        Vector3 targetVelocity = new Vector2(move * 10f, rb2D.velocity.y);
+        Vector3 targetVelocity = new Vector2(move * time * 10f, rb2D.velocity.y);
         // And then smoothing it out and applying it to the character
         rb2D.velocity = transform.TransformVector(Vector3.SmoothDamp(rb2D.velocity, targetVelocity, ref acceleration, smoothTime));
     }
