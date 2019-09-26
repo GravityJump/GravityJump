@@ -39,11 +39,14 @@ public class Menu : MonoBehaviour
     public void HostGame()
     {
         // @TODO : To implement : Block Join and Solo button, Input fields,  Transform Host button to Cancel, and Display that we are looking for a user
-        Debug.Log("Listening for play request on address : " + Network.Utils.GetIPAddress() + " as " + input_username_text.text);
+        // Debug.Log("Listening for play request on address : " +  + " as " + input_username_text.text);
+        Host node = new Host(Network.Utils.GetIPAddress(), 3000);
+        node.StartRegistration();
     }
     public void JoinGame()
     {
         // @TODO : To implement : Block Host and Solo buttons, Input fields, Transform Join button to Cancel, and Display that we are looking for a server
-        Debug.Log("Joining game on address : " + input_ip_text.text + " as " + input_username_text.text);
+        // Debug.Log("Joining game on address : " + input_ip_text.text + " as " + input_username_text.text);
+        Client Node = new Client(Network.Utils.GetIPAddress(), 3000, input_ip_text.text, 3000);
     }
 }
