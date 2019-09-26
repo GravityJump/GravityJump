@@ -8,13 +8,15 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Collider2D closestPlanetoid;
     [SerializeField] private Collider2D characterCollider;
+    [SerializeField] private float runSpeed = 7;
+    [SerializeField] private float jumpSpeed = 7;
 
     const float groundedRadius = 0.2f;
     private float gravityStrengh = 50.0f;
     private float jumpForce = 100f;
 
     private Rigidbody2D rb2D;
-    protected float horizontalMove;
+    protected float horizontalSpeed;
     protected bool jump;
     private bool isGrounded;
     // For velocity smooth damp
@@ -43,32 +45,41 @@ public class CharacterController : MonoBehaviour
                 if (!wasGrounded)
                     Debug.Log("Character has grounded");
             }
-
+        }
+        if (wasGrounded && !isGrounded)
+        {
+            Debug.Log("Character has taken off");
         }
 
-        Move(horizontalMove, jump, Time.fixedDeltaTime);
-        jump = false;
+        Move(horizontalSpeed, jump, Time.fixedDeltaTime);
     }
 
     protected void Move(float move, bool jump, float time)
     {
+        float verticalVelocity = -10f;
         ColliderDistance2D characterPlanetoidDistance = characterCollider.Distance(closestPlanetoid);
-        if (!isGrounded)
-        {
-            rb2D.AddForce(-characterPlanetoidDistance.normal * gravityStrengh);
-        }
-        //transform.Rotate(new Vector3(0, 0, -Vector3.Angle(transform.up, characterPlanetoidDistance.normal)));
-        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.FromToRotation(transform.up, characterPlanetoidDistance.normal), 0.1f);
-        transform.up = characterPlanetoidDistance.normal.normalized;
+        Vector2 groundNormal = characterPlanetoidDistance.normal.normalized;
 
-        if (isGrounded && jump)
+        if (jump)
         {
-            rb2D.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            verticalVelocity = 0;
+            if (isGrounded)
+            {
+                rb2D.AddRelativeForce(new Vector2(0, 10), ForceMode2D.Impulse);
+            }
+        }
+        else
+        {
+            // Reset velocity to avoid having remaining jump forces applied after jump has stopped
+            rb2D.velocity = new Vector2();
         }
 
-        // Move the character by finding the target velocity
-        Vector3 targetVelocity = new Vector2(move * time * 10f, rb2D.velocity.y);
-        // And then smoothing it out and applying it to the character
-        rb2D.velocity = transform.TransformVector(Vector3.SmoothDamp(rb2D.velocity, targetVelocity, ref acceleration, smoothTime));
+        transform.up = groundNormal;
+
+        var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
+        Vector2 horizontalMove = move * runSpeed * moveAlongGround * time;
+        Vector2 verticalMove = verticalVelocity * groundNormal * time;
+
+        rb2D.position = rb2D.position + horizontalMove + verticalMove;
     }
 }

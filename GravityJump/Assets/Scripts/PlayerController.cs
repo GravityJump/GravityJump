@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class PlayerController : CharacterController
 {
-    [SerializeField] private float runSpeed = 100f;
-
     // Update is called once per frame
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-        jump |= Input.GetButtonDown("Jump");
+        horizontalSpeed = Input.GetAxisRaw("Horizontal");
+        jump = (jump || Input.GetButtonDown("Jump")) && !Input.GetButtonUp("Jump");
     }
 }
