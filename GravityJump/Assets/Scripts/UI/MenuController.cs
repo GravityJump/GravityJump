@@ -28,4 +28,19 @@ public class MenuController : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void Solo()
+    {
+        Debug.Log("Start a solo game");
+    }
+
+    public void Host()
+    {
+
+    }
+
+    public void Join()
+    {
+
+    }
 }
