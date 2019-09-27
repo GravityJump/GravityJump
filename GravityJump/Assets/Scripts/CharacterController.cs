@@ -29,6 +29,16 @@ public class CharacterController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            GameObject planetoid = collision.gameObject.transform.parent.gameObject;
+            closestPlanetoidNormalCollider = planetoid.transform.GetChild(1).gameObject.GetComponent<Collider2D>();
+        }
+
+    }
+
     protected void FixedUpdate()
     {
         bool wasGrounded = isGrounded;
