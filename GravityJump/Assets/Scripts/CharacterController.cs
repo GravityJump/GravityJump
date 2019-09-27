@@ -7,11 +7,12 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
     // This should be a collider slightly below the ground collider, to keep the normal upward.
-    [SerializeField] private Collider2D closestPlanetoidNormalCollider;
+    [SerializeField] private GameObject closestAttractingPlanetoid;
+    [SerializeField] private GameObject currentPlanetoid;
     [SerializeField] private Collider2D characterCollider;
     [SerializeField] private float runSpeed = 7;
 
-    const float groundedRadius = 0.2f;
+    const float groundedRadius = 0.1f;
     private float jumpForce = 10f;
     private float gravityForce = 10f;
     private float minGravitySpeedLimit = -10f;
@@ -29,12 +30,15 @@ public class CharacterController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 10)
+        if (
+            collision.gameObject.layer == 10
+            && jump
+            && !ReferenceEquals(collision.gameObject, currentPlanetoid.transform.GetChild(2).gameObject)
+        )
         {
-            GameObject planetoid = collision.gameObject.transform.parent.gameObject;
-            closestPlanetoidNormalCollider = planetoid.transform.GetChild(1).gameObject.GetComponent<Collider2D>();
+            closestAttractingPlanetoid = collision.gameObject.transform.parent.gameObject;
         }
 
     }
@@ -54,6 +58,7 @@ public class CharacterController : MonoBehaviour
                 isGrounded = true;
                 if (!wasGrounded)
                     Debug.Log("Character has grounded");
+                    currentPlanetoid = colliders[i].gameObject.transform.parent.gameObject;
             }
         }
         if (wasGrounded && !isGrounded)
@@ -71,7 +76,7 @@ public class CharacterController : MonoBehaviour
 
     protected void Move(float move, bool jump, float time)
     {
-        ColliderDistance2D characterPlanetoidDistance = characterCollider.Distance(closestPlanetoidNormalCollider);
+        ColliderDistance2D characterPlanetoidDistance = characterCollider.Distance(closestAttractingPlanetoid.transform.GetChild(1).gameObject.GetComponent<Collider2D>());
         Vector2 groundNormal = characterPlanetoidDistance.normal.normalized;
 
         if (jump)
