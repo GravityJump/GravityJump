@@ -6,7 +6,8 @@ public class CharacterController : MonoBehaviour
 {
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private Collider2D closestPlanetoid;
+    // This should be a collider slightly below the ground collider, to keep the normal upward.
+    [SerializeField] private Collider2D closestPlanetoidNormalCollider;
     [SerializeField] private Collider2D characterCollider;
     [SerializeField] private float runSpeed = 7;
 
@@ -60,7 +61,7 @@ public class CharacterController : MonoBehaviour
 
     protected void Move(float move, bool jump, float time)
     {
-        ColliderDistance2D characterPlanetoidDistance = characterCollider.Distance(closestPlanetoid);
+        ColliderDistance2D characterPlanetoidDistance = characterCollider.Distance(closestPlanetoidNormalCollider);
         Vector2 groundNormal = characterPlanetoidDistance.normal.normalized;
 
         if (jump)
