@@ -8,6 +8,7 @@ public class MenuController : MonoBehaviour
     public GameObject TitleScreen;
     public GameObject GameModeScreen;
     public GameObject HostScreen;
+    public GameObject JoinScreen;
     public Text Version;
     public readonly string versionNumber = "0.0.1";
     void Start()
@@ -15,6 +16,7 @@ public class MenuController : MonoBehaviour
         this.Version.text = "Version " + this.versionNumber;
         this.GameModeScreen.gameObject.SetActive(false);
         this.HostScreen.gameObject.SetActive(false);
+        this.JoinScreen.gameObject.SetActive(false);
     }
 
     void Update()
@@ -44,6 +46,7 @@ public class MenuController : MonoBehaviour
 
     public void Join()
     {
-
+        this.GameModeScreen.gameObject.SetActive(false);
+        this.JoinScreen.gameObject.SetActive(true);
     }
 }
