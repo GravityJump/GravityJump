@@ -55,12 +55,12 @@ namespace Network
         public Host(string ip, int port) : base(ip, port) { }
         public void StartRegistration()
         {
-            Debug.Log("waiting for registration on port " + this.Port.ToString());
+            Debug.Log($"waiting for registration on port {this.Port.ToString()}");
 
             RegistrationRequest request = (RegistrationRequest)this.ReceiveFromAll();
 
             this.Neighbour = new Node(request.Ip.ToString(), request.Port);
-            Debug.Log("received request for new registration from IP " + this.Neighbour.Ip.ToString() + ", listening on port: " + this.Neighbour.Port.ToString() + ", assigning listening port: " + this.Port.ToString());
+            Debug.Log($"received request for new registration from IP {this.Neighbour.Ip.ToString()}, listening on port: {this.Neighbour.Port.ToString()}, assigning listening port: {this.Port.ToString()}");
 
         }
     }
