@@ -36,6 +36,7 @@ public class CharacterController : MonoBehaviour
             collision.gameObject.layer == 10
             && jump
             && !ReferenceEquals(collision.gameObject, currentPlanetoid.transform.GetChild(2).gameObject)
+            && ReferenceEquals(currentPlanetoid, closestAttractingPlanetoid)
         )
         {
             closestAttractingPlanetoid = collision.gameObject.transform.parent.gameObject;
@@ -95,7 +96,7 @@ public class CharacterController : MonoBehaviour
         }
         // Add gravity acceleration every time. Limit max speed to avoid extreme behaviors.
         // We keep gravity acceleration after landed to stick the character to the ground.
-        verticalSpeed = Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit);
+        verticalSpeed = Mathf.Abs(move) > 0.1 || !isGrounded ? Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit) : 0; 
 
         transform.up = groundNormal;
 
