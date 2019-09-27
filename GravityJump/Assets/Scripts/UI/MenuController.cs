@@ -49,4 +49,11 @@ public class MenuController : MonoBehaviour
         this.GameModeScreen.gameObject.SetActive(false);
         this.JoinScreen.gameObject.SetActive(true);
     }
+
+    public void GameMode()
+    {
+        this.GameModeScreen.gameObject.SetActive(true);
+        this.HostScreen.gameObject.SetActive(false);
+        this.JoinScreen.gameObject.SetActive(false);
+    }
 }
