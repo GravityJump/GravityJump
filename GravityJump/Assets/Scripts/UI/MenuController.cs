@@ -7,12 +7,14 @@ public class MenuController : MonoBehaviour
 {
     public GameObject TitleScreen;
     public GameObject GameModeScreen;
+    public GameObject HostScreen;
     public Text Version;
     public readonly string versionNumber = "0.0.1";
     void Start()
     {
         this.Version.text = "Version " + this.versionNumber;
         this.GameModeScreen.gameObject.SetActive(false);
+        this.HostScreen.gameObject.SetActive(false);
     }
 
     void Update()
@@ -36,7 +38,8 @@ public class MenuController : MonoBehaviour
 
     public void Host()
     {
-
+        this.GameModeScreen.gameObject.SetActive(false);
+        this.HostScreen.gameObject.SetActive(true);
     }
 
     public void Join()
