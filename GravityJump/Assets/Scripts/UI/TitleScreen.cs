@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class TItleScreen : MonoBehaviour
+public class TitleScreen : MonoBehaviour
 {
     public Text PressStart;
     void Start()

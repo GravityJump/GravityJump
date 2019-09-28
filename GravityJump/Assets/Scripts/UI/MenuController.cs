@@ -13,7 +13,7 @@ public class MenuController : MonoBehaviour
     public readonly string versionNumber = "0.0.1";
     void Start()
     {
-        this.Version.text = "Version " + this.versionNumber;
+        this.Version.text = $"Version {this.versionNumber}";
         this.GameModeScreen.gameObject.SetActive(false);
         this.HostScreen.gameObject.SetActive(false);
         this.JoinScreen.gameObject.SetActive(false);

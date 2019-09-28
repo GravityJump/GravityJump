@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 402566219}
   - component: {fileID: 402566218}
   m_Layer: 5
-  m_Name: Host
+  m_Name: HostButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,8 +414,9 @@ GameObject:
   - component: {fileID: 411682465}
   - component: {fileID: 411682464}
   - component: {fileID: 411682463}
+  - component: {fileID: 411682466}
   m_Layer: 5
-  m_Name: Join
+  m_Name: JoinScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,6 +479,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 13}
   m_SizeDelta: {x: 700, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &411682466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411682462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ed165102838eb7cb68877f39f359a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IP: {fileID: 1928677860}
 --- !u!1 &524738201
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,7 +659,7 @@ GameObject:
   - component: {fileID: 535335414}
   - component: {fileID: 535335413}
   m_Layer: 5
-  m_Name: Exit
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1052,7 +1066,7 @@ GameObject:
   - component: {fileID: 1219827989}
   - component: {fileID: 1219827988}
   m_Layer: 5
-  m_Name: Back
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1181,7 +1195,7 @@ GameObject:
   - component: {fileID: 1245774972}
   - component: {fileID: 1245774971}
   m_Layer: 5
-  m_Name: Solo
+  m_Name: SoloButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1385,8 +1399,9 @@ GameObject:
   - component: {fileID: 1451753505}
   - component: {fileID: 1451753507}
   - component: {fileID: 1451753506}
+  - component: {fileID: 1451753508}
   m_Layer: 5
-  m_Name: Host
+  m_Name: HostScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1449,6 +1464,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451753504}
   m_CullTransparentMesh: 0
+--- !u!114 &1451753508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451753504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7eeb93b49af22cffa551afb078c8a13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IP: {fileID: 1333396044}
 --- !u!1 &1570452728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,7 +1650,7 @@ GameObject:
   - component: {fileID: 1622472202}
   - component: {fileID: 1622472201}
   m_Layer: 5
-  m_Name: Join
+  m_Name: JoinButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1750,7 +1778,7 @@ GameObject:
   - component: {fileID: 1666631341}
   - component: {fileID: 1666631340}
   m_Layer: 5
-  m_Name: GameModeSelection
+  m_Name: GameModeSelectionScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1994,7 +2022,7 @@ GameObject:
   - component: {fileID: 1898595709}
   - component: {fileID: 1898595708}
   m_Layer: 5
-  m_Name: Back
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
