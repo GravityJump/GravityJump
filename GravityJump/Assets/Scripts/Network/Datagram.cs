@@ -3,17 +3,17 @@ using System;
 
 namespace Network
 {
-    interface Datagram
+    public interface Datagram
     {
         byte[] GetBytes();
     }
 
-    enum Instruction : int
+    public enum Instruction : int
     {
         RegistrationRequest,
     };
 
-    class RegistrationRequest : Datagram
+    public class RegistrationRequest : Datagram
     {
         public readonly static byte[] InstructionCode = BitConverter.GetBytes((int)Instruction.RegistrationRequest);
         public IPAddress Ip { get; private set; }
@@ -37,7 +37,7 @@ namespace Network
         }
     }
 
-    class DatagramParser
+    public class DatagramParser
     {
         public static Datagram Parse(byte[] bytes)
         {

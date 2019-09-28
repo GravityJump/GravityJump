@@ -1,20 +1,22 @@
 using System.Net;
 using System;
 using System.Text;
+using System.Collections;
 using System.Net.Sockets;
 using UnityEngine;
 
 namespace Network
 {
-    class Node
+    public class Node
     {
         static int _nodeCounter = 0;
         public IPAddress Ip { get; protected set; }
         public int Port { get; protected set; }
-        public Node Neighbour { get; protected set; }
+        public Node Neighbour { get; set; }
+
         public Node(string ip, int port)
         {
-            if (_nodeCounter > 1)
+            if (_nodeCounter > 2)
             {
                 throw new Exception("only two instances of Node should exist, one host and one client");
             }
@@ -61,12 +63,16 @@ namespace Network
 
             this.Neighbour = new Node(request.Ip.ToString(), request.Port);
             Debug.Log($"received request for new registration from IP {this.Neighbour.Ip.ToString()}, listening on port: {this.Neighbour.Port.ToString()}, assigning listening port: {this.Port.ToString()}");
-
         }
     }
 
     class Client : Node
     {
+
+        public Client(string ip, int port) : base(ip, port)
+        {
+            this.Neighbour = null;
+        }
         public Client(string ip, int port, string hostIP, int hostPort) : base(ip, port)
         {
             this.Neighbour = new Node(hostIP, hostPort);
