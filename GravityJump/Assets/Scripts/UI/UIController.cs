@@ -46,21 +46,21 @@ namespace UI
 
         void GetGameObjects()
         {
-            this.TitleScreen = GameObject.Find("TitleScreen");
-            this.GameModeSelectionScreen = GameObject.Find("GameModeSelectionScreen");
-            this.HostScreen = GameObject.Find("HostScreen");
-            this.JoinScreen = GameObject.Find("JoinScreen");
-            this.TitleScreenCaption = GameObject.Find("TitleScreen/PressStart").GetComponent<Text>();
-            this.VersionText = GameObject.Find("Version").GetComponent<Text>();
-            this.IpText = GameObject.Find("Ip").GetComponent<Text>();
-            this.JoinScreenHostIpInputText = GameObject.Find("JoinScreen/HostIpInput/HostIpInputText").GetComponent<Text>();
-            this.GameModeSelectionScreenSoloButton = GameObject.Find("GameModeSelectionScreen/SoloButton").GetComponent<Button>();
-            this.GameModeSelectionScreenHostButton = GameObject.Find("GameModeSelectionScreen/HostButton").GetComponent<Button>();
-            this.GameModeSelectionScreenJoinButton = GameObject.Find("GameModeSelectionScreen/JoinButton").GetComponent<Button>();
-            this.GameModeSelectionScreenExitButton = GameObject.Find("GameModeSelectionScreen/ExitButton").GetComponent<Button>();
-            this.HostScreenBackButton = GameObject.Find("HostScreen/BackButton").GetComponent<Button>();
-            this.JoinScreenBackButton = GameObject.Find("JoinScreen/BackButton").GetComponent<Button>();
-            this.JoinScreenJoinButton = GameObject.Find("JoinScreen/JoinButton").GetComponent<Button>();
+            this.TitleScreen = GameObject.Find("UICanvas/TitleScreen");
+            this.GameModeSelectionScreen = GameObject.Find("UICanvas/GameModeSelectionScreen");
+            this.HostScreen = GameObject.Find("UICanvas/HostScreen");
+            this.JoinScreen = GameObject.Find("UICanvas/JoinScreen");
+            this.TitleScreenCaption = GameObject.Find("UICanvas/TitleScreen/PressStart").GetComponent<Text>();
+            this.VersionText = GameObject.Find("UICanvas/Version").GetComponent<Text>();
+            this.IpText = GameObject.Find("UICanvas/Ip").GetComponent<Text>();
+            this.JoinScreenHostIpInputText = GameObject.Find("UICanvas/JoinScreen/HostIpInput/HostIpInputText").GetComponent<Text>();
+            this.GameModeSelectionScreenSoloButton = GameObject.Find("UICanvas/GameModeSelectionScreen/SoloButton").GetComponent<Button>();
+            this.GameModeSelectionScreenHostButton = GameObject.Find("UICanvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
+            this.GameModeSelectionScreenJoinButton = GameObject.Find("UICanvas/GameModeSelectionScreen/JoinButton").GetComponent<Button>();
+            this.GameModeSelectionScreenExitButton = GameObject.Find("UICanvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
+            this.HostScreenBackButton = GameObject.Find("UICanvas/HostScreen/BackButton").GetComponent<Button>();
+            this.JoinScreenBackButton = GameObject.Find("UICanvas/JoinScreen/BackButton").GetComponent<Button>();
+            this.JoinScreenJoinButton = GameObject.Find("UICanvas/JoinScreen/JoinButton").GetComponent<Button>();
         }
 
         void SetButtonsCallbacks()
