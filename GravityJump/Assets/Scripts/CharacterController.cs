@@ -14,6 +14,7 @@ public class CharacterController : MonoBehaviour
 
     const float groundedRadius = 0.1f;
     private float jumpForce = 10f;
+    private float landedToGroundedDelay = 0.2f;
     private float gravityForce = 10f;
     private float minGravitySpeedLimit = -10f;
 
@@ -21,7 +22,7 @@ public class CharacterController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     protected float horizontalSpeed;
     private float verticalSpeed;
-    protected bool jump;
+    protected JumpState jump;
     private bool isGrounded;
 
     private void Awake()
@@ -34,7 +35,7 @@ public class CharacterController : MonoBehaviour
     {
         if (
             collision.gameObject.layer == 10
-            && jump
+            && jump == JumpState.Jumping
             && !ReferenceEquals(collision.gameObject, currentPlanetoid.transform.GetChild(2).gameObject)
             && ReferenceEquals(currentPlanetoid, closestAttractingPlanetoid)
         )
@@ -58,8 +59,11 @@ public class CharacterController : MonoBehaviour
             {
                 isGrounded = true;
                 if (!wasGrounded)
-                    Debug.Log("Character has grounded");
+                {
+                    Debug.Log("Character has landed");
+                    StartCoroutine("Land");
                     currentPlanetoid = colliders[i].gameObject.transform.parent.gameObject;
+                }
             }
         }
         if (wasGrounded && !isGrounded)
@@ -75,12 +79,12 @@ public class CharacterController : MonoBehaviour
         Move(horizontalSpeed, jump, Time.fixedDeltaTime);
     }
 
-    protected void Move(float move, bool jump, float time)
+    protected void Move(float move, JumpState jump, float time)
     {
         ColliderDistance2D characterPlanetoidDistance = characterCollider.Distance(closestAttractingPlanetoid.transform.GetChild(1).gameObject.GetComponent<Collider2D>());
         Vector2 groundNormal = characterPlanetoidDistance.normal.normalized;
 
-        if (jump)
+        if (jump == JumpState.Jumping)
         {
             if (isGrounded)
             {
@@ -89,14 +93,18 @@ public class CharacterController : MonoBehaviour
                 rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
         }
-        else
+        else if (jump == JumpState.Landed)
         {
             // Reset velocity to avoid having remaining jump forces applied after jump has stopped
             rb2D.velocity = new Vector2();
         }
         // Add gravity acceleration every time. Limit max speed to avoid extreme behaviors.
         // We keep gravity acceleration after landed to stick the character to the ground.
-        verticalSpeed = Mathf.Abs(move) > 0.1 || !isGrounded ? Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit) : 0; 
+        verticalSpeed = Mathf.Abs(move) > 0.1 || !isGrounded ? Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit) : 0;
+        if (verticalSpeed < 0.1)
+        {
+            StopJumping();
+        }
 
         transform.up = groundNormal;
 
@@ -105,5 +113,40 @@ public class CharacterController : MonoBehaviour
         Vector2 verticalMove = verticalSpeed * groundNormal * time;
 
         rb2D.position = rb2D.position + horizontalMove + verticalMove;
+    }
+
+    public enum JumpState
+    {
+        Grounded,
+        Jumping,
+        InFlight,
+        Landed,
+    }
+
+    protected void Jump()
+    {
+        if (jump == JumpState.Grounded)
+        {
+            jump = JumpState.Jumping;
+        }
+    }
+
+    protected void StopJumping()
+    {
+        if (jump == JumpState.Jumping && !isGrounded)
+        {
+            jump = JumpState.InFlight;
+        }
+    }
+
+    protected IEnumerator Land()
+    {
+        if (jump == JumpState.InFlight)
+        {
+            jump = JumpState.Landed;
+        }
+        yield return new WaitForSeconds(landedToGroundedDelay);
+        jump = JumpState.Grounded;
+        Debug.Log("Character has grounded");
     }
 }
