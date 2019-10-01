@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttractiveBody : Body
 {
     public static List<AttractiveBody> ActiveAttractiveBodies;
+    public float frequency;
 
     static AttractiveBody()
     {
