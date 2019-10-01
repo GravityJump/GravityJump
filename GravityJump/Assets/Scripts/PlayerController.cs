@@ -8,6 +8,11 @@ public class PlayerController : CharacterController
     void Update()
     {
         horizontalSpeed = Input.GetAxisRaw("Horizontal");
-        jump = (jump || Input.GetButtonDown("Jump")) && !Input.GetButtonUp("Jump");
+        if (Input.GetButton("Jump")) {
+            Jump();
+        } else if (Input.GetButtonUp("Jump"))
+        {
+            StopJumping();
+        }
     }
 }
