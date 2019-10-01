@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Network;
+using UnityEngine.Networking;
+
 using System;
 using System.Collections;
+
+using Network;
 
 namespace UI
 {
@@ -49,6 +52,8 @@ namespace UI
 
             this.titleScreenCoroutine = this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen);
             StartCoroutine(this.titleScreenCoroutine);
+
+            NetworkTransport.Init();
         }
 
         void GetGameObjects()
