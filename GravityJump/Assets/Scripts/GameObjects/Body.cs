@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Body : MonoBehaviour
 {
-    public float weight { get; }
+    protected Rigidbody2D rb2D;
+    protected SpriteRenderer spriteRenderer;
 
 }

@@ -4,25 +4,16 @@ using UnityEngine;
 
 public class InputPlayer : Player
 {
-    // Mapping keyboard input to MoveUp, ... methods
-    private void Update()
+    void Update()
     {
-        if (Input.GetKey("up"))
+        horizontalSpeed = Input.GetAxisRaw("Horizontal");
+        if (Input.GetButton("Jump"))
         {
-            this.moveUp();
+            Jump();
         }
-        if (Input.GetKey("down"))
+        else if (Input.GetButtonUp("Jump"))
         {
-            this.moveDown();
-        }
-        if (Input.GetKey("left"))
-        {
-            this.moveLeft();
-        }
-        if (Input.GetKey("right"))
-        {
-            this.moveRight();
+            StopJumping();
         }
     }
-
 }
