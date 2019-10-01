@@ -6,6 +6,8 @@ public class AttractiveBody : Body
 {
     public static List<AttractiveBody> ActiveAttractiveBodies;
     public float frequency;
+    public Collider2D orbit;
+    public Collider2D normalShape;
 
     static AttractiveBody()
     {

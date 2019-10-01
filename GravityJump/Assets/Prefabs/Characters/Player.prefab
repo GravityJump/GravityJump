@@ -167,7 +167,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
-  closestAttractingPlanetoid: {fileID: 0}
-  currentPlanetoid: {fileID: 0}
-  characterCollider: {fileID: 7587937021885771588}
+  closestAttractiveBody: {fileID: 0}
+  currentAttractiveBody: {fileID: 0}
+  attractableBodyCollider: {fileID: 0}
   runSpeed: 7
+  isJumpEnabled: 0
