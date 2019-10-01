@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Network;
 
 namespace UI
 {
@@ -35,7 +36,7 @@ namespace UI
             this.SetButtonsCallbacks();
 
             this.VersionText.text = $"Version {this.Version}";
-            this.Ip = Network.Utils.GetIPAddress();
+            this.Ip = Network.Utils.GetHostIpAddress();
             this.IpText.text = $"IP {this.Ip}";
 
             this.HideAllGameObjects();
