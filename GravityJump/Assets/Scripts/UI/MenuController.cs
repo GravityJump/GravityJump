@@ -52,9 +52,13 @@ public class MenuController : MonoBehaviour
         this.GameModeScreen.gameObject.SetActive(false);
         this.HostScreen.gameObject.SetActive(true);
         this.Node = new Network.Host(Network.Utils.GetIPAddress(), this.port);
+        StartCoroutine(this.HostRoutine());
+    }
 
-        this.registrationThread = new Thread(new ThreadStart(((Network.Host)this.Node).StartRegistration));
-        this.registrationThread.Start();
+    public IEnumerator HostRoutine()
+    {
+        ((Network.Host)this.Node).StartRegistration();
+        yield return null;
     }
 
     public void Join()
