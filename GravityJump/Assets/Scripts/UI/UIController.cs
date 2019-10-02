@@ -12,9 +12,6 @@ namespace UI
     public class UIController : MonoBehaviour
     {
         public readonly string Version = "0.0.1";
-        public readonly int Port = 3000;
-
-        public string Ip { get; private set; }
 
         GameObject TitleScreen;
         GameObject GameModeSelectionScreen;
@@ -33,6 +30,8 @@ namespace UI
         Button JoinScreenJoinButton;
 
         Stack Screens;
+
+        Client Client;
 
         void Start()
         {
@@ -96,8 +95,8 @@ namespace UI
             {
                 try
                 {
-                    this.Ip = Network.Utils.GetHostIpAddress();
-                    this.IpText.text = $"IP {this.Ip}";
+                    this.Client = new Client(Network.Utils.GetHostIpAddress(), 3000);
+                    this.IpText.text = $"IP {this.Client.Ip}";
                 }
                 catch
                 {

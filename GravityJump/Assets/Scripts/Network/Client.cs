@@ -12,10 +12,10 @@ namespace Network
         // int HostId;
         // int ConnectionId;
 
-        public Client(int port)
+        public Client(string ip, int port)
         {
             this.Port = port;
-            this.Ip = "";
+            this.Ip = ip;
             // this.Config = new ConnectionConfig();
             // this.ChannelId = this.Config.AddChannel(QosType.Reliable);
             // this.Topology = new HostTopology(this.Config, 1);
