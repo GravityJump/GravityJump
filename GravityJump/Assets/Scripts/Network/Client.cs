@@ -2,10 +2,21 @@ using UnityEngine.Networking;
 
 namespace Network
 {
+    public struct Node
+    {
+        public int Port { get; set; }
+        public string Ip { get; set; }
+
+        public Node(string ip, int port)
+        {
+            this.Ip = ip;
+            this.Port = port;
+        }
+    }
+
     public class Client
     {
-        public int Port { get; private set; }
-        public string Ip { get; private set; }
+        public Node Self { get; set; }
         // ConnectionConfig Config;
         // int ChannelId;
         // HostTopology Topology;
@@ -14,8 +25,8 @@ namespace Network
 
         public Client(string ip, int port)
         {
-            this.Port = port;
-            this.Ip = ip;
+            this.Self = new Node(ip, port);
+
             // this.Config = new ConnectionConfig();
             // this.ChannelId = this.Config.AddChannel(QosType.Reliable);
             // this.Topology = new HostTopology(this.Config, 1);

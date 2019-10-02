@@ -96,7 +96,7 @@ namespace UI
                 try
                 {
                     this.Client = new Client(Network.Utils.GetHostIpAddress(), 3000);
-                    this.IpText.text = $"IP {this.Client.Ip}";
+                    this.IpText.text = $"IP {this.Client.Self.Ip}";
                 }
                 catch
                 {

@@ -10,7 +10,7 @@ namespace Network
         public static string GetHostIpAddress()
         {
             System.Net.IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
+            foreach (IPAddress ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
