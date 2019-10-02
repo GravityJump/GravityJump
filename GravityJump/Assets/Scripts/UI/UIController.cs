@@ -34,8 +34,6 @@ namespace UI
 
         Stack Screens;
 
-        IEnumerator titleScreenCoroutine;
-
         void Start()
         {
             this.GetGameObjects();
@@ -49,8 +47,7 @@ namespace UI
             NetworkTransport.Init();
 
             this.Screens.Push(this.TitleScreen);
-            this.titleScreenCoroutine = this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen);
-            StartCoroutine(this.titleScreenCoroutine);
+            StartCoroutine(this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen));
         }
 
         void GetGameObjects()
@@ -130,7 +127,6 @@ namespace UI
                     this.Screens.Push(this.GameModeSelectionScreen);
                     this.VersionText.gameObject.SetActive(true);
                     this.IpText.gameObject.SetActive(true);
-                    StopCoroutine(this.titleScreenCoroutine); // not sure it is really necessary
                 }
             }
         }
@@ -140,6 +136,7 @@ namespace UI
             while (this.Screens.Top() == linkedScreen)
             {
                 text.gameObject.SetActive(true);
+                Debug.Log("test");
                 yield return new WaitForSeconds(frequency);
                 text.gameObject.SetActive(false);
                 yield return new WaitForSeconds(frequency);
