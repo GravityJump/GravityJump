@@ -136,7 +136,6 @@ namespace UI
             while (this.Screens.Top() == linkedScreen)
             {
                 text.gameObject.SetActive(true);
-                Debug.Log("test");
                 yield return new WaitForSeconds(frequency);
                 text.gameObject.SetActive(false);
                 yield return new WaitForSeconds(frequency);
