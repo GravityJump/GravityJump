@@ -18,7 +18,7 @@ namespace Network
                 }
             }
 
-            throw new Exception("No network adapters with an IPv4 address in the system!");
+            throw new Exception("No network adapters with an IPv4 address in the system");
         }
 
         public static bool IsInternetAvailable()
@@ -26,7 +26,7 @@ namespace Network
             Ping pinger = new Ping();
             try
             {
-                return pinger.Send("8.8.8.8").Status == IPStatus.Success;
+                return pinger.Send("1.1.1.1").Status == IPStatus.Success;
             }
             catch (PingException)
             {
