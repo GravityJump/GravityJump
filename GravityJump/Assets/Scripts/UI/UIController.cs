@@ -39,21 +39,18 @@ namespace UI
         void Start()
         {
             this.GetGameObjects();
-
             this.SetButtonsCallbacks();
-
             this.VersionText.text = $"Version {this.Version}";
+            this.HideAllGameObjects();
+
+            this.Screens = new Stack();
 
             this.ConfigureNetwork();
+            NetworkTransport.Init();
 
-            this.HideAllGameObjects();
-            this.Screens = new Stack();
             this.Screens.Push(this.TitleScreen);
-
             this.titleScreenCoroutine = this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen);
             StartCoroutine(this.titleScreenCoroutine);
-
-            NetworkTransport.Init();
         }
 
         void GetGameObjects()
@@ -86,12 +83,14 @@ namespace UI
             this.JoinScreenJoinButton.onClick.AddListener(() => { Debug.Log($"{this.JoinScreenHostIpInputText.text}"); });
         }
 
-        void DisableMultiPlayer(string reason)
+        void HideAllGameObjects()
         {
-            this.GameModeSelectionScreenHostButton.interactable = false;
-            this.GameModeSelectionScreenJoinButton.interactable = false;
-            this.IpText.text = reason;
-
+            this.TitleScreen.gameObject.SetActive(false);
+            this.GameModeSelectionScreen.gameObject.SetActive(false);
+            this.HostScreen.gameObject.SetActive(false);
+            this.JoinScreen.gameObject.SetActive(false);
+            this.VersionText.gameObject.SetActive(false);
+            this.IpText.gameObject.SetActive(false);
         }
 
         void ConfigureNetwork()
@@ -114,14 +113,12 @@ namespace UI
             }
         }
 
-        void HideAllGameObjects()
+        void DisableMultiPlayer(string reason)
         {
-            this.TitleScreen.gameObject.SetActive(false);
-            this.GameModeSelectionScreen.gameObject.SetActive(false);
-            this.HostScreen.gameObject.SetActive(false);
-            this.JoinScreen.gameObject.SetActive(false);
-            this.VersionText.gameObject.SetActive(false);
-            this.IpText.gameObject.SetActive(false);
+            this.GameModeSelectionScreenHostButton.interactable = false;
+            this.GameModeSelectionScreenJoinButton.interactable = false;
+            this.IpText.text = reason;
+
         }
 
         void Update()
@@ -133,7 +130,7 @@ namespace UI
                     this.Screens.Push(this.GameModeSelectionScreen);
                     this.VersionText.gameObject.SetActive(true);
                     this.IpText.gameObject.SetActive(true);
-                    StopCoroutine(this.titleScreenCoroutine);
+                    StopCoroutine(this.titleScreenCoroutine); // not sure it is really necessary
                 }
             }
         }
