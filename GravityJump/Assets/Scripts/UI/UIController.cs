@@ -43,7 +43,6 @@ namespace UI
             this.Screens = new Stack();
 
             this.ConfigureNetwork();
-            NetworkTransport.Init();
 
             this.Screens.Push(this.TitleScreen);
             StartCoroutine(this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen));
