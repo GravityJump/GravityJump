@@ -86,18 +86,31 @@ namespace UI
             this.JoinScreenJoinButton.onClick.AddListener(() => { Debug.Log($"{this.JoinScreenHostIpInputText.text}"); });
         }
 
+        void DisableMultiPlayer(string reason)
+        {
+            this.GameModeSelectionScreenHostButton.interactable = false;
+            this.GameModeSelectionScreenJoinButton.interactable = false;
+            this.IpText.text = reason;
+
+        }
+
         void ConfigureNetwork()
         {
-            try
+            if (Network.Utils.IsInternetAvailable())
             {
-                this.Ip = Network.Utils.GetHostIpAddress();
-                this.IpText.text = $"IP {this.Ip}";
+                try
+                {
+                    this.Ip = Network.Utils.GetHostIpAddress();
+                    this.IpText.text = $"IP {this.Ip}";
+                }
+                catch
+                {
+                    this.DisableMultiPlayer("No IP address");
+                }
             }
-            catch
+            else
             {
-                this.IpText.text = "No IP Address";
-                this.GameModeSelectionScreenHostButton.interactable = false;
-                this.GameModeSelectionScreenJoinButton.interactable = false;
+                this.DisableMultiPlayer("No Internet connection");
             }
         }
 
