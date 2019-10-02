@@ -43,8 +43,8 @@ namespace UI
             this.SetButtonsCallbacks();
 
             this.VersionText.text = $"Version {this.Version}";
-            this.Ip = Network.Utils.GetHostIpAddress();
-            this.IpText.text = $"IP {this.Ip}";
+
+            this.ConfigureNetwork();
 
             this.HideAllGameObjects();
             this.Screens = new Stack();
@@ -84,6 +84,21 @@ namespace UI
             this.HostScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
             this.JoinScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
             this.JoinScreenJoinButton.onClick.AddListener(() => { Debug.Log($"{this.JoinScreenHostIpInputText.text}"); });
+        }
+
+        void ConfigureNetwork()
+        {
+            try
+            {
+                this.Ip = Network.Utils.GetHostIpAddress();
+                this.IpText.text = $"IP {this.Ip}";
+            }
+            catch
+            {
+                this.IpText.text = "No IP Address";
+                this.GameModeSelectionScreenHostButton.interactable = false;
+                this.GameModeSelectionScreenJoinButton.interactable = false;
+            }
         }
 
         void HideAllGameObjects()
