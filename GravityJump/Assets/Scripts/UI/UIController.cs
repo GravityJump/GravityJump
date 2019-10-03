@@ -73,7 +73,7 @@ namespace UI
             this.GameModeSelectionScreenHostButton.onClick.AddListener(() =>
             {
                 this.Screens.Push(this.HostScreen);
-                this.Client.Server("127.0.0.1", 8000);
+                this.Client.Server(this.Client.Self.Ip, 8000);
             });
             this.GameModeSelectionScreenJoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
             this.GameModeSelectionScreenExitButton.onClick.AddListener(() => { Application.Quit(); });
@@ -81,7 +81,7 @@ namespace UI
             this.JoinScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
             this.JoinScreenJoinButton.onClick.AddListener(() =>
             {
-                this.Client.Peer = new Node(this.JoinScreenHostIpInputText.text, 8001);
+                this.Client.Peer = new Node(this.JoinScreenHostIpInputText.text, 8000);
                 this.Client.Client(this.JoinScreenHostIpInputText.text, 8000);
                 this.Client.Send("test");
             });
