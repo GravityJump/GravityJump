@@ -17,7 +17,7 @@ public abstract class AttractableBody : Body
     protected float groundedRadius = 0.1f;
     protected float minGravitySpeedLimit = -10f;
 
-    protected float landedToGroundedDelay = 0.2f;
+    protected float landingDelay = 0.2f;
     protected float gravityForce = 10f;
 
     protected JumpState jump;
@@ -76,7 +76,7 @@ public abstract class AttractableBody : Body
         }
         if (!isGrounded && wasGrounded)
         {
-            StopJumping();
+            TakeOff();
         }
 
         if (horizontalSpeed > 0.01f)
@@ -98,13 +98,13 @@ public abstract class AttractableBody : Body
             // Cancel gravity speed modifier and impulse force to jump
             rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
-        else if (jump == JumpState.Landed)
+        else if (jump == JumpState.Landing)
         {
             // Reset velocity to avoid having remaining jump forces applied after jump has stopped
             rb2D.velocity = new Vector2();
         }
         // Add gravity acceleration every time. Limit max speed to avoid extreme behaviors.
-        // We keep gravity acceleration after landed to stick the attractable body to the ground.
+        // We keep gravity acceleration after landing to stick the attractable body to the ground.
         verticalSpeed = Mathf.Abs(move) > 0.1 || !isGrounded ? Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit) : 0;
         if (verticalSpeed < 0.1)
         {
@@ -126,8 +126,7 @@ public abstract class AttractableBody : Body
         Jumping,
         InFlight,
         Falling,
-        Landed,
-        Disabled
+        Landing
     }
 
     protected void Jump()
@@ -146,7 +145,7 @@ public abstract class AttractableBody : Body
         }
     }
 
-    protected void StopJumping()
+    protected void TakeOff()
     {
         if (jump == JumpState.Jumping && !isGrounded)
         {
@@ -167,9 +166,9 @@ public abstract class AttractableBody : Body
     {
         if (jump == JumpState.Falling)
         {
-            jump = JumpState.Landed;
+            jump = JumpState.Landing;
         }
-        yield return new WaitForSeconds(landedToGroundedDelay);
+        yield return new WaitForSeconds(landingDelay);
         jump = JumpState.Grounded;
     }
 }

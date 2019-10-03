@@ -13,7 +13,7 @@ public class InputPlayer : Player
         }
         else if (Input.GetButtonUp("Jump"))
         {
-            StopJumping();
+            TakeOff();
         }
     }
 }
