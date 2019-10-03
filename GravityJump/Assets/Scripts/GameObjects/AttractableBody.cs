@@ -59,10 +59,24 @@ public abstract class AttractableBody : Body
                 isGrounded = true;
                 if (!wasGrounded)
                 {
-                    StartCoroutine("Land");
-                    currentAttractiveBody = (AttractiveBody)colliders[i].gameObject.transform.parent.gameObject.GetComponent("AttractiveBody");
+                    switch (colliders[i].gameObject.layer)
+                    {
+                        case 8:
+                            // Planetoid
+                            StartCoroutine("Land");
+                            currentAttractiveBody = (AttractiveBody)colliders[i].gameObject.transform.parent.gameObject.GetComponent("AttractiveBody");
+                            break;
+                        case 9:
+                            // Player
+                            Bounce();
+                            break;
+                    }
                 }
             }
+        }
+        if (!isGrounded && wasGrounded)
+        {
+            StopJumping();
         }
 
         if (horizontalSpeed > 0.01f)
@@ -80,12 +94,9 @@ public abstract class AttractableBody : Body
 
         if (jump == JumpState.Jumping)
         {
-            if (isGrounded)
-            {
-                verticalSpeed = 0;
-                // Cancel gravity speed modifier and impulse force to jump
-                rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-            }
+            verticalSpeed = 0;
+            // Cancel gravity speed modifier and impulse force to jump
+            rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
         else if (jump == JumpState.Landed)
         {
@@ -97,7 +108,7 @@ public abstract class AttractableBody : Body
         verticalSpeed = Mathf.Abs(move) > 0.1 || !isGrounded ? Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit) : 0;
         if (verticalSpeed < 0.1)
         {
-            StopJumping();
+            Fall();
         }
 
         transform.up = groundNormal;
@@ -114,6 +125,7 @@ public abstract class AttractableBody : Body
         Grounded,
         Jumping,
         InFlight,
+        Falling,
         Landed,
         Disabled
     }
@@ -121,6 +133,14 @@ public abstract class AttractableBody : Body
     protected void Jump()
     {
         if (jump == JumpState.Grounded)
+        {
+            jump = JumpState.Jumping;
+        }
+    }
+
+    protected void Bounce()
+    {
+        if (jump == JumpState.Falling)
         {
             jump = JumpState.Jumping;
         }
@@ -134,10 +154,18 @@ public abstract class AttractableBody : Body
         }
     }
 
+    protected void Fall()
+    {
+        if (jump == JumpState.InFlight)
+        {
+            jump = JumpState.Falling;
+        }
+    }
+
     // Use this function as a Coroutine: StartCoroutine("Land");
     protected IEnumerator Land()
     {
-        if (jump == JumpState.InFlight)
+        if (jump == JumpState.Falling)
         {
             jump = JumpState.Landed;
         }
