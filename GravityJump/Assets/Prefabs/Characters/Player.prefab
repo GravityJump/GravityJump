@@ -148,8 +148,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1.78, y: 2.51}
+  m_Offset: {x: 0, y: -0.18}
+  m_Size: {x: 1.78, y: 2.14}
   m_Direction: 0
 --- !u!114 &5142449972087190579
 MonoBehaviour:
@@ -171,4 +171,4 @@ MonoBehaviour:
   currentAttractiveBody: {fileID: 0}
   attractableBodyCollider: {fileID: 0}
   runSpeed: 7
-  isJumpEnabled: 0
+  jumpForce: 10
