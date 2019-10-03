@@ -1,6 +1,8 @@
-using UnityEngine.Networking;
-using UnityEngine;
+using System.Net;
+using System.Net.Sockets;
 using System;
+using System.Text;
+using UnityEngine;
 
 namespace Network
 {
@@ -16,98 +18,70 @@ namespace Network
         }
     }
 
-    public class Client
+    public class UDPSocket
     {
         public Node Self { get; private set; }
         public Node Peer { get; set; }
-        ConnectionConfig Config { get; set; }
-        int ChannelId { get; set; }
-        HostTopology Topology { get; set; }
-        int SocketId { get; set; }
-        int ConnectionId { get; set; }
 
-        public Client(string ip, int port)
+        Socket Socket;
+        State Buffer;
+        EndPoint epFrom;
+        AsyncCallback recv = null;
+
+        public class State
+        {
+            public readonly int bufferSize = 1024;
+            public byte[] buffer;
+
+            public State()
+            {
+                this.buffer = new byte[this.bufferSize];
+            }
+        }
+
+        public UDPSocket(string ip, int port)
         {
             this.Self = new Node(ip, port);
             this.Peer = null;
 
-            NetworkTransport.Init();
-
-            this.Config = new ConnectionConfig();
-            this.ChannelId = this.Config.AddChannel(QosType.Reliable);
-            this.Topology = new HostTopology(this.Config, 1);
-            this.SocketId = NetworkTransport.AddHost(this.Topology, this.Self.Port);
-            this.ConnectionId = -1;
+            this.Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            this.Buffer = new State();
+            this.epFrom = new IPEndPoint(IPAddress.Any, 0);
         }
 
-        public void Connect()
+        public void Server(string address, int port)
         {
-            if (this.Peer != null)
-            {
-                byte error;
-                this.ConnectionId = NetworkTransport.Connect(this.SocketId, this.Peer.Ip, this.Peer.Port, 0, out error);
-            }
+            this.Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
+            this.Socket.Bind(new IPEndPoint(IPAddress.Parse(address), port));
+            Receive();
         }
 
-        public void Send(string message)
+        public void Client(string address, int port)
         {
-            if (this.ConnectionId != -1)
-            {
-                byte error;
-                byte[] buffer = System.Text.ASCIIEncoding.ASCII.GetBytes(message);
-                NetworkTransport.Send(this.SocketId, this.ConnectionId, this.ChannelId, buffer, buffer.Length, out error);
-            }
+            this.Socket.Connect(IPAddress.Parse(address), port);
+            Receive();
         }
 
-        public void Disconnect()
+        public void Send(string text)
         {
-            if (this.ConnectionId != -1)
+            byte[] data = Encoding.ASCII.GetBytes(text);
+            this.Socket.BeginSend(data, 0, data.Length, SocketFlags.None, (ar) =>
             {
-                byte error;
-                NetworkTransport.Disconnect(this.SocketId, this.ConnectionId, out error);
-            }
+                State so = (State)ar.AsyncState;
+                int bytes = this.Socket.EndSend(ar);
+                Debug.Log($"SEND: {bytes}, {text}");
+            }, this.Buffer);
         }
 
-        public byte[] Receive()
+        private void Receive()
         {
-            int socketId;
-            int connectionId;
-            int channelId;
-            byte[] buffer = new byte[1024];
-            int dataSize;
-            byte error;
-            NetworkEventType networkEvent = NetworkTransport.Receive(out socketId, out connectionId, out channelId, buffer, buffer.Length, out dataSize, out error);
-
-            switch (networkEvent)
+            this.Socket.BeginReceiveFrom(this.Buffer.buffer, 0, this.Buffer.bufferSize, SocketFlags.None, ref epFrom, recv = (ar) =>
             {
-                case NetworkEventType.Nothing:
-                case NetworkEventType.BroadcastEvent:
-                    break;
-                case NetworkEventType.ConnectEvent:
-                    if (connectionId == this.ConnectionId)
-                    {
-                        Debug.Log("Connection request accepted by peer");
-                    }
-                    else
-                    {
-                        Debug.Log("New connection request from a peer");
-                    }
-                    break;
-                case NetworkEventType.DataEvent:
-                    return buffer;
-                case NetworkEventType.DisconnectEvent:
-                    if (connectionId == this.ConnectionId)
-                    {
-                        Debug.Log("Connection refused");
-                    }
-                    else
-                    {
-                        Debug.Log("Peer disconnected");
-                    }
-                    break;
-            }
-
-            return null;
+                State so = (State)ar.AsyncState;
+                int bytes = this.Socket.EndReceiveFrom(ar, ref epFrom);
+                this.Socket.BeginReceiveFrom(so.buffer, 0, this.Buffer.bufferSize, SocketFlags.None, ref epFrom, recv, so);
+                Debug.Log($"RECV: {this.epFrom.ToString()}: {bytes}, {Encoding.ASCII.GetString(so.buffer, 0, bytes)}");
+            }, this.Buffer);
         }
     }
 }

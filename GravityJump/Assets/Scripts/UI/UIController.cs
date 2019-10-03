@@ -31,7 +31,7 @@ namespace UI
 
         Stack Screens;
 
-        Client Client;
+        UDPSocket Client;
 
         void Start()
         {
@@ -70,7 +70,11 @@ namespace UI
         void SetButtonsCallbacks()
         {
             this.GameModeSelectionScreenSoloButton.onClick.AddListener(() => { Debug.Log("Start a solo game"); });
-            this.GameModeSelectionScreenHostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
+            this.GameModeSelectionScreenHostButton.onClick.AddListener(() =>
+            {
+                this.Screens.Push(this.HostScreen);
+                this.Client.Server("127.0.0.1", 8000);
+            });
             this.GameModeSelectionScreenJoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
             this.GameModeSelectionScreenExitButton.onClick.AddListener(() => { Application.Quit(); });
             this.HostScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
@@ -78,8 +82,8 @@ namespace UI
             this.JoinScreenJoinButton.onClick.AddListener(() =>
             {
                 this.Client.Peer = new Node(this.JoinScreenHostIpInputText.text, 8001);
-                this.Client.Connect();
-                this.Client.Send(this.Client.Self.Port.ToString());
+                this.Client.Client(this.JoinScreenHostIpInputText.text, 8000);
+                this.Client.Send("test");
             });
         }
 
@@ -99,7 +103,7 @@ namespace UI
             {
                 try
                 {
-                    this.Client = new Client(Network.Utils.GetHostIpAddress(), 8000);
+                    this.Client = new UDPSocket(Network.Utils.GetHostIpAddress(), 8000);
                     this.IpText.text = $"IP {this.Client.Self.Ip}";
                 }
                 catch
@@ -134,11 +138,7 @@ namespace UI
             }
             else if (this.Screens.Top() == this.HostScreen)
             {
-                byte[] output = this.Client.Receive();
-                if (output != null)
-                {
-                    this.IpText.text = System.Text.ASCIIEncoding.ASCII.GetString(output);
-                }
+
             }
         }
 
