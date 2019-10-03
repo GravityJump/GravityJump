@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 
 using System;
-using static System.Environment;
 using System.Collections;
 
 using Network;
@@ -78,8 +77,7 @@ namespace UI
             this.JoinScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
             this.JoinScreenJoinButton.onClick.AddListener(() =>
             {
-                var input = this.JoinScreenHostIpInputText.text.Split(':');
-                this.Client.Peer = new Node(input[0], Int32.Parse(input[1]));
+                this.Client.Peer = new Node(this.JoinScreenHostIpInputText.text, 8001);
                 this.Client.Connect();
                 this.Client.Send(this.Client.Self.Port.ToString());
             });
@@ -101,7 +99,7 @@ namespace UI
             {
                 try
                 {
-                    this.Client = new Client(Network.Utils.GetHostIpAddress(), Int32.Parse(System.Environment.GetCommandLineArgs()[1]));
+                    this.Client = new Client(Network.Utils.GetHostIpAddress(), 8000);
                     this.IpText.text = $"IP {this.Client.Self.Ip}";
                 }
                 catch
@@ -139,7 +137,6 @@ namespace UI
                 byte[] output = this.Client.Receive();
                 if (output != null)
                 {
-                    Debug.Log(System.Text.ASCIIEncoding.ASCII.GetString(output));
                     this.IpText.text = System.Text.ASCIIEncoding.ASCII.GetString(output);
                 }
             }
