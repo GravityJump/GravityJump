@@ -11,7 +11,7 @@ public class Speed
 
     public float GetValue()
     {
-        this.Value += 0.01f; // linearly increase the speed, could be another function.
+        // this.Value += 0.01f; // linearly increase the speed, could be another function.
         return this.Value;
     }
 }

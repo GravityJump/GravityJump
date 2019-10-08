@@ -11,11 +11,15 @@ public class Spawner : MonoBehaviour
     public List<GameObject> planets;
     private GameObject ActivePlanet;
     private float total_frequency;
-    public GameObject Player;
+    public GameObject PlayerPrefab;
+    public GameObject PlayerGameObject;
+    public bool IsPlayerVisibleOnScreen { get; private set; }
 
     void Start()
     {
         this.Speed = new Speed(2f);
+        this.IsPlayerVisibleOnScreen = false;
+        this.PlayerGameObject = null;
 
         foreach (GameObject planet in planets)
         {
@@ -67,6 +71,14 @@ public class Spawner : MonoBehaviour
             Quaternion.Euler(0, 0, Random.value * 360));
         generatedObject.transform.localScale *= r;
         generatedObject.SetActive(true);
+
+        if (!this.IsPlayerVisibleOnScreen)
+        {
+            ((InputPlayer)this.PlayerPrefab.gameObject.GetComponent("InputPlayer")).closestAttractiveBody = (AttractiveBody)generatedObject.gameObject.GetComponent("AttractiveBody");
+            this.PlayerGameObject = Instantiate(this.PlayerPrefab, new Vector3(x, y, 0), Quaternion.Euler(0, 0, Random.value * 360));
+            generatedObject.SetActive(true);
+            this.IsPlayerVisibleOnScreen = true;
+        }
     }
 
     void PrepareNextSpawn()

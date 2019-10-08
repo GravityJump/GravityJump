@@ -7,8 +7,8 @@ public abstract class AttractableBody : Body
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
     // This should be a collider slightly below the ground collider, to keep the normal upward.
-    [SerializeField] private AttractiveBody closestAttractiveBody;
-    [SerializeField] private AttractiveBody currentAttractiveBody;
+    [SerializeField] public AttractiveBody closestAttractiveBody;
+    [SerializeField] public AttractiveBody currentAttractiveBody;
     [SerializeField] private Collider2D attractableBodyCollider;
     [SerializeField] protected float runSpeed = 7f;
     [SerializeField] protected float jumpForce = 10f;
