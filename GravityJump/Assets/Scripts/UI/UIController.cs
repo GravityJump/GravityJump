@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 using System;
 using System.Collections;
@@ -67,7 +68,7 @@ namespace UI
 
         void SetButtonsCallbacks()
         {
-            this.GameModeSelectionScreenSoloButton.onClick.AddListener(() => { Debug.Log("Start a solo game"); });
+            this.GameModeSelectionScreenSoloButton.onClick.AddListener(() => { SceneManager.LoadScene("GameScene"); });
             this.GameModeSelectionScreenHostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
             this.GameModeSelectionScreenJoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
             this.GameModeSelectionScreenExitButton.onClick.AddListener(() => { Application.Quit(); });
