@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class Player : AttractableBody
 {
-    private string username;
+    private string Username { get; set; }
 }

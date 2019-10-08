@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class Speed
 {
-    private float Value { get; set; }
+    public float Value { get; private set; }
 
     public Speed(float initSpeed)
     {
         this.Value = initSpeed;
     }
 
-    public float GetValue()
+    public void Increment(float timeDelta)
     {
-        this.Value += 0.001f; // linearly increase the speed, could be another function.
-        return this.Value;
+        // TODO: add a more interesting acceleration profile from a difficulty management point of view
+        this.Value += 0.001f;
     }
 }
