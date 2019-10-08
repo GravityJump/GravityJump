@@ -74,7 +74,7 @@ public abstract class AttractableBody : Body
                 }
             }
         }
-        if (!isGrounded && wasGrounded)
+        if (!isGrounded)
         {
             TakeOff();
         }

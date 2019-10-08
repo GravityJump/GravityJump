@@ -391,6 +391,11 @@ PrefabInstance:
       propertyPath: groundMask.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
+        type: 3}
+      propertyPath: jumpForce
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90d53c53b461d41439471ec9e130d147, type: 3}
 --- !u!1001 &1574579383
