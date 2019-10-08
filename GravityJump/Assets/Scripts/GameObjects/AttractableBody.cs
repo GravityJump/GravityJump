@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AttractableBody : Body
@@ -7,9 +6,9 @@ public abstract class AttractableBody : Body
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
     // This should be a collider slightly below the ground collider, to keep the normal upward.
+    [SerializeField] private Collider2D attractableBodyCollider;
     [SerializeField] private AttractiveBody closestAttractiveBody;
     [SerializeField] private AttractiveBody currentAttractiveBody;
-    [SerializeField] private Collider2D attractableBodyCollider;
     [SerializeField] protected float runSpeed = 7f;
     [SerializeField] protected float jumpForce = 10f;
 
@@ -22,7 +21,6 @@ public abstract class AttractableBody : Body
 
     protected JumpState jump;
     protected float horizontalSpeed;
-    private float verticalSpeed;
 
     protected void Awake()
     {
@@ -39,11 +37,11 @@ public abstract class AttractableBody : Body
     {
         if (
             collision.gameObject.layer == 10
-            && jump == JumpState.Jumping
+            && (jump == JumpState.Jumping || jump == JumpState.InFlight)    
             && !ReferenceEquals(collision.gameObject, currentAttractiveBody.orbit)
             && ReferenceEquals(currentAttractiveBody, closestAttractiveBody)
         )
-        {
+        { 
             closestAttractiveBody = (AttractiveBody)collision.gameObject.transform.parent.gameObject.GetComponent("AttractiveBody");
         }
 
@@ -99,7 +97,7 @@ public abstract class AttractableBody : Body
 
         if (jump == JumpState.Jumping)
         {
-            verticalSpeed = 0;
+            rb2D.velocity = new Vector2();
             // Cancel gravity speed modifier and impulse force to jump
             rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
@@ -108,10 +106,13 @@ public abstract class AttractableBody : Body
             // Reset velocity to avoid having remaining jump forces applied after jump has stopped
             rb2D.velocity = new Vector2();
         }
+        else
+        {
+            rb2D.AddRelativeForce(new Vector2(0, -rb2D.mass * gravityForce));
+        }
         // Add gravity acceleration every time. Limit max speed to avoid extreme behaviors.
         // We keep gravity acceleration after landing to stick the attractable body to the ground.
-        verticalSpeed = Mathf.Abs(move) > 0.1 || !isGrounded ? Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit) : 0;
-        if (verticalSpeed < 0.1)
+        if (rb2D.velocity.y < 0.1)
         {
             Fall();
         }
@@ -120,9 +121,8 @@ public abstract class AttractableBody : Body
 
         var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
         Vector2 horizontalMove = move * runSpeed * moveAlongGround * time;
-        Vector2 verticalMove = verticalSpeed * groundNormal * time;
 
-        rb2D.position = rb2D.position + horizontalMove + verticalMove;
+        rb2D.position += horizontalMove;
     }
 
     public enum JumpState
