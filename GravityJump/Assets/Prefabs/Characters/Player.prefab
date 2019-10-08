@@ -166,9 +166,9 @@ MonoBehaviour:
   groundedCheck: {fileID: 7587937021867414669}
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   closestAttractiveBody: {fileID: 0}
   currentAttractiveBody: {fileID: 0}
-  attractableBodyCollider: {fileID: 0}
+  attractableBodyCollider: {fileID: 7587937021885771588}
   runSpeed: 7
   jumpForce: 10

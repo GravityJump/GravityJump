@@ -15,10 +15,10 @@ MonoBehaviour:
   groundedCheck: {fileID: 1702760863759702305}
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   closestAttractiveBody: {fileID: 0}
   currentAttractiveBody: {fileID: 0}
-  attractableBodyCollider: {fileID: 0}
+  attractableBodyCollider: {fileID: 1702760863731917544}
   runSpeed: 7
   jumpForce: 10
 --- !u!1001 &9145877904010562988
@@ -94,6 +94,12 @@ PrefabInstance:
 --- !u!1 &1702760863731917540 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7587937021885771592, guid: 90d53c53b461d41439471ec9e130d147,
+    type: 3}
+  m_PrefabInstance: {fileID: 9145877904010562988}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &1702760863731917544 stripped
+CapsuleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 7587937021885771588, guid: 90d53c53b461d41439471ec9e130d147,
     type: 3}
   m_PrefabInstance: {fileID: 9145877904010562988}
   m_PrefabAsset: {fileID: 0}

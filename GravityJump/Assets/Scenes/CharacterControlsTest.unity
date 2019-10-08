@@ -120,12 +120,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &195374501 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7587937021867414669, guid: 90d53c53b461d41439471ec9e130d147,
-    type: 3}
-  m_PrefabInstance: {fileID: 1386226459}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &985802228
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,12 +272,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c33dc618c5ae34333902a1c070230eab, type: 3}
---- !u!70 &1378889481 stripped
-CapsuleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 7587937021885771588, guid: 90d53c53b461d41439471ec9e130d147,
-    type: 3}
-  m_PrefabInstance: {fileID: 1386226459}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1386226459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -363,38 +351,8 @@ PrefabInstance:
       objectReference: {fileID: 1678141309}
     - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
         type: 3}
-      propertyPath: attractableBodyCollider
-      value: 
-      objectReference: {fileID: 1378889481}
-    - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
-        type: 3}
       propertyPath: isJumpEnabled
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
-        type: 3}
-      propertyPath: runSpeed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
-        type: 3}
-      propertyPath: groundedCheck
-      value: 
-      objectReference: {fileID: 195374501}
-    - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
-        type: 3}
-      propertyPath: groundMask.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
-    - target: {fileID: 5142449972087190579, guid: 90d53c53b461d41439471ec9e130d147,
-        type: 3}
-      propertyPath: jumpForce
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90d53c53b461d41439471ec9e130d147, type: 3}
@@ -722,24 +680,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5645609294998826743, guid: eec9d71500b5f4d09bc5af2a2fb5572c,
-        type: 3}
-      propertyPath: closestAttractiveBody
-      value: 
-      objectReference: {fileID: 1678141309}
-    - target: {fileID: 5645609294998826743, guid: eec9d71500b5f4d09bc5af2a2fb5572c,
-        type: 3}
-      propertyPath: attractableBodyCollider
-      value: 
-      objectReference: {fileID: 2201906182077885625}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eec9d71500b5f4d09bc5af2a2fb5572c, type: 3}
---- !u!70 &2201906182077885625 stripped
-CapsuleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1702760863731917544, guid: eec9d71500b5f4d09bc5af2a2fb5572c,
-    type: 3}
-  m_PrefabInstance: {fileID: 2201906182077885624}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3968688070640912507
 PrefabInstance:
   m_ObjectHideFlags: 0

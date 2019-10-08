@@ -28,6 +28,11 @@ public abstract class AttractableBody : Body
     {
         rb2D = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        int defaultLayerMask = LayerMask.GetMask("Planetoid", "Character");
+        if (groundMask.value != defaultLayerMask)
+        {
+            Debug.LogWarning($"groundMask for attractableBody {this.name} is different from the default layer mask: {defaultLayerMask}");
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
