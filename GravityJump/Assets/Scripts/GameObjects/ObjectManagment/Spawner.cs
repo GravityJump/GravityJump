@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class Spawner : MonoBehaviour
     public GameObject PlayerPrefab;
     public GameObject PlayerGameObject;
     public bool IsPlayerVisibleOnScreen { get; private set; }
+    public float distance = 0f;
+    public Text DistanceText;
 
     void Start()
     {
@@ -60,6 +63,9 @@ public class Spawner : MonoBehaviour
             GeneratePlanet();
             PrepareNextSpawn();
         }
+
+        this.distance += this.Speed.GetValue() * Time.deltaTime / 10;
+        this.DistanceText.text = $"Distance {this.distance.ToString("0.00")} a.l.";
     }
 
     void GeneratePlanet()
