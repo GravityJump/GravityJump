@@ -31,24 +31,7 @@ namespace UI
 
         Stack Screens;
 
-        UDPSocket Client;
-
-        void Start()
-        {
-            this.GetGameObjects();
-            this.SetButtonsCallbacks();
-            this.VersionText.text = $"Version {this.Version}";
-            this.HideAllGameObjects();
-
-            this.Screens = new Stack();
-
-            this.ConfigureNetwork();
-
-            this.Screens.Push(this.TitleScreen);
-            StartCoroutine(this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen));
-        }
-
-        void GetGameObjects()
+        void Awake()
         {
             this.TitleScreen = GameObject.Find("UICanvas/TitleScreen");
             this.GameModeSelectionScreen = GameObject.Find("UICanvas/GameModeSelectionScreen");
@@ -67,24 +50,29 @@ namespace UI
             this.JoinScreenJoinButton = GameObject.Find("UICanvas/JoinScreen/JoinButton").GetComponent<Button>();
         }
 
+        void Start()
+        {
+            this.SetButtonsCallbacks();
+            this.VersionText.text = $"Version {this.Version}";
+            this.HideAllGameObjects();
+
+            this.Screens = new Stack();
+
+            this.ConfigureNetwork();
+
+            this.Screens.Push(this.TitleScreen);
+            StartCoroutine(this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen));
+        }
+
         void SetButtonsCallbacks()
         {
             this.GameModeSelectionScreenSoloButton.onClick.AddListener(() => { Debug.Log("Start a solo game"); });
-            this.GameModeSelectionScreenHostButton.onClick.AddListener(() =>
-            {
-                this.Screens.Push(this.HostScreen);
-                this.Client.Server(this.Client.Self.Ip, 8000);
-            });
+            this.GameModeSelectionScreenHostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
             this.GameModeSelectionScreenJoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
             this.GameModeSelectionScreenExitButton.onClick.AddListener(() => { Application.Quit(); });
             this.HostScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
             this.JoinScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
-            this.JoinScreenJoinButton.onClick.AddListener(() =>
-            {
-                this.Client.Peer = new Node(this.JoinScreenHostIpInputText.text, 8000);
-                this.Client.Client(this.JoinScreenHostIpInputText.text, 8000);
-                this.Client.Send("test");
-            });
+            this.JoinScreenJoinButton.onClick.AddListener(() => { });
         }
 
         void HideAllGameObjects()
@@ -103,8 +91,7 @@ namespace UI
             {
                 try
                 {
-                    this.Client = new UDPSocket(Network.Utils.GetHostIpAddress(), 8000);
-                    this.IpText.text = $"IP {this.Client.Self.Ip}";
+                    this.IpText.text = $"IP {Network.Utils.GetHostIpAddress()}";
                 }
                 catch
                 {
@@ -122,7 +109,6 @@ namespace UI
             this.GameModeSelectionScreenHostButton.interactable = false;
             this.GameModeSelectionScreenJoinButton.interactable = false;
             this.IpText.text = reason;
-
         }
 
         void Update()
@@ -135,10 +121,6 @@ namespace UI
                     this.VersionText.gameObject.SetActive(true);
                     this.IpText.gameObject.SetActive(true);
                 }
-            }
-            else if (this.Screens.Top() == this.HostScreen)
-            {
-
             }
         }
 
