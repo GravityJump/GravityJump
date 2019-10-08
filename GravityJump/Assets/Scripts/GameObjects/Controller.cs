@@ -21,6 +21,11 @@ namespace Game
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+
             if (this.PlayerController.Player == null && this.Spawner.PlayerSpawningPlanet != null)
             {
                 this.PlayerController.InstantiatePlayer(this.Spawner.PlayerSpawningPlanet);
