@@ -13,6 +13,7 @@ namespace UI
     {
         public readonly string Version = "0.0.1";
 
+        NetworkManager NetworkManager;
         GameObject TitleScreen;
         GameObject GameModeSelectionScreen;
         GameObject HostScreen;
@@ -33,6 +34,7 @@ namespace UI
 
         void Awake()
         {
+            this.NetworkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
             this.TitleScreen = GameObject.Find("UICanvas/TitleScreen");
             this.GameModeSelectionScreen = GameObject.Find("UICanvas/GameModeSelectionScreen");
             this.HostScreen = GameObject.Find("UICanvas/HostScreen");
@@ -67,12 +69,21 @@ namespace UI
         void SetButtonsCallbacks()
         {
             this.GameModeSelectionScreenSoloButton.onClick.AddListener(() => { Debug.Log("Start a solo game"); });
-            this.GameModeSelectionScreenHostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
+            this.GameModeSelectionScreenHostButton.onClick.AddListener(() =>
+            {
+                this.Screens.Push(this.HostScreen);
+                this.NetworkManager.networkAddress = "localhost";
+                this.NetworkManager.StartHost();
+            });
             this.GameModeSelectionScreenJoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
             this.GameModeSelectionScreenExitButton.onClick.AddListener(() => { Application.Quit(); });
             this.HostScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
             this.JoinScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
-            this.JoinScreenJoinButton.onClick.AddListener(() => { });
+            this.JoinScreenJoinButton.onClick.AddListener(() =>
+            {
+                this.NetworkManager.networkAddress = this.JoinScreenHostIpInputText.text;
+                this.NetworkManager.StartClient();
+            });
         }
 
         void HideAllGameObjects()
