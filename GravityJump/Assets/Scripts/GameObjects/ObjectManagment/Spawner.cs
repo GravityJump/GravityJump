@@ -15,8 +15,6 @@ public class Spawner : MonoBehaviour
     public GameObject PlayerPrefab;
     public GameObject PlayerGameObject;
     public bool IsPlayerVisibleOnScreen { get; private set; }
-    public float distance = 0f;
-    public Text DistanceText;
 
     void Start()
     {
@@ -63,9 +61,6 @@ public class Spawner : MonoBehaviour
             GeneratePlanet();
             PrepareNextSpawn();
         }
-
-        this.distance += this.Speed.GetValue() * Time.deltaTime / 10;
-        this.DistanceText.text = $"Distance {this.distance.ToString("0.00")} a.l.";
     }
 
     void GeneratePlanet()
@@ -80,7 +75,7 @@ public class Spawner : MonoBehaviour
 
         if (!this.IsPlayerVisibleOnScreen)
         {
-            ((InputPlayer)this.PlayerPrefab.gameObject.GetComponent("InputPlayer")).closestAttractiveBody = (AttractiveBody)generatedObject.gameObject.GetComponent("AttractiveBody");
+            this.PlayerPrefab.gameObject.GetComponent<InputPlayer>().closestAttractiveBody = generatedObject.gameObject.GetComponent<AttractiveBody>();
             this.PlayerGameObject = Instantiate(this.PlayerPrefab, new Vector3(x, y, 0), Quaternion.Euler(0, 0, Random.value * 360));
             generatedObject.SetActive(true);
             this.IsPlayerVisibleOnScreen = true;
