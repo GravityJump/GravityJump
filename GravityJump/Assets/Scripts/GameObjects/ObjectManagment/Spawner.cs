@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public float speed = 2f;
+    public Speed Speed;
     public float x = 3f;
     public float y = 1f;
     private float r = 1f;
     public List<GameObject> planets;
     private GameObject ActivePlanet;
     private float total_frequency;
+    public GameObject Player;
+
     void Start()
     {
+        this.Speed = new Speed(2f);
+
         foreach (GameObject planet in planets)
         {
             total_frequency += planet.GetComponent<AttractiveBody>().frequency;
@@ -42,9 +46,11 @@ public class Spawner : MonoBehaviour
         Debug.Log("No random planet could be selected");
         return planets[0];
     }
+
     void Update()
     {
-        transform.Translate(speed * Time.deltaTime, 0, 0);
+        transform.Translate(this.Speed.GetValue() * Time.deltaTime, 0, 0);
+
         if (transform.position.x >= x)
         {
             GeneratePlanet();
@@ -65,7 +71,7 @@ public class Spawner : MonoBehaviour
 
     void PrepareNextSpawn()
     {
-        // Pulling previous usefull data on 
+        // Pulling previous usefull data on
         float r_last = r;
         float x_last = x;
         float y_last = y;
@@ -99,5 +105,4 @@ public class Spawner : MonoBehaviour
 
         ActivePlanet = NextPlanet;
     }
-
 }
