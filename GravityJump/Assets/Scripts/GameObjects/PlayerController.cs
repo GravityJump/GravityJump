@@ -4,12 +4,12 @@ namespace Game
 {
     public class PlayerController : MonoBehaviour
     {
-        // TODO: move prefab in dir `Resources` in order to be able to user `Resouces.Load` instead of a magic binding
-        public GameObject Prefab;
+        private GameObject Prefab;
         public GameObject Player;
 
         void Awake()
         {
+            this.Prefab = Resources.Load("Prefabs/Characters/Player") as GameObject;
             this.Player = null;
         }
 
