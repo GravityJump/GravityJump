@@ -8,8 +8,16 @@ public class AttractiveBody : Body
     public float frequency;
     public Collider2D orbit;
     public Collider2D normalShape;
+    public int id { get; private set; }
+    private static int idGenerator;
 
     public float default_size;
+
+    AttractiveBody()
+    {
+        id = idGenerator;
+        idGenerator++;
+    }
 
     static AttractiveBody()
     {

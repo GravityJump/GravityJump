@@ -36,15 +36,19 @@ public abstract class AttractableBody : Body
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (
-            collision.gameObject.layer == 10
-            && (jump == JumpState.Jumping || jump == JumpState.InFlight)    
-            && !ReferenceEquals(collision.gameObject, currentAttractiveBody.orbit)
-            && ReferenceEquals(currentAttractiveBody, closestAttractiveBody)
+            collision.gameObject.layer == LayerMask.NameToLayer("Orbit")
         )
         {
-            closestAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
+            AttractiveBody collisionAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
+            if (
+                (jump == JumpState.Jumping || jump == JumpState.InFlight)
+                && collisionAttractiveBody.id != currentAttractiveBody.id
+                && closestAttractiveBody.id == currentAttractiveBody.id
+            )
+            {
+                closestAttractiveBody = collisionAttractiveBody;
+            }
         }
-
     }
 
     protected void FixedUpdate()
@@ -172,8 +176,8 @@ public abstract class AttractableBody : Body
         if (jump == JumpState.Falling)
         {
             jump = JumpState.Landing;
+            yield return new WaitForSeconds(landingDelay);
+            jump = JumpState.Grounded;
         }
-        yield return new WaitForSeconds(landingDelay);
-        jump = JumpState.Grounded;
     }
 }
