@@ -23,7 +23,7 @@ public class Spawner : MonoBehaviour
     public float x = 3f;
     public float y = 1f;
     private float r = 1f;
-    public List<GameObject> planets;
+    private List<GameObject> AvailablePlanetsPrefabs;
     private GameObject ActivePlanet;
     private float total_frequency;
     public SpawningPoint PlayerSpawningPlanet;
@@ -33,13 +33,17 @@ public class Spawner : MonoBehaviour
     {
         this.PlayerSpawningPlanet = null;
         this.IsPlayerAlive = false;
+
+        this.AvailablePlanetsPrefabs = new List<GameObject>();
+        this.AvailablePlanetsPrefabs.Add(Resources.Load("Prefabs/Planetoids/Planet") as GameObject);
+        this.AvailablePlanetsPrefabs.Add(Resources.Load("Prefabs/Planetoids/Cucumboid") as GameObject);
     }
 
     void Start()
     {
         this.Speed = new Speed(2f);
 
-        foreach (GameObject planet in planets)
+        foreach (GameObject planet in this.AvailablePlanetsPrefabs)
         {
             total_frequency += planet.GetComponent<AttractiveBody>().frequency;
         }
@@ -52,7 +56,7 @@ public class Spawner : MonoBehaviour
     {
         float v = Random.value * total_frequency;
         float f;
-        foreach (GameObject planet in planets)
+        foreach (GameObject planet in this.AvailablePlanetsPrefabs)
         {
             f = planet.GetComponent<AttractiveBody>().frequency;
             if (v <= f)
@@ -66,7 +70,7 @@ public class Spawner : MonoBehaviour
         }
         // if nothing has been found
         Debug.Log("No random planet could be selected");
-        return planets[0];
+        return this.AvailablePlanetsPrefabs[0];
     }
 
     void Update()
