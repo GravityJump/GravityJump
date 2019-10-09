@@ -44,7 +44,7 @@ public abstract class AttractableBody : Body
             && ReferenceEquals(currentAttractiveBody, closestAttractiveBody)
         )
         {
-            closestAttractiveBody = (AttractiveBody)collision.gameObject.transform.parent.gameObject.GetComponent("AttractiveBody");
+            closestAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
         }
 
     }
@@ -69,7 +69,7 @@ public abstract class AttractableBody : Body
                         case 8:
                             // Planetoid
                             StartCoroutine("Land");
-                            currentAttractiveBody = (AttractiveBody)colliders[i].gameObject.transform.parent.gameObject.GetComponent("AttractiveBody");
+                            currentAttractiveBody = colliders[i].gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
                             break;
                         case 9:
                             // Player
