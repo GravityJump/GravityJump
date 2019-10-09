@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 using System;
@@ -14,7 +13,6 @@ namespace UI
     {
         public readonly string Version = "0.0.1";
 
-        NetworkManager NetworkManager;
         GameObject TitleScreen;
         GameObject GameModeSelectionScreen;
         GameObject HostScreen;

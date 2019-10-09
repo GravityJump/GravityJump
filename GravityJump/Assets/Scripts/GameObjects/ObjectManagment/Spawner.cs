@@ -1,18 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public class SpawningPoint
+{
+    public GameObject Planet { get; private set; }
+    public float X { get; private set; }
+    public float Y { get; private set; }
+
+    public SpawningPoint(GameObject planet, float x, float y)
+    {
+        this.Planet = planet;
+        this.X = x;
+        this.Y = y;
+    }
+}
 
 public class Spawner : MonoBehaviour
 {
-    public float speed = 2f;
+    public Speed Speed;
     public float x = 3f;
     public float y = 1f;
     private float r = 1f;
     public List<GameObject> planets;
     private GameObject ActivePlanet;
     private float total_frequency;
+    public SpawningPoint PlayerSpawningPlanet;
+    public bool IsPlayerAlive;
+
+    void Awake()
+    {
+        this.PlayerSpawningPlanet = null;
+        this.IsPlayerAlive = false;
+    }
+
     void Start()
     {
+        this.Speed = new Speed(2f);
+
         foreach (GameObject planet in planets)
         {
             total_frequency += planet.GetComponent<AttractiveBody>().frequency;
@@ -42,14 +68,18 @@ public class Spawner : MonoBehaviour
         Debug.Log("No random planet could be selected");
         return planets[0];
     }
+
     void Update()
     {
-        transform.Translate(speed * Time.deltaTime, 0, 0);
+        transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
+
         if (transform.position.x >= x)
         {
             GeneratePlanet();
             PrepareNextSpawn();
         }
+
+        this.Speed.Increment(Time.deltaTime);
     }
 
     void GeneratePlanet()
@@ -61,11 +91,16 @@ public class Spawner : MonoBehaviour
             Quaternion.Euler(0, 0, Random.value * 360));
         generatedObject.transform.localScale *= r;
         generatedObject.SetActive(true);
+
+        if (!this.IsPlayerAlive)
+        {
+            this.PlayerSpawningPlanet = new SpawningPoint(generatedObject, x, y);
+        }
     }
 
     void PrepareNextSpawn()
     {
-        // Pulling previous usefull data on 
+        // Pulling previous usefull data on
         float r_last = r;
         float x_last = x;
         float y_last = y;
@@ -99,5 +134,4 @@ public class Spawner : MonoBehaviour
 
         ActivePlanet = NextPlanet;
     }
-
 }
