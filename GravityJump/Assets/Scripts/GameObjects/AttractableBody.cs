@@ -112,7 +112,7 @@ public abstract class AttractableBody : Body
         }
         // Add gravity acceleration every time. Limit max speed to avoid extreme behaviors.
         // We keep gravity acceleration after landing to stick the attractable body to the ground.
-        if (rb2D.velocity.y < 0.1)
+        if (transform.InverseTransformVector(rb2D.velocity).y < 0.1)
         {
             Fall();
         }
