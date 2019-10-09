@@ -101,19 +101,15 @@ public abstract class AttractableBody : Body
 
     protected void Move(float move, JumpState jump, float time)
     {
-        ColliderDistance2D attractableToAttractiveBodyDistance = attractableBodyCollider.Distance(closestAttractiveBody.normalShape);
-        Vector2 groundNormal = attractableToAttractiveBodyDistance.normal.normalized;
+        ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(closestAttractiveBody.normalShape);
+        Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
+        float groundToNormalDistance = - closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
         if (jump == JumpState.Jumping)
         {
             rb2D.velocity = new Vector2();
             // Cancel gravity speed modifier and impulse force to jump
             rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-        }
-        else if (jump == JumpState.Landing)
-        {
-            // Reset velocity to avoid having remaining jump forces applied after jump has stopped
-            rb2D.velocity = new Vector2();
         }
         else
         {
@@ -129,7 +125,7 @@ public abstract class AttractableBody : Body
         transform.up = groundNormal;
 
         var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-        float horizontalMove = move * runSpeed * time;
+        float horizontalMove = move * runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
         Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * horizontalInertia) * moveAlongGround;
 
         rb2D.position += horizontalPositionMove;

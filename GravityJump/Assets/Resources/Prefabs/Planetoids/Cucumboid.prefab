@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frequency: 0.1
   orbit: {fileID: 4259395862610054942}
+  ground: {fileID: 4259395862274863919}
   normalShape: {fileID: 4259395862344068051}
   default_size: 1
 --- !u!1 &4259395862274863916
