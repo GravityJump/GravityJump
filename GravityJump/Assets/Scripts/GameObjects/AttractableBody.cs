@@ -15,7 +15,6 @@ public abstract class AttractableBody : Body
     protected bool isGrounded;
     protected float groundedRadius = 0.1f;
     protected float minGravitySpeedLimit = -10f;
-
     protected float landingDelay = 0.2f;
     protected float gravityForce = 10f;
 
@@ -47,6 +46,7 @@ public abstract class AttractableBody : Body
             )
             {
                 closestAttractiveBody = collisionAttractiveBody;
+                rb2D.velocity = new Vector2(0, 0);
             }
         }
     }
