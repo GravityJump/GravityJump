@@ -122,7 +122,14 @@ public abstract class AttractableBody : Body
             Fall();
         }
 
-        transform.up = groundNormal;
+        if (isGrounded)
+        {
+            transform.up = groundNormal;
+        }
+        else
+        {
+            transform.up = transform.up + ((Vector3)groundNormal - transform.up) * time * 10;
+        }
 
         var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
         float horizontalMove = move * runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
