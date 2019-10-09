@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game
 {
@@ -23,7 +24,7 @@ namespace Game
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Application.Quit();
+                SceneManager.LoadScene("Menu");
             }
 
             if (this.PlayerController.Player == null && this.Spawner.PlayerSpawningPlanet != null)
