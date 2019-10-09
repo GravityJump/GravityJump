@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -12,13 +13,17 @@ public abstract class AttractableBody : Body
     [SerializeField] protected float runSpeed = 7f;
     [SerializeField] protected float jumpForce = 10f;
 
-    protected bool isGrounded;
+    // Physics constants
     protected float groundedRadius = 0.1f;
-    protected float minGravitySpeedLimit = -10f;
     protected float landingDelay = 0.2f;
+    protected float inertiaForce = 0.8f;
     protected float gravityForce = 10f;
+    protected float minGravitySpeedLimit = -10f;
 
+    // State variables
+    protected bool isGrounded;
     protected JumpState jump;
+    protected float horizontalInertia;
     protected float horizontalSpeed;
 
     protected void Awake()
@@ -124,9 +129,11 @@ public abstract class AttractableBody : Body
         transform.up = groundNormal;
 
         var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-        Vector2 horizontalMove = move * runSpeed * moveAlongGround * time;
+        float horizontalMove = move * runSpeed * time;
+        Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * horizontalInertia) * moveAlongGround;
 
-        rb2D.position += horizontalMove;
+        rb2D.position += horizontalPositionMove;
+        horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
     }
 
     public enum JumpState
