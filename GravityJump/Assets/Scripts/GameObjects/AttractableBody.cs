@@ -7,8 +7,8 @@ public abstract class AttractableBody : Body
     [SerializeField] private LayerMask groundMask;
     // This should be a collider slightly below the ground collider, to keep the normal upward.
     [SerializeField] private Collider2D attractableBodyCollider;
-    [SerializeField] private AttractiveBody closestAttractiveBody;
-    [SerializeField] private AttractiveBody currentAttractiveBody;
+    [SerializeField] public AttractiveBody closestAttractiveBody;
+    [SerializeField] public AttractiveBody currentAttractiveBody;
     [SerializeField] protected float runSpeed = 7f;
     [SerializeField] protected float jumpForce = 10f;
 
@@ -41,8 +41,8 @@ public abstract class AttractableBody : Body
             && !ReferenceEquals(collision.gameObject, currentAttractiveBody.orbit)
             && ReferenceEquals(currentAttractiveBody, closestAttractiveBody)
         )
-        { 
-            closestAttractiveBody = (AttractiveBody)collision.gameObject.transform.parent.gameObject.GetComponent("AttractiveBody");
+        {
+            closestAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
         }
 
     }
@@ -67,7 +67,7 @@ public abstract class AttractableBody : Body
                         case 8:
                             // Planetoid
                             StartCoroutine("Land");
-                            currentAttractiveBody = (AttractiveBody)colliders[i].gameObject.transform.parent.gameObject.GetComponent("AttractiveBody");
+                            currentAttractiveBody = colliders[i].gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
                             break;
                         case 9:
                             // Player
