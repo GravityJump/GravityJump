@@ -58,7 +58,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3025378533434834081}
   - component: {fileID: 3025378533434834094}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: GameSpawnerSet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,11 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87c9df58eeb8480eb3019a526b59b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  spawnRate: 3
-  planets:
-  - {fileID: 0}
-  - {fileID: 0}
+  x: 3
+  y: 1
+  IsPlayerAlive: 0
 --- !u!1 &3025378534498660374
 GameObject:
   m_ObjectHideFlags: 0
