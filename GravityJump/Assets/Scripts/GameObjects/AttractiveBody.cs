@@ -6,10 +6,23 @@ public class AttractiveBody : Body
 {
     public static List<AttractiveBody> ActiveAttractiveBodies;
     public float frequency;
+    // All following colliders are attached to children of the current gameObject.
+    // A trigger collider that represent the orbit of the planet.
     public Collider2D orbit;
+    // A rigidbody collider that represent the ground on which the player will walk.
+    public Collider2D ground;
+    // A trigger collider, slightly below the ground collider. It is used to compute the normal to the ground.
     public Collider2D normalShape;
+    public int id { get; private set; }
+    private static int idGenerator;
 
     public float default_size;
+
+    AttractiveBody()
+    {
+        id = idGenerator;
+        idGenerator++;
+    }
 
     static AttractiveBody()
     {
@@ -39,5 +52,10 @@ public class AttractiveBody : Body
     public float GetMaximalDistance(float size)
     {
         return 2 * size;
+    }
+
+    public ColliderDistance2D getDistanceBetweenNormalAndGround()
+    {
+        return normalShape.Distance(ground);
     }
 }

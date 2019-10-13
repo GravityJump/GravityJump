@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AttractableBody : Body
@@ -7,22 +7,24 @@ public abstract class AttractableBody : Body
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
     // This should be a collider slightly below the ground collider, to keep the normal upward.
+    [SerializeField] private Collider2D attractableBodyCollider;
     [SerializeField] public AttractiveBody closestAttractiveBody;
     [SerializeField] public AttractiveBody currentAttractiveBody;
-    [SerializeField] private Collider2D attractableBodyCollider;
     [SerializeField] protected float runSpeed = 7f;
     [SerializeField] protected float jumpForce = 10f;
 
-    protected bool isGrounded;
+    // Physics constants
     protected float groundedRadius = 0.1f;
+    protected float landingDelay = 0.2f;
+    protected float inertiaForce = 0.8f;
+    protected float gravityForce = 10f;
     protected float minGravitySpeedLimit = -10f;
 
-    protected float landingDelay = 0.2f;
-    protected float gravityForce = 10f;
-
+    // State variables
+    protected bool isGrounded;
     protected JumpState jump;
+    protected float horizontalInertia;
     protected float horizontalSpeed;
-    private float verticalSpeed;
 
     protected void Awake()
     {
@@ -38,15 +40,20 @@ public abstract class AttractableBody : Body
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (
-            collision.gameObject.layer == 10
-            && jump == JumpState.Jumping
-            && !ReferenceEquals(collision.gameObject, currentAttractiveBody.orbit)
-            && ReferenceEquals(currentAttractiveBody, closestAttractiveBody)
+            collision.gameObject.layer == LayerMask.NameToLayer("Orbit")
         )
         {
-            closestAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
+            AttractiveBody collisionAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
+            if (
+                (jump == JumpState.Jumping || jump == JumpState.InFlight)
+                && collisionAttractiveBody.id != currentAttractiveBody.id
+                && closestAttractiveBody.id == currentAttractiveBody.id
+            )
+            {
+                closestAttractiveBody = collisionAttractiveBody;
+                rb2D.velocity = new Vector2(0, 0);
+            }
         }
-
     }
 
     protected void FixedUpdate()
@@ -94,35 +101,42 @@ public abstract class AttractableBody : Body
 
     protected void Move(float move, JumpState jump, float time)
     {
-        ColliderDistance2D attractableToAttractiveBodyDistance = attractableBodyCollider.Distance(closestAttractiveBody.normalShape);
-        Vector2 groundNormal = attractableToAttractiveBodyDistance.normal.normalized;
+        ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(closestAttractiveBody.normalShape);
+        Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
+        float groundToNormalDistance = - closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
         if (jump == JumpState.Jumping)
         {
-            verticalSpeed = 0;
+            rb2D.velocity = new Vector2();
             // Cancel gravity speed modifier and impulse force to jump
             rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
-        else if (jump == JumpState.Landing)
+        else
         {
-            // Reset velocity to avoid having remaining jump forces applied after jump has stopped
-            rb2D.velocity = new Vector2();
+            rb2D.AddRelativeForce(new Vector2(0, -rb2D.mass * gravityForce));
         }
         // Add gravity acceleration every time. Limit max speed to avoid extreme behaviors.
         // We keep gravity acceleration after landing to stick the attractable body to the ground.
-        verticalSpeed = Mathf.Abs(move) > 0.1 || !isGrounded ? Mathf.Max(verticalSpeed - rb2D.mass * gravityForce * time, minGravitySpeedLimit) : 0;
-        if (verticalSpeed < 0.1)
+        if (transform.InverseTransformVector(rb2D.velocity).y < 0.1)
         {
             Fall();
         }
 
-        transform.up = groundNormal;
+        if (isGrounded)
+        {
+            transform.up = groundNormal;
+        }
+        else
+        {
+            transform.up = transform.up + ((Vector3)groundNormal - transform.up) * time * 10;
+        }
 
         var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-        Vector2 horizontalMove = move * runSpeed * moveAlongGround * time;
-        Vector2 verticalMove = verticalSpeed * groundNormal * time;
+        float horizontalMove = move * runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
+        Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * horizontalInertia) * moveAlongGround;
 
-        rb2D.position = rb2D.position + horizontalMove + verticalMove;
+        rb2D.position += horizontalPositionMove;
+        horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
     }
 
     public enum JumpState
@@ -172,8 +186,8 @@ public abstract class AttractableBody : Body
         if (jump == JumpState.Falling)
         {
             jump = JumpState.Landing;
+            yield return new WaitForSeconds(landingDelay);
+            jump = JumpState.Grounded;
         }
-        yield return new WaitForSeconds(landingDelay);
-        jump = JumpState.Grounded;
     }
 }
