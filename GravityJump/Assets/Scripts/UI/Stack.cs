@@ -41,5 +41,10 @@ namespace UI
 
             return gameState;
         }
+
+        public int Count()
+        {
+            return this.stack.Count;
+        }
     }
 }

@@ -14,13 +14,13 @@ namespace UI
 
         public override void Awake()
         {
-            this.Panel = GameObject.Find("UICanvas/GameModeSelectionScreen");
-            this.Version = GameObject.Find("UICanvas/GameModeSelectionScreen/Version").GetComponent<Text>();
-            this.Ip = GameObject.Find("UICanvas/GameModeSelectionScreen/Ip").GetComponent<Text>();
-            this.SoloButton = GameObject.Find("UICanvas/GameModeSelectionScreen/SoloButton").GetComponent<Button>();
-            this.HostButton = GameObject.Find("UICanvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
-            this.JoinButton = GameObject.Find("UICanvas/GameModeSelectionScreen/JoinButton").GetComponent<Button>();
-            this.ExitButton = GameObject.Find("UICanvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
+            this.Panel = GameObject.Find("Canvas/GameModeSelectionScreen");
+            this.Version = GameObject.Find("Canvas/GameModeSelectionScreen/Version").GetComponent<Text>();
+            this.Ip = GameObject.Find("Canvas/GameModeSelectionScreen/Ip").GetComponent<Text>();
+            this.SoloButton = GameObject.Find("Canvas/GameModeSelectionScreen/SoloButton").GetComponent<Button>();
+            this.HostButton = GameObject.Find("Canvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
+            this.JoinButton = GameObject.Find("Canvas/GameModeSelectionScreen/JoinButton").GetComponent<Button>();
+            this.ExitButton = GameObject.Find("Canvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
         }
 
         public override void OnStart()

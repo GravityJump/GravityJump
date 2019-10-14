@@ -9,8 +9,8 @@ namespace UI
 
         public override void Awake()
         {
-            this.Panel = GameObject.Find("UICanvas/HostScreen");
-            this.Back = GameObject.Find("UICanvas/HostScreen/BackButton").GetComponent<Button>();
+            this.Panel = GameObject.Find("Canvas/HostScreen");
+            this.Back = GameObject.Find("Canvas/HostScreen/BackButton").GetComponent<Button>();
         }
     }
 }

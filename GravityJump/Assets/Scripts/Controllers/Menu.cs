@@ -2,32 +2,30 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-using Network;
-
-namespace UI
+namespace Controllers
 {
-    public class UIController : MonoBehaviour
+    public class Menu : MonoBehaviour
     {
         public readonly string Version = "0.0.1";
 
-        Stack Screens;
+        UI.Stack Screens;
 
-        TitleScreen TitleScreen;
-        GameModeSelectionScreen GameModeSelectionScreen;
-        HostScreen HostScreen;
-        JoinScreen JoinScreen;
+        UI.TitleScreen TitleScreen;
+        UI.GameModeSelectionScreen GameModeSelectionScreen;
+        UI.HostScreen HostScreen;
+        UI.JoinScreen JoinScreen;
 
         void Awake()
         {
-            this.TitleScreen = GameObject.Find("UICanvas/TitleScreen").GetComponent<TitleScreen>();
-            this.GameModeSelectionScreen = GameObject.Find("UICanvas/GameModeSelectionScreen").GetComponent<GameModeSelectionScreen>();
-            this.HostScreen = GameObject.Find("UICanvas/HostScreen").GetComponent<HostScreen>();
-            this.JoinScreen = GameObject.Find("UICanvas/JoinScreen").GetComponent<JoinScreen>();
+            this.TitleScreen = GameObject.Find("Canvas/TitleScreen").GetComponent<UI.TitleScreen>();
+            this.GameModeSelectionScreen = GameObject.Find("Canvas/GameModeSelectionScreen").GetComponent<UI.GameModeSelectionScreen>();
+            this.HostScreen = GameObject.Find("Canvas/HostScreen").GetComponent<UI.HostScreen>();
+            this.JoinScreen = GameObject.Find("Canvas/JoinScreen").GetComponent<UI.JoinScreen>();
         }
 
         void Start()
         {
-            this.Screens = new Stack();
+            this.Screens = new UI.Stack();
 
             this.GameModeSelectionScreen.Version.text = $"Version {this.Version}";
             this.SetButtonsCallbacks();

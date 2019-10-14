@@ -12,8 +12,8 @@ namespace UI
 
         public override void Awake()
         {
-            this.Panel = GameObject.Find("UICanvas/TitleScreen");
-            this.Caption = GameObject.Find("UICanvas/TitleScreen/PressStart").GetComponent<Text>();
+            this.Panel = GameObject.Find("Canvas/TitleScreen");
+            this.Caption = GameObject.Find("Canvas/TitleScreen/PressStart").GetComponent<Text>();
             this.blinker = this.BlinkCaption(0.7f);
         }
 
@@ -25,8 +25,8 @@ namespace UI
 
         public override void OnStop()
         {
-            StopCoroutine(this.blinker);
             this.Panel.SetActive(false);
+            StopCoroutine(this.blinker);
         }
 
         IEnumerator BlinkCaption(float frequency)
