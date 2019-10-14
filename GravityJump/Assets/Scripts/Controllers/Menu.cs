@@ -41,15 +41,7 @@ namespace Controllers
 
         void SetButtonsCallbacks()
         {
-            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() =>
-            {
-                while (this.Screens.Count() > 0)
-                {
-                    this.Screens.Pop();
-                }
-
-                SceneManager.LoadScene("GameScene");
-            });
+            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() => { SceneManager.LoadScene("GameScene"); });
             this.GameModeSelectionScreen.HostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
             this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
             this.GameModeSelectionScreen.ExitButton.onClick.AddListener(() => { Application.Quit(); });
