@@ -6,6 +6,7 @@ namespace Controllers
     public class Game : MonoBehaviour
     {
         UI.Stack Screens;
+
         UI.PauseScreen PauseScreen;
 
         public UI.HUD HUD { get; private set; }
@@ -24,6 +25,7 @@ namespace Controllers
         {
             this.Screens = new UI.Stack();
             this.SetButtonsCallbacks();
+            this.PauseScreen.Clear();
         }
 
         void SetButtonsCallbacks()

@@ -12,7 +12,7 @@ namespace UI
             this.Panel = null;
         }
 
-        public virtual void Start()
+        public virtual void Clear()
         {
             this.Panel.SetActive(false);
         }

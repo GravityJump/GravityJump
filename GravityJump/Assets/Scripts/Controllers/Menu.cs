@@ -31,12 +31,25 @@ namespace Controllers
             this.SetButtonsCallbacks();
             this.ConfigureNetwork();
 
+            this.TitleScreen.Clear();
+            this.GameModeSelectionScreen.Clear();
+            this.HostScreen.Clear();
+            this.JoinScreen.Clear();
+
             this.Screens.Push(this.TitleScreen);
         }
 
         void SetButtonsCallbacks()
         {
-            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() => { SceneManager.LoadScene("GameScene"); });
+            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() =>
+            {
+                while (this.Screens.Count() > 0)
+                {
+                    this.Screens.Pop();
+                }
+
+                SceneManager.LoadScene("GameScene");
+            });
             this.GameModeSelectionScreen.HostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
             this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
             this.GameModeSelectionScreen.ExitButton.onClick.AddListener(() => { Application.Quit(); });
@@ -73,9 +86,9 @@ namespace Controllers
 
         void Update()
         {
-            if (this.Screens.Top() == this.TitleScreen)
+            if (Input.GetKeyDown(KeyCode.Return))
             {
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (this.Screens.Top() == this.TitleScreen)
                 {
                     this.Screens.Push(this.GameModeSelectionScreen);
                 }

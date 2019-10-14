@@ -25,6 +25,7 @@ namespace UI
             {
                 this.Top().OnPause();
             }
+
             this.stack.Push(gameState);
             this.Top().OnStart();
         }

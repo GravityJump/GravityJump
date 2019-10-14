@@ -29,6 +29,16 @@ namespace UI
             StopCoroutine(this.blinker);
         }
 
+        public override void OnResume()
+        {
+            this.OnStart();
+        }
+
+        public override void OnPause()
+        {
+            this.OnStop();
+        }
+
         IEnumerator BlinkCaption(float frequency)
         {
             while (true)
