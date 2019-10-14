@@ -2,9 +2,6 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-using System;
-using System.Collections;
-
 using Network;
 
 namespace UI
@@ -13,76 +10,41 @@ namespace UI
     {
         public readonly string Version = "0.0.1";
 
-        GameObject TitleScreen;
-        GameObject GameModeSelectionScreen;
-        GameObject HostScreen;
-        GameObject JoinScreen;
-        Text TitleScreenCaption;
-        Text VersionText;
-        Text IpText;
-        Text JoinScreenHostIpInputText;
-        Button GameModeSelectionScreenSoloButton;
-        Button GameModeSelectionScreenHostButton;
-        Button GameModeSelectionScreenJoinButton;
-        Button GameModeSelectionScreenExitButton;
-        Button HostScreenBackButton;
-        Button JoinScreenBackButton;
-        Button JoinScreenJoinButton;
-
         Stack Screens;
+
+        TitleScreen TitleScreen;
+        GameModeSelectionScreen GameModeSelectionScreen;
+        HostScreen HostScreen;
+        JoinScreen JoinScreen;
 
         void Awake()
         {
-            this.TitleScreen = GameObject.Find("UICanvas/TitleScreen");
-            this.GameModeSelectionScreen = GameObject.Find("UICanvas/GameModeSelectionScreen");
-            this.HostScreen = GameObject.Find("UICanvas/HostScreen");
-            this.JoinScreen = GameObject.Find("UICanvas/JoinScreen");
-            this.TitleScreenCaption = GameObject.Find("UICanvas/TitleScreen/PressStart").GetComponent<Text>();
-            this.VersionText = GameObject.Find("UICanvas/Version").GetComponent<Text>();
-            this.IpText = GameObject.Find("UICanvas/Ip").GetComponent<Text>();
-            this.JoinScreenHostIpInputText = GameObject.Find("UICanvas/JoinScreen/HostIpInput/HostIpInputText").GetComponent<Text>();
-            this.GameModeSelectionScreenSoloButton = GameObject.Find("UICanvas/GameModeSelectionScreen/SoloButton").GetComponent<Button>();
-            this.GameModeSelectionScreenHostButton = GameObject.Find("UICanvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
-            this.GameModeSelectionScreenJoinButton = GameObject.Find("UICanvas/GameModeSelectionScreen/JoinButton").GetComponent<Button>();
-            this.GameModeSelectionScreenExitButton = GameObject.Find("UICanvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
-            this.HostScreenBackButton = GameObject.Find("UICanvas/HostScreen/BackButton").GetComponent<Button>();
-            this.JoinScreenBackButton = GameObject.Find("UICanvas/JoinScreen/BackButton").GetComponent<Button>();
-            this.JoinScreenJoinButton = GameObject.Find("UICanvas/JoinScreen/JoinButton").GetComponent<Button>();
+            this.TitleScreen = GameObject.Find("UICanvas/TitleScreen").GetComponent<TitleScreen>();
+            this.GameModeSelectionScreen = GameObject.Find("UICanvas/GameModeSelectionScreen").GetComponent<GameModeSelectionScreen>();
+            this.HostScreen = GameObject.Find("UICanvas/HostScreen").GetComponent<HostScreen>();
+            this.JoinScreen = GameObject.Find("UICanvas/JoinScreen").GetComponent<JoinScreen>();
         }
 
         void Start()
         {
-            this.SetButtonsCallbacks();
-            this.VersionText.text = $"Version {this.Version}";
-            this.HideAllGameObjects();
-
             this.Screens = new Stack();
 
+            this.GameModeSelectionScreen.Version.text = $"Version {this.Version}";
+            this.SetButtonsCallbacks();
             this.ConfigureNetwork();
 
             this.Screens.Push(this.TitleScreen);
-            StartCoroutine(this.BlinkText(this.TitleScreenCaption, 0.7f, this.TitleScreen));
         }
 
         void SetButtonsCallbacks()
         {
-            this.GameModeSelectionScreenSoloButton.onClick.AddListener(() => { SceneManager.LoadScene("GameScene"); });
-            this.GameModeSelectionScreenHostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
-            this.GameModeSelectionScreenJoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
-            this.GameModeSelectionScreenExitButton.onClick.AddListener(() => { Application.Quit(); });
-            this.HostScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
-            this.JoinScreenBackButton.onClick.AddListener(() => { this.Screens.Pop(); });
-            this.JoinScreenJoinButton.onClick.AddListener(() => { });
-        }
-
-        void HideAllGameObjects()
-        {
-            this.TitleScreen.gameObject.SetActive(false);
-            this.GameModeSelectionScreen.gameObject.SetActive(false);
-            this.HostScreen.gameObject.SetActive(false);
-            this.JoinScreen.gameObject.SetActive(false);
-            this.VersionText.gameObject.SetActive(false);
-            this.IpText.gameObject.SetActive(false);
+            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() => { SceneManager.LoadScene("GameScene"); });
+            this.GameModeSelectionScreen.HostButton.onClick.AddListener(() => { this.Screens.Push(this.HostScreen); });
+            this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() => { this.Screens.Push(this.JoinScreen); });
+            this.GameModeSelectionScreen.ExitButton.onClick.AddListener(() => { Application.Quit(); });
+            this.HostScreen.Back.onClick.AddListener(() => { this.Screens.Pop(); });
+            this.JoinScreen.Back.onClick.AddListener(() => { this.Screens.Pop(); });
+            this.JoinScreen.Join.onClick.AddListener(() => { });
         }
 
         void ConfigureNetwork()
@@ -91,7 +53,7 @@ namespace UI
             {
                 try
                 {
-                    this.IpText.text = $"IP {Network.Utils.GetHostIpAddress()}";
+                    this.GameModeSelectionScreen.Ip.text = $"IP {Network.Utils.GetHostIpAddress()}";
                 }
                 catch
                 {
@@ -106,9 +68,9 @@ namespace UI
 
         void DisableMultiPlayer(string reason)
         {
-            this.GameModeSelectionScreenHostButton.interactable = false;
-            this.GameModeSelectionScreenJoinButton.interactable = false;
-            this.IpText.text = reason;
+            this.GameModeSelectionScreen.HostButton.interactable = false;
+            this.GameModeSelectionScreen.JoinButton.interactable = false;
+            this.GameModeSelectionScreen.Ip.text = reason;
         }
 
         void Update()
@@ -118,20 +80,7 @@ namespace UI
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
                     this.Screens.Push(this.GameModeSelectionScreen);
-                    this.VersionText.gameObject.SetActive(true);
-                    this.IpText.gameObject.SetActive(true);
                 }
-            }
-        }
-
-        IEnumerator BlinkText(Text text, float frequency, GameObject linkedScreen)
-        {
-            while (this.Screens.Top() == linkedScreen)
-            {
-                text.gameObject.SetActive(true);
-                yield return new WaitForSeconds(frequency);
-                text.gameObject.SetActive(false);
-                yield return new WaitForSeconds(frequency);
             }
         }
     }
