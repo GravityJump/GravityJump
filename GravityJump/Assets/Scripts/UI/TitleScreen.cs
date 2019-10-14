@@ -26,6 +26,7 @@ namespace UI
         public override void OnStop()
         {
             StopCoroutine(this.blinker);
+            this.Panel.SetActive(false);
         }
 
         IEnumerator BlinkCaption(float frequency)
