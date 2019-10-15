@@ -41,14 +41,19 @@ public class AttractiveBody : Body
     {
         return new Vector2(0, 0);
     }
+
+    // Give a random size for the spawner
     public float GetRandomSize()
     {
-        return default_size * (Random.value + 0.5f);
+        return default_size * (Random.value + 0.7f);
     }
+    // For a given size, return Minimal distance an adjacent planet can be
     public float GetMinimalDistance(float size)
     {
-        return size / 2;
+        return size;
     }
+
+    // For a given size, Return Maximal distance an adjacent planet can be
     public float GetMaximalDistance(float size)
     {
         return 2 * size;
