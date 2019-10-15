@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Net;
+using System;
 
 namespace UI
 {
@@ -7,7 +9,16 @@ namespace UI
     {
         public Button Back;
         public Button Join;
-        public Text Input;
+        Text Input;
+
+        public IPAddress Ip
+        {
+            get
+            {
+                return IPAddress.Parse(this.Input.text);
+            }
+            private set { }
+        }
 
         public override void Awake()
         {
