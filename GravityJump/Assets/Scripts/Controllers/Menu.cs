@@ -60,7 +60,10 @@ namespace Controllers
                 this.Connection.Stop();
             });
             this.JoinScreen.Back.onClick.AddListener(() => { this.Screens.Pop(); });
-            this.JoinScreen.Join.onClick.AddListener(() => { });
+            this.JoinScreen.Join.onClick.AddListener(() =>
+            {
+                this.Connection.To(this.JoinScreen.Ip);
+            });
         }
 
         void ConfigureNetwork()
@@ -98,7 +101,6 @@ namespace Controllers
         void SetJoinScreen()
         {
             this.Screens.Push(this.JoinScreen);
-            Debug.Log(this.JoinScreen.Ip);
         }
 
         void Update()

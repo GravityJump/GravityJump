@@ -47,19 +47,37 @@ namespace Network
             while (this.Status != Status.Established)
             {
                 Debug.Log($"Server waiting for connection");
-                TcpClient client = this.Listener.AcceptTcpClient();
-                this.RemoteIp = ((IPEndPoint)client.Client.RemoteEndPoint).Address;
+                this.Client = this.Listener.AcceptTcpClient();
+                this.RemoteIp = ((IPEndPoint)this.Client.Client.RemoteEndPoint).Address;
                 Debug.Log($"Connection established with {this.RemoteIp.ToString()}");
-                this.Stream = client.GetStream();
-
+                this.Stream = this.Client.GetStream();
                 this.Status = Status.Established;
             }
         }
 
+        public void To(IPAddress ip)
+        {
+            this.RemoteIp = ip;
+            this.Client = new TcpClient(this.RemoteIp.ToString(), this.Port);
+            Debug.Log($"Connection established with {this.RemoteIp.ToString()}");
+            this.Stream = this.Client.GetStream();
+            this.Status = Status.Established;
+        }
+
         public void Stop()
         {
-            this.RegistrationThread.Interrupt();
-            this.Listener.Stop();
+            if (this.RegistrationThread != null)
+            {
+                this.RegistrationThread.Interrupt();
+            }
+            if (this.Listener != null)
+            {
+                this.Listener.Stop();
+            }
+            if (this.Client != null)
+            {
+                this.Client.Close();
+            }
             this.Status = Status.None;
             this.RemoteIp = null;
             this.Stream = null;
