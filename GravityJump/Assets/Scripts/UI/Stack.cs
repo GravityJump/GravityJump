@@ -7,38 +7,45 @@ namespace UI
 {
     class Stack
     {
-        System.Collections.Generic.Stack<GameObject> stack;
+        System.Collections.Generic.Stack<IGameState> stack { get; set; }
 
         public Stack()
         {
-            this.stack = new System.Collections.Generic.Stack<GameObject>();
+            this.stack = new System.Collections.Generic.Stack<IGameState>();
         }
 
-        public void Push(GameObject item)
-        {
-            if (this.stack.Count > 0)
-            {
-                this.Top().gameObject.SetActive(false);
-            }
-            this.stack.Push(item);
-            this.Top().gameObject.SetActive(true);
-        }
-
-        public GameObject Top()
+        public IGameState Top()
         {
             return this.stack.Peek();
         }
 
-        public GameObject Pop()
+        public void Push(IGameState gameState)
         {
-            GameObject item = this.stack.Pop();
-            item.gameObject.SetActive(false);
             if (this.stack.Count > 0)
             {
-                this.Top().gameObject.SetActive(true);
+                this.Top().OnPause();
             }
 
-            return item;
+            this.stack.Push(gameState);
+            this.Top().OnStart();
+        }
+
+        public IGameState Pop()
+        {
+            IGameState gameState = this.stack.Pop();
+            gameState.OnStop();
+
+            if (this.stack.Count > 0)
+            {
+                this.Top().OnResume();
+            }
+
+            return gameState;
+        }
+
+        public int Count()
+        {
+            return this.stack.Count;
         }
     }
 }
