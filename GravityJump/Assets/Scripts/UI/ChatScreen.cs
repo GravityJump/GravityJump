@@ -20,5 +20,10 @@ namespace UI
             this.Quit = GameObject.Find("Canvas/ChatScreen/QuitButton").GetComponent<Button>();
             this.Start = GameObject.Find("Canvas/ChatScreen/StartButton").GetComponent<Button>();
         }
+
+        public void ClearInput()
+        {
+            this.Input.text = "";
+        }
     }
 }

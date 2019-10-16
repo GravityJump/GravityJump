@@ -83,6 +83,7 @@ namespace Controllers
                 try
                 {
                     this.Connection.Write(this.ChatScreen.Input.text);
+                    this.ChatScreen.ClearInput();
                 }
                 catch
                 {
@@ -99,12 +100,6 @@ namespace Controllers
 
         void Update()
         {
-            // a bit hacky...
-            // if (this.Connection.Status == Network.Status.Established && this.Screens.Top() != this.ChatScreen)
-            // {
-            //     this.Screens.Push(this.ChatScreen);
-            // }
-
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 if (this.Screens.Top() == this.TitleScreen)
