@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Text;
+using System;
+using System.Collections.Generic;
 
 namespace Network
 {
@@ -84,6 +87,16 @@ namespace Network
             this.Listener = null;
             this.Client = null;
             this.RegistrationThread = null;
+        }
+
+        public void SendMessage(string msg)
+        {
+            List<byte> payload = new List<Byte>();
+            payload.Add((byte)Network.OpCode.Message);
+            payload.AddRange(BitConverter.GetBytes(Encoding.UTF8.GetByteCount(msg)));
+            payload.AddRange(Encoding.UTF8.GetBytes(msg));
+
+            this.Stream.Write(payload.ToArray(), 0, payload.Count);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Network
 
     public class Parser
     {
-        static Payload Parse(byte[] data)
+        public static Payload Parse(byte[] data)
         {
             if (data.Length < 1)
             {
@@ -52,8 +52,9 @@ namespace Network
             switch (data[0])
             {
                 case (byte)OpCode.Message:
-                    byte[] msg = new byte[data.Length - 1];
-                    Array.Copy(data, 1, msg, 0, msg.Length);
+                    byte[] msg = new byte[data.Length + 3];
+                    Array.Copy(data, 1, BitConverter.GetBytes(msg.Length), 0, 4);
+                    Array.Copy(data, 5, msg, 0, msg.Length);
                     return new Message(Encoding.UTF8.GetString(msg));
                 default:
                     throw new Exception("invalid opcode");

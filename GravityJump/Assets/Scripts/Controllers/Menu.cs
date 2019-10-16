@@ -17,6 +17,7 @@ namespace Controllers
         UI.GameModeSelectionScreen GameModeSelectionScreen;
         UI.HostScreen HostScreen;
         UI.JoinScreen JoinScreen;
+        UI.ChatScreen ChatScreen;
 
         Network.Connection Connection;
 
@@ -26,6 +27,7 @@ namespace Controllers
             this.GameModeSelectionScreen = GameObject.Find("Canvas/GameModeSelectionScreen").GetComponent<UI.GameModeSelectionScreen>();
             this.HostScreen = GameObject.Find("Canvas/HostScreen").GetComponent<UI.HostScreen>();
             this.JoinScreen = GameObject.Find("Canvas/JoinScreen").GetComponent<UI.JoinScreen>();
+            this.ChatScreen = GameObject.Find("Canvas/ChatScreen").GetComponent<UI.ChatScreen>();
             if (this.Connection == null)
             {
                 this.Connection = new Network.Connection();
@@ -44,25 +46,52 @@ namespace Controllers
             this.GameModeSelectionScreen.Clear();
             this.HostScreen.Clear();
             this.JoinScreen.Clear();
+            this.ChatScreen.Clear();
 
             this.Screens.Push(this.TitleScreen);
         }
 
         void SetButtonsCallbacks()
         {
-            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() => { SceneManager.LoadScene("GameScene"); });
-            this.GameModeSelectionScreen.HostButton.onClick.AddListener(() => { this.SetHostScreen(); });
-            this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() => { this.SetJoinScreen(); });
-            this.GameModeSelectionScreen.ExitButton.onClick.AddListener(() => { Application.Quit(); });
+            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("GameScene");
+            });
+            this.GameModeSelectionScreen.HostButton.onClick.AddListener(() =>
+            {
+                this.SetHostScreen();
+            });
+            this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() =>
+            {
+                this.SetJoinScreen();
+            });
+            this.GameModeSelectionScreen.ExitButton.onClick.AddListener(() =>
+            {
+                Application.Quit();
+            });
             this.HostScreen.Back.onClick.AddListener(() =>
             {
                 this.Screens.Pop();
                 this.Connection.Stop();
             });
-            this.JoinScreen.Back.onClick.AddListener(() => { this.Screens.Pop(); });
+            this.JoinScreen.Back.onClick.AddListener(() =>
+            {
+                this.Screens.Pop();
+            });
             this.JoinScreen.Join.onClick.AddListener(() =>
             {
                 this.Connection.To(this.JoinScreen.Ip);
+                this.Screens.Push(this.ChatScreen);
+            });
+            this.ChatScreen.Send.onClick.AddListener(() =>
+            {
+                this.Connection.SendMessage(this.ChatScreen.Input.text);
+                this.ChatScreen.Input.text = "";
+            });
+            this.ChatScreen.Quit.onClick.AddListener(() =>
+            {
+                this.Connection.Stop();
+                this.Screens.Pop();
             });
         }
 
@@ -105,6 +134,12 @@ namespace Controllers
 
         void Update()
         {
+            // a bit hacky...
+            if (this.Connection.Status == Network.Status.Established && this.Screens.Top() != this.ChatScreen)
+            {
+                this.Screens.Push(this.ChatScreen);
+            }
+
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 if (this.Screens.Top() == this.TitleScreen)
