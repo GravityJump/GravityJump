@@ -101,6 +101,14 @@ namespace Controllers
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (this.Screens.Top() == this.TitleScreen)
+                {
+                    this.Screens.Push(this.GameModeSelectionScreen);
+                }
+            }
+
             if (this.Screens.Top() == this.HostScreen)
             {
                 if (this.Connection == null && this.HostScreen.GetConnection() != null)
@@ -110,12 +118,9 @@ namespace Controllers
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (this.Screens.Top() == this.ChatScreen)
             {
-                if (this.Screens.Top() == this.TitleScreen)
-                {
-                    this.Screens.Push(this.GameModeSelectionScreen);
-                }
+                // this.Connection.Read();
             }
         }
     }
