@@ -53,12 +53,12 @@ namespace Controllers
             });
             this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() =>
             {
-                this.SetJoinScreen();
+                this.Screens.Push(this.JoinScreen);
             });
             this.HostScreen.Back.onClick.AddListener(() =>
             {
-                this.Screens.Pop();
                 this.Connection.Stop();
+                this.Screens.Pop();
             });
             this.JoinScreen.Back.onClick.AddListener(() =>
             {
@@ -105,11 +105,6 @@ namespace Controllers
             {
                 this.Screens.Pop();
             }
-        }
-
-        void SetJoinScreen()
-        {
-            this.Screens.Push(this.JoinScreen);
         }
 
         void Update()
