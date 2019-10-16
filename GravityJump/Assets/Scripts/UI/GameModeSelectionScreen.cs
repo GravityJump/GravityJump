@@ -42,6 +42,36 @@ namespace UI
             this.Panel.SetActive(true);
             this.Version.gameObject.SetActive(true);
             this.Ip.gameObject.SetActive(true);
+
+            this.CheckNetworkAvailability();
+
+            Debug.Log("test");
+        }
+
+        void CheckNetworkAvailability()
+        {
+            if (Network.Utils.IsInternetAvailable())
+            {
+                try
+                {
+                    this.Ip.text = $"IP {Network.Utils.GetHostIpAddress()}";
+                }
+                catch
+                {
+                    this.DisableMultiplayer("No IP address");
+                }
+            }
+            else
+            {
+                this.DisableMultiplayer("No Internet connection");
+            }
+        }
+
+        void DisableMultiplayer(string reason)
+        {
+            this.HostButton.interactable = false;
+            this.JoinButton.interactable = false;
+            this.Ip.text = reason;
         }
     }
 }

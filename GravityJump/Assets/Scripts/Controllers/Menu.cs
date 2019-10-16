@@ -39,7 +39,6 @@ namespace Controllers
 
             this.GameModeSelectionScreen.Version.text = $"Version {this.Version}";
             this.SetButtonsCallbacks();
-            this.ConfigureNetwork();
 
             this.TitleScreen.Clear();
             this.GameModeSelectionScreen.Clear();
@@ -97,32 +96,6 @@ namespace Controllers
                 this.Connection.Stop();
                 this.Screens.Pop();
             });
-        }
-
-        void ConfigureNetwork()
-        {
-            if (Network.Utils.IsInternetAvailable())
-            {
-                try
-                {
-                    this.GameModeSelectionScreen.Ip.text = $"IP {Network.Utils.GetHostIpAddress()}";
-                }
-                catch
-                {
-                    this.DisableMultiPlayer("No IP address");
-                }
-            }
-            else
-            {
-                this.DisableMultiPlayer("No Internet connection");
-            }
-        }
-
-        void DisableMultiPlayer(string reason)
-        {
-            this.GameModeSelectionScreen.HostButton.interactable = false;
-            this.GameModeSelectionScreen.JoinButton.interactable = false;
-            this.GameModeSelectionScreen.Ip.text = reason;
         }
 
         void SetHostScreen()
