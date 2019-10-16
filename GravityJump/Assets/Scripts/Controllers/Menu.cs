@@ -53,10 +53,6 @@ namespace Controllers
 
         void SetButtonsCallbacks()
         {
-            this.GameModeSelectionScreen.SoloButton.onClick.AddListener(() =>
-            {
-                SceneManager.LoadScene("GameScene");
-            });
             this.GameModeSelectionScreen.HostButton.onClick.AddListener(() =>
             {
                 this.SetHostScreen();
@@ -64,10 +60,6 @@ namespace Controllers
             this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() =>
             {
                 this.SetJoinScreen();
-            });
-            this.GameModeSelectionScreen.ExitButton.onClick.AddListener(() =>
-            {
-                Application.Quit();
             });
             this.HostScreen.Back.onClick.AddListener(() =>
             {
@@ -80,13 +72,26 @@ namespace Controllers
             });
             this.JoinScreen.Join.onClick.AddListener(() =>
             {
-                this.Connection.To(this.JoinScreen.Ip);
-                this.Screens.Push(this.ChatScreen);
+                try
+                {
+                    this.Connection.To(this.JoinScreen.Ip);
+                    this.Screens.Push(this.ChatScreen);
+                }
+                catch
+                {
+                }
             });
             this.ChatScreen.Send.onClick.AddListener(() =>
             {
-                this.Connection.SendMessage(this.ChatScreen.Input.text);
-                this.ChatScreen.Input.text = "";
+                try
+                {
+                    this.Connection.SendMessage(this.ChatScreen.Input.text);
+                    this.ChatScreen.Input.text = " ";
+                }
+                catch
+                {
+                    this.Screens.Pop();
+                }
             });
             this.ChatScreen.Quit.onClick.AddListener(() =>
             {
@@ -124,7 +129,14 @@ namespace Controllers
         void SetHostScreen()
         {
             this.Screens.Push(this.HostScreen);
-            this.Connection.Listen();
+            try
+            {
+                this.Connection.Listen();
+            }
+            catch
+            {
+                this.Screens.Pop();
+            }
         }
 
         void SetJoinScreen()

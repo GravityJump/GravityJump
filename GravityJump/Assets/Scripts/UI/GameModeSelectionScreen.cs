@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
     public class GameModeSelectionScreen : BasicScreen
     {
-        public Button SoloButton;
+        Button SoloButton;
         public Button HostButton;
         public Button JoinButton;
-        public Button ExitButton;
+        Button ExitButton;
         public Text Version;
         public Text Ip;
 
@@ -21,6 +22,19 @@ namespace UI
             this.HostButton = GameObject.Find("Canvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
             this.JoinButton = GameObject.Find("Canvas/GameModeSelectionScreen/JoinButton").GetComponent<Button>();
             this.ExitButton = GameObject.Find("Canvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
+        }
+
+        public override void Start()
+        {
+            this.SoloButton.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("GameScene");
+            });
+
+            this.ExitButton.onClick.AddListener(() =>
+            {
+                Application.Quit();
+            });
         }
 
         public override void OnStart()
