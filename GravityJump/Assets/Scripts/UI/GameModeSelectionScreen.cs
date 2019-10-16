@@ -6,12 +6,14 @@ namespace UI
 {
     public class GameModeSelectionScreen : BasicScreen
     {
-        Button SoloButton;
-        public Button HostButton;
-        public Button JoinButton;
-        Button ExitButton;
-        public Text Version;
-        public Text Ip;
+        public readonly string Version = "0.0.1";
+
+        Button SoloButton { get; set; }
+        public Button HostButton { get; set; }
+        public Button JoinButton { get; set; }
+        Button ExitButton { get; set; }
+        Text Version { get; set; }
+        Text Ip { get; set; }
 
         public override void Awake()
         {
@@ -26,6 +28,8 @@ namespace UI
 
         public void Start()
         {
+            this.Version.text = $"Version {this.Version}";
+
             this.SoloButton.onClick.AddListener(() =>
             {
                 SceneManager.LoadScene("GameScene");
@@ -42,10 +46,7 @@ namespace UI
             this.Panel.SetActive(true);
             this.Version.gameObject.SetActive(true);
             this.Ip.gameObject.SetActive(true);
-
             this.CheckNetworkAvailability();
-
-            Debug.Log("test");
         }
 
         void CheckNetworkAvailability()

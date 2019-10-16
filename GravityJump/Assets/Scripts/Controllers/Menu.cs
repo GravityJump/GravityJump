@@ -8,8 +8,6 @@ namespace Controllers
 {
     public class Menu : MonoBehaviour
     {
-        public readonly string Version = "0.0.1";
-
         UI.Stack Screens;
 
         UI.TitleScreen TitleScreen;
@@ -27,6 +25,9 @@ namespace Controllers
             this.HostScreen = GameObject.Find("Canvas/HostScreen").GetComponent<UI.HostScreen>();
             this.JoinScreen = GameObject.Find("Canvas/JoinScreen").GetComponent<UI.JoinScreen>();
             this.ChatScreen = GameObject.Find("Canvas/ChatScreen").GetComponent<UI.ChatScreen>();
+
+            this.Screens = new UI.Stack();
+            this.SetButtonsCallbacks();
             if (this.Connection == null)
             {
                 this.Connection = new Network.Connection();
@@ -35,11 +36,6 @@ namespace Controllers
 
         void Start()
         {
-            this.Screens = new UI.Stack();
-
-            this.GameModeSelectionScreen.Version.text = $"Version {this.Version}";
-            this.SetButtonsCallbacks();
-
             this.TitleScreen.Clear();
             this.GameModeSelectionScreen.Clear();
             this.HostScreen.Clear();
