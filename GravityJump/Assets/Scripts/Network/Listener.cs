@@ -20,7 +20,7 @@ namespace Network
         {
             Debug.Log($"Server initialization on port {this.Port}...");
             this.TCPListener = new TcpListener(IPAddress.Parse("0.0.0.0"), this.Port);
-            this.TCPListener.Start();
+            this.TCPListener.Start(1);
 
             Thread th = new Thread(new ThreadStart(this.WaitForConnection));
             th.Start();
@@ -28,7 +28,8 @@ namespace Network
 
         void WaitForConnection()
         {
-            this.TCPClient = TCPListener.AcceptTcpClient();
+            Debug.Log("Waiting for new connections...");
+            this.TCPClient = this.TCPListener.AcceptTcpClient();
         }
 
         public void Stop()

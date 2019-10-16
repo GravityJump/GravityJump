@@ -22,14 +22,10 @@ namespace Network
             Debug.Log($"Connection established with {ip.ToString()}");
         }
 
-        public void Write(string msg)
+        public void Write(Payload payload)
         {
-            List<byte> payload = new List<byte>();
-            payload.Add((byte)OpCode.Message);
-            payload.AddRange(BitConverter.GetBytes(Encoding.UTF8.GetByteCount(msg)));
-            payload.AddRange(Encoding.UTF8.GetBytes(msg));
             NetworkStream stream = this.Client.GetStream();
-            stream.Write(payload.ToArray(), 0, payload.Count);
+            stream.Write(payload.GetBytes(), 0, payload.Length());
         }
 
         public void Close()

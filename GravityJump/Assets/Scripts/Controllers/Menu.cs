@@ -82,7 +82,7 @@ namespace Controllers
             {
                 try
                 {
-                    this.Connection.Write(this.ChatScreen.Input.text);
+                    this.Connection.Write(new Network.Message(this.ChatScreen.Input.text));
                     this.ChatScreen.ClearInput();
                 }
                 catch
@@ -94,6 +94,7 @@ namespace Controllers
             this.ChatScreen.Quit.onClick.AddListener(() =>
             {
                 this.Connection.Close();
+                this.Connection = null;
                 this.Screens.Pop();
             });
         }
