@@ -24,7 +24,7 @@ namespace UI
             this.ExitButton = GameObject.Find("Canvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
         }
 
-        public override void Start()
+        public void Start()
         {
             this.SoloButton.onClick.AddListener(() =>
             {
