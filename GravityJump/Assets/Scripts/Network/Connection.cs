@@ -36,6 +36,7 @@ namespace Network
         {
             try
             {
+                Debug.Log("Connection closed");
                 this.Client.Close();
             }
             catch

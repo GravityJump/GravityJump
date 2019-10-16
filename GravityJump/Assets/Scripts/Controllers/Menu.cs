@@ -100,6 +100,15 @@ namespace Controllers
 
         void Update()
         {
+            if (this.Screens.Top() == this.HostScreen)
+            {
+                if (this.Connection == null && this.HostScreen.GetConnection() != null)
+                {
+                    this.Connection = this.HostScreen.GetConnection();
+                    this.Screens.Push(this.ChatScreen);
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 if (this.Screens.Top() == this.TitleScreen)

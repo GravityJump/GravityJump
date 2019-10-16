@@ -27,5 +27,10 @@ namespace UI
             this.Listener.Stop();
             this.Panel.SetActive(false);
         }
+
+        public Network.Connection GetConnection()
+        {
+            return this.Listener.GetConnection();
+        }
     }
 }
