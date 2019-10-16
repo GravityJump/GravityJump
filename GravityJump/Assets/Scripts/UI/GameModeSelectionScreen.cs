@@ -12,13 +12,13 @@ namespace UI
         public Button HostButton { get; set; }
         public Button JoinButton { get; set; }
         Button ExitButton { get; set; }
-        Text Version { get; set; }
+        Text VersionText { get; set; }
         Text Ip { get; set; }
 
         public override void Awake()
         {
             this.Panel = GameObject.Find("Canvas/GameModeSelectionScreen");
-            this.Version = GameObject.Find("Canvas/GameModeSelectionScreen/Version").GetComponent<Text>();
+            this.VersionText = GameObject.Find("Canvas/GameModeSelectionScreen/Version").GetComponent<Text>();
             this.Ip = GameObject.Find("Canvas/GameModeSelectionScreen/Ip").GetComponent<Text>();
             this.SoloButton = GameObject.Find("Canvas/GameModeSelectionScreen/SoloButton").GetComponent<Button>();
             this.HostButton = GameObject.Find("Canvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
@@ -28,7 +28,7 @@ namespace UI
 
         public void Start()
         {
-            this.Version.text = $"Version {this.Version}";
+            this.VersionText.text = $"Version {this.Version}";
 
             this.SoloButton.onClick.AddListener(() =>
             {
@@ -44,7 +44,7 @@ namespace UI
         public override void OnStart()
         {
             this.Panel.SetActive(true);
-            this.Version.gameObject.SetActive(true);
+            this.VersionText.gameObject.SetActive(true);
             this.Ip.gameObject.SetActive(true);
             this.CheckNetworkAvailability();
         }

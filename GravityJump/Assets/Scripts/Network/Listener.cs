@@ -1,35 +1,36 @@
+using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using System.Text;
-using System;
-using System.Collections.Generic;
 
 namespace Network
 {
     public class Listener : TcpConfig
     {
-        TcpListener Listener { get; set; }
-        Thread RegistrationThread { get; set; }
+        TcpListener TCPListener { get; set; }
 
         public Listener()
         {
-            this.RemoteIp = null;
-            this.Stream = null;
-            this.Listener = null;
-            this.Client = null;
-            this.RegistrationThread = null;
+            this.TCPListener = null;
         }
 
-        public void Listen()
+        public void Start()
         {
             Debug.Log($"Server initialization on port {this.Port}...");
-            this.Listener = new TcpListener(IPAddress.Parse("0.0.0.0"), this.Port);
-            this.Listener.Start();
+            this.TCPListener = new TcpListener(IPAddress.Parse("0.0.0.0"), this.Port);
+            this.TCPListener.Start();
+        }
 
-
-
-            this.Listener.Stop();
+        public void Stop()
+        {
+            try
+            {
+                this.TCPListener.Stop();
+                Debug.Log("Server stopped");
+            }
+            catch
+            {
+                Debug.Log("Could not stop the server");
+            }
         }
     }
 }

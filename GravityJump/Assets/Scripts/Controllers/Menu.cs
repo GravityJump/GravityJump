@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
 
 namespace Controllers
 {
@@ -27,15 +24,13 @@ namespace Controllers
             this.ChatScreen = GameObject.Find("Canvas/ChatScreen").GetComponent<UI.ChatScreen>();
 
             this.Screens = new UI.Stack();
-            this.SetButtonsCallbacks();
-            if (this.Connection == null)
-            {
-                this.Connection = new Network.Connection();
-            }
+            this.Connection = null;
         }
 
         void Start()
         {
+            this.SetButtonsCallbacks();
+
             this.TitleScreen.Clear();
             this.GameModeSelectionScreen.Clear();
             this.HostScreen.Clear();
@@ -49,7 +44,15 @@ namespace Controllers
         {
             this.GameModeSelectionScreen.HostButton.onClick.AddListener(() =>
             {
-                this.SetHostScreen();
+                try
+                {
+                    this.Screens.Push(this.HostScreen);
+                }
+                catch
+                {
+                    Debug.Log("Could not start the listener");
+                    this.Screens.Pop();
+                }
             });
             this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() =>
             {
@@ -57,7 +60,6 @@ namespace Controllers
             });
             this.HostScreen.Back.onClick.AddListener(() =>
             {
-                this.Connection.Stop();
                 this.Screens.Pop();
             });
             this.JoinScreen.Back.onClick.AddListener(() =>
@@ -68,52 +70,40 @@ namespace Controllers
             {
                 try
                 {
-                    this.Connection.To(this.JoinScreen.Ip);
+                    this.Connection = new Network.Connection(this.JoinScreen.Ip);
                     this.Screens.Push(this.ChatScreen);
                 }
                 catch
                 {
+                    Debug.Log($"Could not establish a connection with {this.JoinScreen.Ip}");
                 }
             });
             this.ChatScreen.Send.onClick.AddListener(() =>
             {
                 try
                 {
-                    this.Connection.SendMessage(this.ChatScreen.Input.text);
-                    this.ChatScreen.Input.text = " ";
+                    this.Connection.Write(this.ChatScreen.Input.text);
                 }
                 catch
                 {
+                    Debug.Log("Connection lost");
                     this.Screens.Pop();
                 }
             });
             this.ChatScreen.Quit.onClick.AddListener(() =>
             {
-                this.Connection.Stop();
+                this.Connection.Close();
                 this.Screens.Pop();
             });
-        }
-
-        void SetHostScreen()
-        {
-            this.Screens.Push(this.HostScreen);
-            try
-            {
-                this.Connection.Listen();
-            }
-            catch
-            {
-                this.Screens.Pop();
-            }
         }
 
         void Update()
         {
             // a bit hacky...
-            if (this.Connection.Status == Network.Status.Established && this.Screens.Top() != this.ChatScreen)
-            {
-                this.Screens.Push(this.ChatScreen);
-            }
+            // if (this.Connection.Status == Network.Status.Established && this.Screens.Top() != this.ChatScreen)
+            // {
+            //     this.Screens.Push(this.ChatScreen);
+            // }
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
