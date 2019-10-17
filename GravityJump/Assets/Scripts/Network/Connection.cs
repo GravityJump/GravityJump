@@ -11,7 +11,7 @@ namespace Network
     public class Connection : TcpConfig
     {
         TcpClient Client { get; set; }
-        NetworkStream Stream { get; set; }
+        public NetworkStream Stream { get; set; }
 
         public Connection(TcpClient client)
         {
@@ -29,23 +29,6 @@ namespace Network
         public void Write(Payload payload)
         {
             this.Stream.Write(payload.GetBytes(), 0, payload.Length());
-        }
-
-        public void Read(Text conversation)
-        {
-            if (this.Stream.DataAvailable)
-            {
-                byte[] buffer = new byte[256];
-
-                this.Stream.Read(buffer, 0, 1);
-                if (buffer[0] == (byte)Network.OpCode.Message)
-                {
-                    this.Stream.Read(buffer, 0, 4);
-                    int msgLength = BitConverter.ToInt32(buffer, 0);
-                    this.Stream.Read(buffer, 0, msgLength);
-                    conversation.text += $"[The Stranger] {Encoding.UTF8.GetString(buffer)}\n";
-                }
-            }
         }
 
         public void Close()

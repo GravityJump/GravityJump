@@ -61,4 +61,12 @@ namespace Network
             return Encoding.UTF8.GetByteCount(this.Text) + 5;
         }
     }
+
+    public class Ready : BasePayload
+    {
+        public override byte[] GetBytes()
+        {
+            return new byte[] { (byte)OpCode.Ready };
+        }
+    }
 }

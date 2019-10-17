@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using System.Text;
 
 namespace Controllers
 {
@@ -105,7 +106,32 @@ namespace Controllers
             this.ChatScreen.Start.onClick.AddListener(() =>
             {
                 this.Ready = true;
+                // this.Connection.Write(new Network.Ready());
             });
+        }
+
+        void Read()
+        {
+            if (this.Connection.Stream.DataAvailable)
+            {
+                byte[] buffer = new byte[256];
+
+                this.Connection.Stream.Read(buffer, 0, 1);
+                switch (buffer[0])
+                {
+                    case (byte)Network.OpCode.Message:
+                        this.Connection.Stream.Read(buffer, 0, 4);
+                        int msgLength = BitConverter.ToInt32(buffer, 0);
+                        this.Connection.Stream.Read(buffer, 0, msgLength);
+                        this.ChatScreen.Conversation.text = $"[The Stranger] {Encoding.UTF8.GetString(buffer)}\n";
+                        break;
+                    case (byte)Network.OpCode.Ready:
+                        this.OtherPlayerReady = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         void Update()
@@ -143,7 +169,7 @@ namespace Controllers
                     SceneManager.LoadScene("GameScene");
                 }
 
-                this.Connection.Read(this.ChatScreen.Conversation);
+                this.Read();
             }
         }
     }
