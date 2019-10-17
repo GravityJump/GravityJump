@@ -169,6 +169,7 @@ namespace Controllers
                     SceneManager.LoadScene("GameScene");
                 }
 
+                this.ChatScreen.Start.interactable = this.Ready;
                 this.Read();
             }
         }
