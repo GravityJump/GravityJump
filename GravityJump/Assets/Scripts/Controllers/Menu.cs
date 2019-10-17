@@ -106,7 +106,8 @@ namespace Controllers
             this.ChatScreen.Start.onClick.AddListener(() =>
             {
                 this.Ready = true;
-                // this.Connection.Write(new Network.Ready());
+                this.Connection.Write(new Network.Ready());
+                this.ChatScreen.Start.interactable = false;
             });
         }
 
@@ -127,6 +128,7 @@ namespace Controllers
                         break;
                     case (byte)Network.OpCode.Ready:
                         this.OtherPlayerReady = true;
+                        this.ChatScreen.OtherPlayerReadyText.SetActive(this.OtherPlayerReady);
                         break;
                     default:
                         break;
@@ -169,7 +171,6 @@ namespace Controllers
                     SceneManager.LoadScene("GameScene");
                 }
 
-                this.ChatScreen.Start.interactable = this.Ready;
                 this.Read();
             }
         }

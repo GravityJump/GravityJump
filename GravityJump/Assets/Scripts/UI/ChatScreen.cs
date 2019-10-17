@@ -12,6 +12,7 @@ namespace UI
         public Button Start;
         public InputField Input;
         public Text Conversation;
+        public GameObject OtherPlayerReadyText;
 
         public override void Awake()
         {
@@ -21,6 +22,13 @@ namespace UI
             this.Quit = GameObject.Find("Canvas/ChatScreen/QuitButton").GetComponent<Button>();
             this.Start = GameObject.Find("Canvas/ChatScreen/StartButton").GetComponent<Button>();
             this.Conversation = GameObject.Find("Canvas/ChatScreen/Conversation").GetComponent<Text>();
+            this.OtherPlayerReadyText = GameObject.Find("Canvas/ChatScreen/OtherPlayerReadyText");
+        }
+
+        public override void OnStart()
+        {
+            this.Panel.SetActive(true);
+            this.OtherPlayerReadyText.SetActive(false);
         }
     }
 }
