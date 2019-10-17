@@ -32,15 +32,18 @@ namespace Network
 
         public void Read()
         {
-            byte[] buffer = new byte[256];
-
-            this.Stream.Read(buffer, 0, 1);
-            if (buffer[0] == (byte)Network.OpCode.Message)
+            if (this.Stream.DataAvailable)
             {
-                this.Stream.Read(buffer, 0, 4);
-                int msgLength = BitConverter.ToInt32(buffer, 0);
-                this.Stream.Read(buffer, 0, msgLength);
-                Debug.Log($"{Encoding.UTF8.GetString(buffer)}");
+                byte[] buffer = new byte[256];
+
+                this.Stream.Read(buffer, 0, 1);
+                if (buffer[0] == (byte)Network.OpCode.Message)
+                {
+                    this.Stream.Read(buffer, 0, 4);
+                    int msgLength = BitConverter.ToInt32(buffer, 0);
+                    this.Stream.Read(buffer, 0, msgLength);
+                    Debug.Log($"{Encoding.UTF8.GetString(buffer)}");
+                }
             }
         }
 

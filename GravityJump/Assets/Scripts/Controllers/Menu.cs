@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Controllers
 {
@@ -14,6 +15,8 @@ namespace Controllers
         UI.ChatScreen ChatScreen;
 
         Network.Connection Connection;
+        bool Ready = false;
+        bool OtherPlayerReady = false;
 
         void Awake()
         {
@@ -97,6 +100,10 @@ namespace Controllers
                 this.Connection = null;
                 this.Screens.Pop();
             });
+            this.ChatScreen.Start.onClick.AddListener(() =>
+            {
+                this.Ready = true;
+            });
         }
 
         void Update()
@@ -120,7 +127,12 @@ namespace Controllers
 
             if (this.Screens.Top() == this.ChatScreen)
             {
-                // this.Connection.Read();
+                if (this.Ready && this.OtherPlayerReady)
+                {
+                    SceneManager.LoadScene("GameScene");
+                }
+
+                this.Connection.Read();
             }
         }
     }

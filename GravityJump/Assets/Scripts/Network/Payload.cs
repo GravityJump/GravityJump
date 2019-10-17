@@ -8,7 +8,7 @@ namespace Network
     {
         Raw,
         Message,
-        Payload,
+        Ready,
     }
 
     public interface Payload
