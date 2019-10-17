@@ -10,14 +10,14 @@ namespace UI
         public Button Send;
         public Button Quit;
         public Button Start;
-        public Text Input;
+        public InputField Input;
         public Text Conversation;
 
         public override void Awake()
         {
             this.Panel = GameObject.Find("Canvas/ChatScreen");
             this.Send = GameObject.Find("Canvas/ChatScreen/SendButton").GetComponent<Button>();
-            this.Input = GameObject.Find("Canvas/ChatScreen/MessageInput/MessageInputText").GetComponent<Text>();
+            this.Input = GameObject.Find("Canvas/ChatScreen/MessageInput").GetComponent<InputField>();
             this.Quit = GameObject.Find("Canvas/ChatScreen/QuitButton").GetComponent<Button>();
             this.Start = GameObject.Find("Canvas/ChatScreen/StartButton").GetComponent<Button>();
             this.Conversation = GameObject.Find("Canvas/ChatScreen/Conversation").GetComponent<Text>();

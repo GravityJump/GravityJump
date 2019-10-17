@@ -88,7 +88,6 @@ namespace Controllers
             {
                 try
                 {
-                    this.Connection.Write(new Network.Message(this.ChatScreen.Input.text));
                     this.messageToSend = this.ChatScreen.Input.text;
                 }
                 catch
