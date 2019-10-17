@@ -2052,7 +2052,7 @@ GameObject:
   - component: {fileID: 1223443693}
   - component: {fileID: 1223443692}
   m_Layer: 5
-  m_Name: Text
+  m_Name: OtherPlayerReadyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2386,6 +2386,7 @@ MonoBehaviour:
   Start: {fileID: 0}
   Input: {fileID: 0}
   Conversation: {fileID: 0}
+  OtherPlayerReadyText: {fileID: 0}
 --- !u!114 &1342738340
 MonoBehaviour:
   m_ObjectHideFlags: 0
