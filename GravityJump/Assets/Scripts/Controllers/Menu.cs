@@ -133,7 +133,8 @@ namespace Controllers
                 {
                     this.ChatScreen.Input.text = "";
                     this.Connection.Write(new Network.Message(this.messageToSend));
-                    this.ChatScreen.Conversation.text += $"[Me] {this.messageToSend}\n";
+                    // TODO: add messages to existing history
+                    this.ChatScreen.Conversation.text = $"[Me] {this.messageToSend}";
                     this.messageToSend = null;
                 }
 
