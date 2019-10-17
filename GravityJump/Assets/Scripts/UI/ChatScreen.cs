@@ -11,6 +11,7 @@ namespace UI
         public Button Quit;
         public Button Start;
         public Text Input;
+        public Text Conversation;
 
         public override void Awake()
         {
@@ -19,11 +20,7 @@ namespace UI
             this.Input = GameObject.Find("Canvas/ChatScreen/MessageInput/MessageInputText").GetComponent<Text>();
             this.Quit = GameObject.Find("Canvas/ChatScreen/QuitButton").GetComponent<Button>();
             this.Start = GameObject.Find("Canvas/ChatScreen/StartButton").GetComponent<Button>();
-        }
-
-        public void ClearInput()
-        {
-            this.Input.text = "";
+            this.Conversation = GameObject.Find("Canvas/ChatScreen/Conversation").GetComponent<Text>();
         }
     }
 }

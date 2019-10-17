@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 using System.Text;
@@ -30,7 +31,7 @@ namespace Network
             this.Stream.Write(payload.GetBytes(), 0, payload.Length());
         }
 
-        public void Read()
+        public void Read(Text conversation)
         {
             if (this.Stream.DataAvailable)
             {
@@ -42,7 +43,7 @@ namespace Network
                     this.Stream.Read(buffer, 0, 4);
                     int msgLength = BitConverter.ToInt32(buffer, 0);
                     this.Stream.Read(buffer, 0, msgLength);
-                    Debug.Log($"{Encoding.UTF8.GetString(buffer)}");
+                    conversation.text += $"[The Stranger] {Encoding.UTF8.GetString(buffer)}\n";
                 }
             }
         }

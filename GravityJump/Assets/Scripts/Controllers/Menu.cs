@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace Controllers
 {
@@ -17,6 +18,8 @@ namespace Controllers
         Network.Connection Connection;
         bool Ready = false;
         bool OtherPlayerReady = false;
+
+        String messageToSend = null;
 
         void Awake()
         {
@@ -86,7 +89,7 @@ namespace Controllers
                 try
                 {
                     this.Connection.Write(new Network.Message(this.ChatScreen.Input.text));
-                    this.ChatScreen.ClearInput();
+                    this.messageToSend = this.ChatScreen.Input.text;
                 }
                 catch
                 {
@@ -127,12 +130,20 @@ namespace Controllers
 
             if (this.Screens.Top() == this.ChatScreen)
             {
+                if (this.messageToSend != null)
+                {
+                    this.ChatScreen.Input.text = "";
+                    this.Connection.Write(new Network.Message(this.messageToSend));
+                    this.ChatScreen.Conversation.text += $"[Me] {this.messageToSend}\n";
+                    this.messageToSend = null;
+                }
+
                 if (this.Ready && this.OtherPlayerReady)
                 {
                     SceneManager.LoadScene("GameScene");
                 }
 
-                this.Connection.Read();
+                this.Connection.Read(this.ChatScreen.Conversation);
             }
         }
     }

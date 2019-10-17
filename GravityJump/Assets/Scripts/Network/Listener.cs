@@ -38,6 +38,7 @@ namespace Network
             {
                 this.TCPListener.Stop();
                 Debug.Log("Server stopped");
+                this.TCPClient = null;
             }
             catch
             {
