@@ -168,6 +168,8 @@ namespace Controllers
 
                 if (this.Ready && this.OtherPlayerReady)
                 {
+                    Data.Storage.isMultiplayer = true;
+                    Data.Storage.otherIp = this.Connection;
                     SceneManager.LoadScene("GameScene");
                 }
 
