@@ -83,25 +83,21 @@ namespace Network
 
     public class PlayerCoordinates : BasePayload
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float ZAngle { get; set; }
+        public GameObjects.Coordinates2D coordinates2D;
 
         public PlayerCoordinates(float x, float y, float zAngle)
         {
             this.Code = OpCode.PlayerCoordinates;
-            this.X = x;
-            this.Y = y;
-            this.ZAngle = zAngle;
+            this.coordinates2D = new GameObjects.Coordinates2D(x, y, zAngle);
         }
 
         public override byte[] GetBytes()
         {
             List<byte> payload = new List<byte>();
             payload.Add((byte)this.Code);
-            payload.AddRange(BitConverter.GetBytes(this.X));
-            payload.AddRange(BitConverter.GetBytes(this.Y));
-            payload.AddRange(BitConverter.GetBytes(this.ZAngle));
+            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.X));
+            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.Y));
+            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.ZAngle));
             return payload.ToArray();
         }
 
