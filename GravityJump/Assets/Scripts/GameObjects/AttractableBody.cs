@@ -45,7 +45,7 @@ public abstract class AttractableBody : PhysicBody
         {
             AttractiveBody collisionAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
             if (
-                (jump == JumpState.Jumping || jump == JumpState.InFlight)
+                (jump == JumpState.Jumping || jump == JumpState.InFlight || jump == JumpState.Falling)
                 && collisionAttractiveBody.id != currentAttractiveBody.id
                 && closestAttractiveBody.id == currentAttractiveBody.id
             )

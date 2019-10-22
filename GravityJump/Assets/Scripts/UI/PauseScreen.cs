@@ -14,7 +14,6 @@ namespace UI
             this.Panel = GameObject.Find("GameController/HUD/PauseScreen/");
             this.Back = GameObject.Find("GameController/HUD/PauseScreen/BackButton").GetComponent<Button>();
             this.Resume = GameObject.Find("GameController/HUD/PauseScreen/ResumeButton").GetComponent<Button>();
-            this.Back.interactable = false;
         }
 
         public override void OnStart()
