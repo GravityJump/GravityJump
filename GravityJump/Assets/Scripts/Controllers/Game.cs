@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading;
 
 namespace Controllers
 {
@@ -8,8 +9,10 @@ namespace Controllers
         UI.Stack Screens;
 
         UI.PauseScreen PauseScreen;
-
         public UI.HUD HUD { get; private set; }
+
+        Network.Connection Connection;
+
         public Player PlayerController { get; private set; }
         public Spawner Spawner { get; private set; }
 
@@ -19,6 +22,7 @@ namespace Controllers
             this.PlayerController = GameObject.Find("GameController/PlayerController").GetComponent<Player>();
             this.Spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
+            this.Connection = null;
         }
 
         void Start()
@@ -26,6 +30,46 @@ namespace Controllers
             this.Screens = new UI.Stack();
             this.SetButtonsCallbacks();
             this.PauseScreen.Clear();
+
+            if (Data.Storage.isMultiplayer)
+            {
+                this.InitNetwork();
+            }
+        }
+
+        void InitNetwork()
+        {
+            if (Data.Storage.isHost)
+            {
+                Network.Listener listener = new Network.Listener();
+                listener.Start();
+
+                int maxTry = 10;
+                int i = 0;
+                while (i < maxTry)
+                {
+                    this.Connection = listener.GetConnection();
+                    if (this.Connection == null)
+                    {
+                        Thread.Sleep(1000);
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (i == maxTry)
+                {
+                    Debug.Log("could not establish a connection");
+                    SceneManager.LoadScene("Menu");
+                }
+            }
+            else
+            {
+                this.Connection = new Network.Connection(Data.Storage.otherIp);
+            }
         }
 
         void SetButtonsCallbacks()
