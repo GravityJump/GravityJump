@@ -20,6 +20,11 @@ namespace UI
             private set { }
         }
 
+        public override void OnStart()
+        {
+            this.Panel.SetActive(true);
+        }
+
         public override void Awake()
         {
             this.Panel = GameObject.Find("Canvas/JoinScreen");

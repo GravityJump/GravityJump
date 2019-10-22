@@ -20,8 +20,6 @@ namespace Controllers
         bool Ready = false;
         bool OtherPlayerReady = false;
 
-        String messageToSend = null;
-
         void Awake()
         {
             this.TitleScreen = GameObject.Find("Canvas/TitleScreen").GetComponent<UI.TitleScreen>();
@@ -89,7 +87,10 @@ namespace Controllers
             {
                 try
                 {
-                    this.messageToSend = this.ChatScreen.Input.text;
+                    this.Connection.Write(new Network.Message(this.ChatScreen.Input.text));
+                    // TODO: add messages to existing history
+                    this.ChatScreen.Conversation.text = $"[Me] {this.ChatScreen.Input.text}";
+                    this.ChatScreen.Input.text = "";
                 }
                 catch
                 {
@@ -109,31 +110,6 @@ namespace Controllers
                 this.Connection.Write(new Network.Ready());
                 this.ChatScreen.Start.interactable = false;
             });
-        }
-
-        void Read()
-        {
-            if (this.Connection.Stream.DataAvailable)
-            {
-                byte[] buffer = new byte[256];
-
-                this.Connection.Stream.Read(buffer, 0, 1);
-                switch (buffer[0])
-                {
-                    case (byte)Network.OpCode.Message:
-                        this.Connection.Stream.Read(buffer, 0, 4);
-                        int msgLength = BitConverter.ToInt32(buffer, 0);
-                        this.Connection.Stream.Read(buffer, 0, msgLength);
-                        this.ChatScreen.Conversation.text = $"[The Stranger] {Encoding.UTF8.GetString(buffer)}\n";
-                        break;
-                    case (byte)Network.OpCode.Ready:
-                        this.OtherPlayerReady = true;
-                        this.ChatScreen.OtherPlayerReadyText.SetActive(this.OtherPlayerReady);
-                        break;
-                    default:
-                        break;
-                }
-            }
         }
 
         void Update()
@@ -157,21 +133,32 @@ namespace Controllers
 
             if (this.Screens.Top() == this.ChatScreen)
             {
-                if (this.messageToSend != null)
+
+                Network.BasePayload payload = this.Connection.Read();
+                if (payload != null)
                 {
-                    this.ChatScreen.Input.text = "";
-                    this.Connection.Write(new Network.Message(this.messageToSend));
-                    // TODO: add messages to existing history
-                    this.ChatScreen.Conversation.text = $"[Me] {this.messageToSend}";
-                    this.messageToSend = null;
+                    this.HandleMessage(payload);
                 }
 
                 if (this.Ready && this.OtherPlayerReady)
                 {
                     SceneManager.LoadScene("GameScene");
+                    Data.Storage.Connection = this.Connection;
                 }
+            }
+        }
 
-                this.Read();
+        void HandleMessage(Network.BasePayload payload)
+        {
+            switch (payload.Code)
+            {
+                case Network.OpCode.Message:
+                    this.ChatScreen.Conversation.text = $"[The Stranger] {((Network.Message)payload).Text}\n";
+                    break;
+                case Network.OpCode.Ready:
+                    this.OtherPlayerReady = true;
+                    this.ChatScreen.OtherPlayerReadyText.SetActive(this.OtherPlayerReady);
+                    break;
             }
         }
     }

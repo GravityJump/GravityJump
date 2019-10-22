@@ -8,8 +8,10 @@ namespace Controllers
         UI.Stack Screens;
 
         UI.PauseScreen PauseScreen;
-
         public UI.HUD HUD { get; private set; }
+
+        Network.Connection Connection;
+
         public Player PlayerController { get; private set; }
         public Spawner Spawner { get; private set; }
 
@@ -19,23 +21,27 @@ namespace Controllers
             this.PlayerController = GameObject.Find("GameController/PlayerController").GetComponent<Player>();
             this.Spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
+
+            this.Connection = null;
+            this.Screens = new UI.Stack();
         }
 
         void Start()
         {
-            this.Screens = new UI.Stack();
             this.SetButtonsCallbacks();
             this.PauseScreen.Clear();
+            if (Data.Storage.Connection == null)
+            {
+                this.Connection = Data.Storage.Connection;
+            }
         }
 
         void SetButtonsCallbacks()
         {
-            this.PauseScreen.Back.onClick.AddListener(() =>
+            this.PauseScreen.Resume.onClick.AddListener(() =>
             {
-                this.PlayerController.Clear();
-                SceneManager.LoadScene("Menu");
+                this.Screens.Pop();
             });
-            this.PauseScreen.Resume.onClick.AddListener(() => { this.Screens.Pop(); });
         }
 
         void Update()

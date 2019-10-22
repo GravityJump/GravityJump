@@ -64,9 +64,19 @@ namespace Network
 
     public class Ready : BasePayload
     {
+        public Ready()
+        {
+            this.Code = OpCode.Ready;
+        }
+
         public override byte[] GetBytes()
         {
             return new byte[] { (byte)OpCode.Ready };
+        }
+
+        public override int Length()
+        {
+            return 1;
         }
     }
 }
