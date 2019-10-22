@@ -20,8 +20,6 @@ namespace Controllers
         bool Ready = false;
         bool OtherPlayerReady = false;
 
-        String messageToSend = null;
-
         void Awake()
         {
             this.TitleScreen = GameObject.Find("Canvas/TitleScreen").GetComponent<UI.TitleScreen>();
@@ -89,7 +87,10 @@ namespace Controllers
             {
                 try
                 {
-                    this.messageToSend = this.ChatScreen.Input.text;
+                    this.Connection.Write(new Network.Message(this.ChatScreen.Input.text));
+                    // TODO: add messages to existing history
+                    this.ChatScreen.Conversation.text = $"[Me] {this.ChatScreen.Input.text}";
+                    this.ChatScreen.Input.text = "";
                 }
                 catch
                 {
@@ -137,15 +138,6 @@ namespace Controllers
                 if (payload != null)
                 {
                     this.HandleMessage(payload);
-                }
-
-                if (this.messageToSend != null)
-                {
-                    this.ChatScreen.Input.text = "";
-                    this.Connection.Write(new Network.Message(this.messageToSend));
-                    // TODO: add messages to existing history
-                    this.ChatScreen.Conversation.text = $"[Me] {this.messageToSend}";
-                    this.messageToSend = null;
                 }
 
                 if (this.Ready && this.OtherPlayerReady)
