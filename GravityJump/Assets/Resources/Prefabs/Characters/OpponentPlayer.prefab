@@ -16,9 +16,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 768
+  attractableBodyCollider: {fileID: 1702760863731917544}
   closestAttractiveBody: {fileID: 0}
   currentAttractiveBody: {fileID: 0}
-  attractableBodyCollider: {fileID: 1702760863731917544}
   runSpeed: 7
   jumpForce: 10
 --- !u!1001 &9145877904010562988
@@ -31,7 +31,7 @@ PrefabInstance:
     - target: {fileID: 7587937021885771592, guid: 90d53c53b461d41439471ec9e130d147,
         type: 3}
       propertyPath: m_Name
-      value: Ennemy Variant
+      value: OpponentPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 7587937021885771594, guid: 90d53c53b461d41439471ec9e130d147,
         type: 3}

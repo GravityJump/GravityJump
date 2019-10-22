@@ -10,13 +10,16 @@ namespace Controllers
         UI.PauseScreen PauseScreen;
 
         public UI.HUD HUD { get; private set; }
-        public Player PlayerController { get; private set; }
+        public MainPlayer MainPlayerController { get; private set; }
+        public OpponentPlayer OpponentPlayerController { get; private set; }
         public Spawner Spawner { get; private set; }
 
         void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
-            this.PlayerController = GameObject.Find("GameController/PlayerController").GetComponent<Player>();
+            this.MainPlayerController = GameObject.Find("GameController/MainPlayerController").GetComponent<MainPlayer>();
+            this.OpponentPlayerController = GameObject.Find("GameController/OpponentPlayerController").GetComponent<OpponentPlayer>();
+
             this.Spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
         }
@@ -32,7 +35,8 @@ namespace Controllers
         {
             this.PauseScreen.Back.onClick.AddListener(() =>
             {
-                this.PlayerController.Clear();
+                this.MainPlayerController.Clear();
+                this.OpponentPlayerController.Clear();
                 SceneManager.LoadScene("Menu");
             });
             this.PauseScreen.Resume.onClick.AddListener(() => { this.Screens.Pop(); });
@@ -52,9 +56,10 @@ namespace Controllers
                 }
             }
 
-            if (this.PlayerController.PlayerObject == null && this.Spawner.PlayerSpawningPlanet != null)
+            if (this.MainPlayerController.PlayerObject == null && this.Spawner.PlayerSpawningPlanet != null)
             {
-                this.PlayerController.InstantiatePlayer(this.Spawner.PlayerSpawningPlanet);
+                this.MainPlayerController.InstantiatePlayer(this.Spawner.PlayerSpawningPlanet);
+                this.OpponentPlayerController.InstantiatePlayer(this.Spawner.PlayerSpawningPlanet);
                 this.Spawner.IsPlayerAlive = true;
             }
 
