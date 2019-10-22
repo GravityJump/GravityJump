@@ -30,5 +30,11 @@ namespace UI
             this.Panel.SetActive(true);
             this.OtherPlayerReadyText.SetActive(false);
         }
+
+        public override void OnStop()
+        {
+            this.Conversation.text = "";
+            this.Panel.SetActive(false);
+        }
     }
 }
