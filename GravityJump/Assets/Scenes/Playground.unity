@@ -120,6 +120,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &339975444 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1006575894002596989, guid: 94fac85ca25a342e6bc53baed0678389,
+    type: 3}
+  m_PrefabInstance: {fileID: 979200584318004994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &339975446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339975444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02460bb7b5e8c4f45b2bf9a74eab560e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerObject: {fileID: 0}
 --- !u!1001 &979200584318004994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -187,5 +206,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1006575894002596989, guid: 94fac85ca25a342e6bc53baed0678389,
+        type: 3}
+      propertyPath: m_Name
+      value: MainPlayerController
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1006575894002596979, guid: 94fac85ca25a342e6bc53baed0678389, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 94fac85ca25a342e6bc53baed0678389, type: 3}
