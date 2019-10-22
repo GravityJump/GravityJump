@@ -4,6 +4,5 @@ using UnityEngine;
 
 public abstract class Body : MonoBehaviour
 {
-    protected Rigidbody2D rb2D;
     protected SpriteRenderer spriteRenderer;
 }
