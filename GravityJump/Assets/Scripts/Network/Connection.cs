@@ -12,18 +12,21 @@ namespace Network
     {
         TcpClient Client { get; set; }
         public NetworkStream Stream { get; set; }
+        public IPAddress Ip { get; set; }
 
         public Connection(TcpClient client)
         {
             this.Client = client;
             this.Stream = this.Client.GetStream();
+            this.Ip = ((IPEndPoint)this.Client.Client.RemoteEndPoint).Address;
         }
 
         public Connection(IPAddress ip)
         {
             this.Client = new TcpClient(ip.ToString(), this.Port);
             this.Stream = this.Client.GetStream();
-            Debug.Log($"Connection established with {ip.ToString()}");
+            this.Ip = ip;
+            Debug.Log($"Connection established with {this.Ip.ToString()}");
         }
 
         public void Write(Payload payload)

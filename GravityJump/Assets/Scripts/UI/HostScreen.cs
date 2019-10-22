@@ -18,6 +18,7 @@ namespace UI
 
         public override void OnStart()
         {
+            Data.Storage.isHost = true;
             this.Panel.SetActive(true);
             this.Listener.Start();
         }
