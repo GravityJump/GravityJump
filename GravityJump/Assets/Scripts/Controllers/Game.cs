@@ -32,11 +32,8 @@ namespace Controllers
 
         void Start()
         {
-<<<<<<< GravityJump/Assets/Scripts/Controllers/Game.cs
             this.Speed = new Speed(1f);
             this.Screens = new UI.Stack();
-=======
->>>>>>> GravityJump/Assets/Scripts/Controllers/Game.cs
             this.SetButtonsCallbacks();
             this.PauseScreen.Clear();
             if (Data.Storage.Connection == null)
