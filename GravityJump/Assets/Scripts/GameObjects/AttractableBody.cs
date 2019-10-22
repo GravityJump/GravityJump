@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public abstract class AttractableBody : Body
+public abstract class AttractableBody : PhysicBody
 {
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private LayerMask groundMask;
@@ -103,7 +103,7 @@ public abstract class AttractableBody : Body
     {
         ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(closestAttractiveBody.normalShape);
         Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
-        float groundToNormalDistance = - closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
+        float groundToNormalDistance = -closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
         if (jump == JumpState.Jumping)
         {

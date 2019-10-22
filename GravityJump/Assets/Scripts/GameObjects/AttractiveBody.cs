@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttractiveBody : Body
+public class AttractiveBody : PhysicBody
 {
     public static List<AttractiveBody> ActiveAttractiveBodies;
     public float frequency;

@@ -11,18 +11,23 @@ namespace Controllers
 
         public UI.HUD HUD { get; private set; }
         public Player PlayerController { get; private set; }
-        public Spawner Spawner { get; private set; }
+        public PlanetSpawner planetSpawner { get; private set; }
+        // public CollectibleSpawner collectibleSpawner { get; private set; }
+        // public DecorSpawner decorSpawner { get; private set; }
+
+        public Speed Speed;
 
         void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
             this.PlayerController = GameObject.Find("GameController/PlayerController").GetComponent<Player>();
-            this.Spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
+            this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<PlanetSpawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
         }
 
         void Start()
         {
+            this.Speed = new Speed(1f);
             this.Screens = new UI.Stack();
             this.SetButtonsCallbacks();
             this.PauseScreen.Clear();
@@ -40,6 +45,7 @@ namespace Controllers
 
         void Update()
         {
+            this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (this.Screens.Count() == 0)
@@ -52,13 +58,14 @@ namespace Controllers
                 }
             }
 
-            if (this.PlayerController.PlayerObject == null && this.Spawner.PlayerSpawningPlanet != null)
+            if (this.PlayerController.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
             {
-                this.PlayerController.InstantiatePlayer(this.Spawner.PlayerSpawningPlanet);
-                this.Spawner.IsPlayerAlive = true;
+                this.PlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
+                this.planetSpawner.IsPlayerAlive = true;
             }
 
             this.HUD.UpdateDistance(0.1f, Time.deltaTime);
+            this.Speed.Increment(Time.deltaTime);
         }
     }
 }
