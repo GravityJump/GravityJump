@@ -6,7 +6,7 @@ namespace UI
     public class PauseScreen : BasicScreen
     {
 
-        public Button Back;
+        Button Back;
         public Button Resume;
         float resumedTimeScale;
 
@@ -16,6 +16,14 @@ namespace UI
             this.Back = GameObject.Find("GameController/HUD/PauseScreen/BackButton").GetComponent<Button>();
             this.Resume = GameObject.Find("GameController/HUD/PauseScreen/ResumeButton").GetComponent<Button>();
             this.resumedTimeScale = Time.timeScale;
+        }
+
+        public void Start()
+        {
+            this.Back.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("Menu");
+            });
         }
 
         public override void OnStart()
