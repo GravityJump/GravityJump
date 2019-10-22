@@ -132,6 +132,13 @@ namespace Controllers
 
             if (this.Screens.Top() == this.ChatScreen)
             {
+
+                Network.BasePayload payload = this.Connection.Read();
+                if (payload != null)
+                {
+                    this.HandleMessage(payload);
+                }
+
                 if (this.messageToSend != null)
                 {
                     this.ChatScreen.Input.text = "";
@@ -145,12 +152,6 @@ namespace Controllers
                 {
                     SceneManager.LoadScene("GameScene");
                     Data.Storage.Connection = this.Connection;
-                }
-
-                Network.BasePayload payload = this.Connection.Read();
-                if (payload != null)
-                {
-                    this.HandleMessage(payload);
                 }
             }
         }
