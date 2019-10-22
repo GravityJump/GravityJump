@@ -9,6 +9,7 @@ namespace Network
         Raw,
         Message,
         Ready,
+        PlayerCoordinates
     }
 
     public interface Payload
@@ -77,6 +78,36 @@ namespace Network
         public override int Length()
         {
             return 1;
+        }
+    }
+
+    public class PlayerCoordinates : BasePayload
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float ZAngle { get; set; }
+
+        public PlayerCoordinates(float x, float y, float zAngle)
+        {
+            this.Code = OpCode.PlayerCoordinates;
+            this.X = x;
+            this.Y = y;
+            this.ZAngle = zAngle;
+        }
+
+        public override byte[] GetBytes()
+        {
+            List<byte> payload = new List<byte>();
+            payload.Add((byte)this.Code);
+            payload.AddRange(BitConverter.GetBytes(this.X));
+            payload.AddRange(BitConverter.GetBytes(this.Y));
+            payload.AddRange(BitConverter.GetBytes(this.ZAngle));
+            return payload.ToArray();
+        }
+
+        public override int Length()
+        {
+            return 1 + 3 * 4;
         }
     }
 }
