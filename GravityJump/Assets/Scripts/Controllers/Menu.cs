@@ -111,31 +111,6 @@ namespace Controllers
             });
         }
 
-        void Read()
-        {
-            if (this.Connection.Stream.DataAvailable)
-            {
-                byte[] buffer = new byte[256];
-
-                this.Connection.Stream.Read(buffer, 0, 1);
-                switch (buffer[0])
-                {
-                    case (byte)Network.OpCode.Message:
-                        this.Connection.Stream.Read(buffer, 0, 4);
-                        int msgLength = BitConverter.ToInt32(buffer, 0);
-                        this.Connection.Stream.Read(buffer, 0, msgLength);
-                        this.ChatScreen.Conversation.text = $"[The Stranger] {Encoding.UTF8.GetString(buffer)}\n";
-                        break;
-                    case (byte)Network.OpCode.Ready:
-                        this.OtherPlayerReady = true;
-                        this.ChatScreen.OtherPlayerReadyText.SetActive(this.OtherPlayerReady);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Return))
@@ -172,7 +147,25 @@ namespace Controllers
                     Data.Storage.Connection = this.Connection;
                 }
 
-                this.Read();
+                Network.BasePayload payload = this.Connection.Read();
+                if (payload != null)
+                {
+                    this.HandleMessage(payload);
+                }
+            }
+        }
+
+        void HandleMessage(Network.BasePayload payload)
+        {
+            switch (payload.Code)
+            {
+                case Network.OpCode.Message:
+                    this.ChatScreen.Conversation.text = $"[The Stranger] {((Network.Message)payload).Text}\n";
+                    break;
+                case Network.OpCode.Ready:
+                    this.OtherPlayerReady = true;
+                    this.ChatScreen.OtherPlayerReadyText.SetActive(this.OtherPlayerReady);
+                    break;
             }
         }
     }
