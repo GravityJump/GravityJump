@@ -1,4 +1,6 @@
-﻿namespace GameObjects
+﻿using UnityEngine;
+
+namespace GameObjects
 {
     public class Coordinates2D
     {
@@ -11,6 +13,11 @@
             this.X = x;
             this.Y = y;
             this.ZAngle = zAngle;
+        }
+
+        public Vector2 getVector2()
+        {
+            return new Vector2(X, Y);
         }
     }
 }
