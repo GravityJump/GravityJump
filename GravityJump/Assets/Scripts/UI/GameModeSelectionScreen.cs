@@ -32,7 +32,6 @@ namespace UI
 
             this.SoloButton.onClick.AddListener(() =>
             {
-                Data.Storage.isMultiplayer = false;
                 SceneManager.LoadScene("GameScene");
             });
 

@@ -30,47 +30,10 @@ namespace Controllers
         void Start()
         {
             this.SetButtonsCallbacks();
-
             this.PauseScreen.Clear();
-
-            if (Data.Storage.isMultiplayer)
+            if (Data.Storage.Connection == null)
             {
-                this.InitNetwork();
-            }
-        }
-
-        void InitNetwork()
-        {
-            if (Data.Storage.isHost)
-            {
-                Network.Listener listener = new Network.Listener();
-                listener.Start();
-
-                int maxTry = 10;
-                int i = 0;
-                while (i < maxTry)
-                {
-                    this.Connection = listener.GetConnection();
-                    if (this.Connection == null)
-                    {
-                        Thread.Sleep(1000);
-                        i++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if (i == maxTry)
-                {
-                    Debug.Log("could not establish a connection");
-                    SceneManager.LoadScene("Menu");
-                }
-            }
-            else
-            {
-                this.Connection = new Network.Connection(Data.Storage.otherIp);
+                this.Connection = Data.Storage.Connection;
             }
         }
 
