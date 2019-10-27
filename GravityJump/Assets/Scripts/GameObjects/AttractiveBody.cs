@@ -45,18 +45,18 @@ public class AttractiveBody : PhysicBody
     // Give a random size for the spawner
     public float GetRandomSize()
     {
-        return default_size * (Random.value + 0.7f);
+        return default_size * (Random.value + 3f);
     }
     // For a given size, return Minimal distance an adjacent planet can be
     public float GetMinimalDistance(float size)
     {
-        return size;
+        return 2; //size;
     }
 
     // For a given size, Return Maximal distance an adjacent planet can be
     public float GetMaximalDistance(float size)
     {
-        return 2 * size;
+        return 4; //2 * size;
     }
 
     public ColliderDistance2D getDistanceBetweenNormalAndGround()

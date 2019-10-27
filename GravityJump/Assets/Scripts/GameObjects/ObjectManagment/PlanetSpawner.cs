@@ -34,6 +34,8 @@ public class PlanetSpawner : Spawner
         this.AvailablePrefabs = new List<GameObject>();
         this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planet") as GameObject);
         this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Cucumboid") as GameObject);
+        this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/DarkDwarf") as GameObject);
+
         // Computing the sum of available planets' frequency
         foreach (GameObject planet in this.AvailablePrefabs)
         {
