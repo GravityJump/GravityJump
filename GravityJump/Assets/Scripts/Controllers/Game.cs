@@ -53,7 +53,7 @@ namespace Controllers
         void Update()
         {
             this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.PlayerController.PlayerObject != null && this.PlayerController.PlayerObject.transform.position.x < this.transform.position.x - 10))
             {
                 if (this.Screens.Count() == 0)
                 {
