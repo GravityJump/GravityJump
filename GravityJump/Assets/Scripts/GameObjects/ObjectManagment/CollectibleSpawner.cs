@@ -27,6 +27,8 @@ public class CollectibleSpawner : Spawner
     {
         this.AvailablePrefabs = new List<GameObject>();
         this.AvailablePrefabs.Add(Resources.Load("Prefabs/Collectibles/Boost") as GameObject);
+        this.AvailablePrefabs.Add(Resources.Load("Prefabs/Collectibles/Minimizer") as GameObject);
+        this.AvailablePrefabs.Add(Resources.Load("Prefabs/Collectibles/Maximizer") as GameObject);
         foreach (GameObject collectible in this.AvailablePrefabs)
         {
             total_frequency += collectible.GetComponent<Collectible>().frequency;
