@@ -12,23 +12,18 @@ namespace Controllers
 
         Network.Connection Connection;
 
-
-        public MainPlayer MainPlayerController { get; private set; }
-        public OpponentPlayer OpponentPlayerController { get; private set; }
-
-        public PlanetSpawner planetSpawner { get; private set; }
+        public Players.Spawner PlayerController { get; private set; }
+        public Planets.Spawner planetSpawner { get; private set; }
         // public CollectibleSpawner collectibleSpawner { get; private set; }
         // public DecorSpawner decorSpawner { get; private set; }
 
-        public Speed Speed;
+        public Physic.Speed Speed;
 
         void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
-            this.MainPlayerController = GameObject.Find("GameController/MainPlayerController").GetComponent<MainPlayer>();
-            this.OpponentPlayerController = GameObject.Find("GameController/OpponentPlayerController").GetComponent<OpponentPlayer>();
-
-            this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<PlanetSpawner>();
+            this.PlayerController = GameObject.Find("GameController/PlayerController").GetComponent<Players.Spawner>();
+            this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
 
             this.Connection = null;
@@ -37,11 +32,12 @@ namespace Controllers
 
         void Start()
         {
-            this.Speed = new Speed(1f);
+            this.Speed = new Physic.Speed(1f);
             this.Screens = new UI.Stack();
-            this.SetButtonsCallbacks();
             this.PauseScreen.Clear();
-            if (Data.Storage.Connection == null)
+            this.SetButtonsCallbacks();
+
+            if (Data.Storage.Connection != null)
             {
                 this.Connection = Data.Storage.Connection;
             }
@@ -58,7 +54,7 @@ namespace Controllers
         void Update()
         {
             this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.PlayerController.PlayerObject != null && this.PlayerController.PlayerObject.transform.position.x < this.transform.position.x - 10))
             {
                 if (this.Screens.Count() == 0)
                 {
@@ -70,11 +66,9 @@ namespace Controllers
                 }
             }
 
-            if (this.MainPlayerController.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
+            if (this.PlayerController.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
             {
-
-                this.MainPlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
-                this.OpponentPlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
+                this.PlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
                 this.planetSpawner.IsPlayerAlive = true;
             }
 

@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02460bb7b5e8c4f45b2bf9a74eab560e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Prefab: {fileID: 0}
   PlayerObject: {fileID: 0}
 --- !u!1001 &979200584318004994
 PrefabInstance:
@@ -146,6 +147,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1006575894002596989, guid: 94fac85ca25a342e6bc53baed0678389,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerController
+      objectReference: {fileID: 0}
     - target: {fileID: 524706275908027907, guid: 94fac85ca25a342e6bc53baed0678389,
         type: 3}
       propertyPath: m_Name
@@ -206,11 +212,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1006575894002596989, guid: 94fac85ca25a342e6bc53baed0678389,
+    - target: {fileID: 5025158590779887551, guid: 94fac85ca25a342e6bc53baed0678389,
         type: 3}
-      propertyPath: m_Name
-      value: MainPlayerController
-      objectReference: {fileID: 0}
+      propertyPath: PlayerObject
+      value: 
+      objectReference: {fileID: 7587937021885771592, guid: 55adf5c6b85d54d50b9f64e3d3c16f8f,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 1006575894002596979, guid: 94fac85ca25a342e6bc53baed0678389, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 94fac85ca25a342e6bc53baed0678389, type: 3}

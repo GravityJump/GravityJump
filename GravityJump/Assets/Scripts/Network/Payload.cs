@@ -83,12 +83,12 @@ namespace Network
 
     public class PlayerCoordinates : BasePayload
     {
-        public GameObjects.Coordinates2D coordinates2D;
+        public Physic.Coordinates2D coordinates2D;
 
         public PlayerCoordinates(float x, float y, float zAngle)
         {
             this.Code = OpCode.PlayerCoordinates;
-            this.coordinates2D = new GameObjects.Coordinates2D(x, y, zAngle);
+            this.coordinates2D = new Physic.Coordinates2D(x, y, zAngle);
         }
 
         public override byte[] GetBytes()
