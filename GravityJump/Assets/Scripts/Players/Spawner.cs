@@ -9,6 +9,7 @@ namespace Players
 
         void Awake()
         {
+            this.Prefab = Resources.Load("Prefabs/Characters/MainPlayer") as GameObject;
             this.PlayerObject = null;
         }
 
