@@ -96,11 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c51d988bd751cbca0b577e8ab2dca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 0
-  orbit: {fileID: 0}
-  ground: {fileID: 0}
-  normalShape: {fileID: 0}
-  default_size: 0
+  frequency: 0.05
+  orbit: {fileID: 4259395862610054942}
+  ground: {fileID: 4259395862274863919}
+  normalShape: {fileID: 4259395862344068051}
+  default_size: 0.5
 --- !u!1 &4259395862274863916
 GameObject:
   m_ObjectHideFlags: 0
