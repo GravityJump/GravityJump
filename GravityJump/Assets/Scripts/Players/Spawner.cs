@@ -4,12 +4,12 @@ namespace Players
 {
     public class Spawner : MonoBehaviour
     {
-        private GameObject Prefab;
+        protected GameObject Prefab;
         public GameObject PlayerObject;
 
         void Awake()
         {
-            this.Prefab = Resources.Load("Prefabs/Characters/Player") as GameObject;
+            this.Prefab = Resources.Load("Prefabs/Characters/MainPlayer") as GameObject;
             this.PlayerObject = null;
         }
 

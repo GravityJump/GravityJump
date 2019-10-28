@@ -63,9 +63,15 @@ namespace Network
                         return new Message(Encoding.UTF8.GetString(buffer));
                     case (byte)Network.OpCode.Ready:
                         return new Ready();
+                    case (byte)Network.OpCode.PlayerCoordinates:
+                        this.Stream.Read(buffer, 0, 12);
+                        float x = BitConverter.ToSingle(buffer, 0);
+                        float y = BitConverter.ToSingle(buffer, 4);
+                        float zAngle = BitConverter.ToSingle(buffer, 8);
+                        return new PlayerCoordinates(x, y, zAngle);
+
                     default:
                         return null;
-                        break;
                 }
             }
 

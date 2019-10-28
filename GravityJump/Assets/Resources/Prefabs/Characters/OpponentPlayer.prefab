@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &5645609294998826743
+--- !u!114 &8044849387080222250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31,7 +31,7 @@ PrefabInstance:
     - target: {fileID: 7587937021885771592, guid: 90d53c53b461d41439471ec9e130d147,
         type: 3}
       propertyPath: m_Name
-      value: Ennemy Variant
+      value: OpponentPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 7587937021885771594, guid: 90d53c53b461d41439471ec9e130d147,
         type: 3}
