@@ -160,15 +160,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7587937021885771592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 846dd3b139f8342c6ad593ed2f7cf7f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ffd3a6a5360d8e0d9461b81c87dc54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundedCheck: {fileID: 7587937021867414669}
+  groundedCheck: {fileID: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 768
-  attractableBodyCollider: {fileID: 7587937021885771588}
+    m_Bits: 0
+  attractableBodyCollider: {fileID: 0}
   closestAttractiveBody: {fileID: 0}
   currentAttractiveBody: {fileID: 0}
-  runSpeed: 10
+  runSpeed: 7
   jumpForce: 10
