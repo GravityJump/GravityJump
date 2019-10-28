@@ -142,8 +142,8 @@ namespace Controllers
 
                 if (this.Ready && this.OtherPlayerReady)
                 {
-                    SceneManager.LoadScene("GameScene");
                     Data.Storage.Connection = this.Connection;
+                    SceneManager.LoadScene("GameScene");
                 }
             }
         }

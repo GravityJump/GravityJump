@@ -23,6 +23,8 @@ namespace UI
         {
             this.Back.onClick.AddListener(() =>
             {
+                Data.Storage.Connection = null;
+                Data.Storage.IsHost = false;
                 SceneManager.LoadScene("Menu");
             });
         }
