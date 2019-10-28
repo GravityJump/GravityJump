@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1702760863731917540}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c3e0bc02a8274508b6d735cd68b622c, type: 3}
+  m_Script: {fileID: 11500000, guid: c8ee8bc6081f26a0d9de0699a49a2bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundedCheck: {fileID: 1702760863759702305}
+  groundedCheck: {fileID: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 0
+  attractableBodyCollider: {fileID: 0}
   closestAttractiveBody: {fileID: 0}
   currentAttractiveBody: {fileID: 0}
-  attractableBodyCollider: {fileID: 1702760863731917544}
   runSpeed: 7
   jumpForce: 10
 --- !u!1001 &9145877904010562988
@@ -94,18 +94,6 @@ PrefabInstance:
 --- !u!1 &1702760863731917540 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7587937021885771592, guid: 90d53c53b461d41439471ec9e130d147,
-    type: 3}
-  m_PrefabInstance: {fileID: 9145877904010562988}
-  m_PrefabAsset: {fileID: 0}
---- !u!70 &1702760863731917544 stripped
-CapsuleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 7587937021885771588, guid: 90d53c53b461d41439471ec9e130d147,
-    type: 3}
-  m_PrefabInstance: {fileID: 9145877904010562988}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1702760863759702305 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7587937021867414669, guid: 90d53c53b461d41439471ec9e130d147,
     type: 3}
   m_PrefabInstance: {fileID: 9145877904010562988}
   m_PrefabAsset: {fileID: 0}

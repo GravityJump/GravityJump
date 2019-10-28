@@ -12,18 +12,18 @@ namespace Controllers
 
         Network.Connection Connection;
 
-        public Player PlayerController { get; private set; }
-        public PlanetSpawner planetSpawner { get; private set; }
+        public Players.Spawner PlayerController { get; private set; }
+        public Planets.Spawner planetSpawner { get; private set; }
         // public CollectibleSpawner collectibleSpawner { get; private set; }
         // public DecorSpawner decorSpawner { get; private set; }
 
-        public Speed Speed;
+        public Physic.Speed Speed;
 
         void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
-            this.PlayerController = GameObject.Find("GameController/PlayerController").GetComponent<Player>();
-            this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<PlanetSpawner>();
+            this.PlayerController = GameObject.Find("GameController/PlayerController").GetComponent<Players.Spawner>();
+            this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
 
             this.Connection = null;
@@ -32,11 +32,12 @@ namespace Controllers
 
         void Start()
         {
-            this.Speed = new Speed(1f);
+            this.Speed = new Physic.Speed(1f);
             this.Screens = new UI.Stack();
-            this.SetButtonsCallbacks();
             this.PauseScreen.Clear();
-            if (Data.Storage.Connection == null)
+            this.SetButtonsCallbacks();
+
+            if (Data.Storage.Connection != null)
             {
                 this.Connection = Data.Storage.Connection;
             }

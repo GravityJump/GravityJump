@@ -43,9 +43,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7946553882725245960}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20a90452aafbf4e3b809787be56fa6d9, type: 3}
+  m_Script: {fileID: 11500000, guid: e75d5e7c395808d3d80744a91da12ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frequency: 1
   speed: {x: 0, y: 0, z: 0}
 --- !u!96 &6262787385835397422
 TrailRenderer:
