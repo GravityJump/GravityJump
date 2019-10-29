@@ -9,7 +9,8 @@ namespace Network
         Raw,
         Message,
         Ready,
-        PlayerCoordinates
+        PlayerCoordinates,
+        PlanetoidCoordinates,
     }
 
     public interface Payload
@@ -104,6 +105,35 @@ namespace Network
         public override int Length()
         {
             return 1 + 3 * 4;
+        }
+    }
+
+    public class PlanetoidCoordinates : BasePayload
+    {
+        public Physic.Coordinates2D coordinates2D;
+        public Planets.Type planetoid;
+
+        public PlanetoidCoordinates(Planets.Type planetoid, float x, float y, float zAngle)
+        {
+            this.Code = OpCode.PlayerCoordinates;
+            this.coordinates2D = new Physic.Coordinates2D(x, y, zAngle);
+            this.planetoid = planetoid;
+        }
+
+        public override byte[] GetBytes()
+        {
+            List<byte> payload = new List<byte>();
+            payload.Add((byte)this.Code);
+            payload.Add((byte)this.planetoid);
+            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.X));
+            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.Y));
+            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.ZAngle));
+            return payload.ToArray();
+        }
+
+        public override int Length()
+        {
+            return 2 + 3 * 4;
         }
     }
 }
