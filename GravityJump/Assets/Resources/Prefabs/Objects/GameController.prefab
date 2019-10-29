@@ -735,9 +735,9 @@ Transform:
   - {fileID: 979200585011736746}
   - {fileID: 8047877790210531958}
   - {fileID: 979200583384074974}
-  - {fileID: 1006575894002596978}
   - {fileID: 8047877788514926662}
-  - {fileID: 7342685292321342378}
+  - {fileID: 3471899768225424246}
+  - {fileID: 483702978098195785}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   x: 0
---- !u!1 &1006575894002596989
+--- !u!1 &2608808536005830261
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1008,42 +1008,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1006575894002596978}
-  - component: {fileID: 5025158590779887551}
+  - component: {fileID: 3471899768225424246}
+  - component: {fileID: 4190746165898235281}
   m_Layer: 0
-  m_Name: MainPlayerController
+  m_Name: LocalPlayerSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1006575894002596978
+--- !u!4 &3471899768225424246
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1006575894002596989}
+  m_GameObject: {fileID: 2608808536005830261}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -11.262853, y: -1.875279, z: -0.5829075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 524706275908027905}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5025158590779887551
+--- !u!114 &4190746165898235281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1006575894002596989}
+  m_GameObject: {fileID: 2608808536005830261}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da8e84299a37b194390de2f3f658444c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerObject: {fileID: 0}
+  PlayerObject: {fileID: 7587937021885771592, guid: 55adf5c6b85d54d50b9f64e3d3c16f8f,
+    type: 3}
 --- !u!1 &8047877788514926713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,7 +1075,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 524706275908027905}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &8047877788514926660
 Camera:
@@ -1247,7 +1248,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 2.56}
   m_EdgeRadius: 0
---- !u!1 &8509615427710632612
+--- !u!1 &8613579061145081040
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1255,39 +1256,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7342685292321342378}
-  - component: {fileID: 8480912330522282404}
+  - component: {fileID: 483702978098195785}
+  - component: {fileID: 126632075503082191}
   m_Layer: 0
-  m_Name: OpponentPlayerController
+  m_Name: RemotePlayerSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7342685292321342378
+--- !u!4 &483702978098195785
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8509615427710632612}
+  m_GameObject: {fileID: 8613579061145081040}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 935.36, y: 0, z: 0}
+  m_LocalPosition: {x: -11.262853, y: -1.875279, z: -0.5829075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 524706275908027905}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8480912330522282404
+--- !u!114 &126632075503082191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8509615427710632612}
+  m_GameObject: {fileID: 8613579061145081040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9e9767e983ae4394b1a4ef52b79b2ad, type: 3}
+  m_Script: {fileID: 11500000, guid: e508bf3d95269494c9b755fe07760d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerObject: {fileID: 0}
+  PlayerObject: {fileID: 6483548752540926593, guid: 7723708a8175f4381bf4a85f275ac3e7,
+    type: 3}
