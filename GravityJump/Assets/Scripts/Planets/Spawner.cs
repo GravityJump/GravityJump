@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,19 +5,14 @@ namespace Planets
 {
     public class Spawner : ObjectManagement.Spawner
     {
-        public float x = 3f;
-        public float y = 1f;
-        private float r = 1f;
-        public bool IsPlayerAlive;
         private GameObject ActivePlanet;
         private float total_frequency;
 
         public SpawningPoint PlayerSpawningPlanet;
 
-        protected override void InitiateSpawner()
+        public override void InitiateSpawner()
         {
-            this.PlayerSpawningPlanet = null;
-            this.IsPlayerAlive = false;
+            this.spawnerType = ObjectManagement.SpawnerType.Planet;
 
             this.AvailablePrefabs = new List<GameObject>();
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planet") as GameObject);
@@ -30,22 +24,29 @@ namespace Planets
             {
                 total_frequency += planet.GetComponent<Physic.AttractiveBody>().frequency;
             }
-            // First positions x and y are already defined, preparing the next planet and it size
-            ActivePlanet = GetRandomPlanet();
-            r = ActivePlanet.GetComponent<Physic.AttractiveBody>().GetRandomSize();
+            // Create a starting Planet
+            assetId = 0;
+            position = new Vector3(-3, 0, 0);
+            rotation = 0;
+            scaleRatio = 1;
+            GameObject generatedObject = Instantiate(
+                AvailablePrefabs[assetId],
+                position,
+                Quaternion.Euler(0, 0, rotation));
+            generatedObject.transform.localScale *= scaleRatio;
+            PlayerSpawningPlanet = new SpawningPoint(generatedObject, 0, 0);
         }
-        protected override bool ShouldSpawn()
+        public override void PrepareNextAsset()
         {
-            return transform.position.x >= x;
-        }
-        protected override void PrepareNextAsset()
-        {
-            float r_last = r;
-            float x_last = x;
-            float y_last = y;
+            // Saving previous parameters
+            float r_last = scaleRatio;
+            float x_last = position.x;
+            float y_last = position.y;
+            GameObject ActivePlanet = AvailablePrefabs[assetId];
             // Deciding next planet and it size
-            GameObject NextPlanet = GetRandomPlanet();
-            r = NextPlanet.GetComponent<Physic.AttractiveBody>().GetRandomSize();
+            SetRandomAssetId();
+            GameObject NextPlanet = AvailablePrefabs[assetId];
+            float r = NextPlanet.GetComponent<Physic.AttractiveBody>().GetRandomSize();
             // Deducing minimal and maximal distance to the next planet
             float d_min = Mathf.Max(NextPlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r), ActivePlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r_last));
             float d_max = Mathf.Min(NextPlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r), ActivePlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r_last));
@@ -65,6 +66,8 @@ namespace Planets
             // Finding an angle satisfying all constraints
             float teta = angle_min;
             int attempts = 0;
+            float y = y_last;
+            float x = x_last;
             while (attempts < 20 && (teta <= angle_min || teta >= angle_max || Mathf.Abs(y) > y_limit || Mathf.Abs(teta - Mathf.PI / 2) < angle_margin))
             {
                 attempts += 1;
@@ -89,46 +92,34 @@ namespace Planets
             }
             // Computing the x position of next planet
             x = x_last + Mathf.Sin(teta) * (r_last + d + r);
-            ActivePlanet = NextPlanet;
+            scaleRatio = r;
+            position = new Vector3(x, y, 0);
+            rotation = Random.value * 360;
         }
-        protected override void Spawn()
-        {
-            // Rotation is randomly decided on instantiation
-            // x, y and r have been previously defined
-            GameObject generatedObject = Instantiate(
-                ActivePlanet,
-                new Vector3(x, y, 0),
-                Quaternion.Euler(0, 0, Random.value * 360));
-            generatedObject.transform.localScale *= r;
-            generatedObject.SetActive(true);
-            // @TODO : To comment
-            if (!this.IsPlayerAlive)
-            {
-                this.PlayerSpawningPlanet = new SpawningPoint(generatedObject, x, y);
-            }
-        }
-        private GameObject GetRandomPlanet()
+        private void SetRandomAssetId()
         {
             // We select a random number between 0 and the sum of available planets frequencies
             // This number will define the selected planet
             float v = Random.value * total_frequency;
             float f;
+            assetId = 0;
             foreach (GameObject planet in this.AvailablePrefabs)
             {
                 f = planet.GetComponent<Physic.AttractiveBody>().frequency;
                 if (v <= f)
                 {
-                    return planet;
+                    return;
                 }
                 else
                 {
                     v -= f;
+                    assetId += 1;
                 }
             }
             // In case nothing got selected
             // Should not happen as long as AvailablePrefabs and their frequencies remain unchanged
             Debug.Log("No random planet could be selected");
-            return this.AvailablePrefabs[0];
+            assetId = 0;
         }
     }
 }
