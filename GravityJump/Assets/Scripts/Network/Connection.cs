@@ -56,12 +56,12 @@ namespace Network
                 this.Stream.Read(buffer, 0, 1);
                 switch (buffer[0])
                 {
-                    case (byte)Network.OpCode.Message:
+                    case (byte)OpCode.Message:
                         this.Stream.Read(buffer, 0, 4);
                         int msgLength = BitConverter.ToInt32(buffer, 0);
                         this.Stream.Read(buffer, 0, msgLength);
                         return new Message(Encoding.UTF8.GetString(buffer));
-                    case (byte)Network.OpCode.Ready:
+                    case (byte)OpCode.Ready:
                         return new Ready();
                     default:
                         return null;
