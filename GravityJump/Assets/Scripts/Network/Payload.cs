@@ -10,7 +10,7 @@ namespace Network
         Message,
         Ready,
         PlayerCoordinates,
-        PlanetCoordinates,
+        PlanetoidCoordinates,
     }
 
     public interface Payload
@@ -108,12 +108,12 @@ namespace Network
         }
     }
 
-    public class PlanetCoordinates : BasePayload
+    public class PlanetoidCoordinates : BasePayload
     {
         public Physic.Coordinates2D coordinates2D;
-        public Planets.Planetoids planetoid;
+        public Planets.Type planetoid;
 
-        public PlayerCoordinates(float x, float y, float zAngle, Planets.Planetoids planetoid)
+        public PlanetoidCoordinates(Planets.Type planetoid, float x, float y, float zAngle)
         {
             this.Code = OpCode.PlayerCoordinates;
             this.coordinates2D = new Physic.Coordinates2D(x, y, zAngle);

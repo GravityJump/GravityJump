@@ -63,13 +63,19 @@ namespace Network
                         return new Message(Encoding.UTF8.GetString(buffer));
                     case (byte)OpCode.Ready:
                         return new Ready();
-                    case (byte)Network.OpCode.PlayerCoordinates:
+                    case (byte)OpCode.PlayerCoordinates:
                         this.Stream.Read(buffer, 0, 12);
-                        float x = BitConverter.ToSingle(buffer, 0);
-                        float y = BitConverter.ToSingle(buffer, 4);
-                        float zAngle = BitConverter.ToSingle(buffer, 8);
-                        return new PlayerCoordinates(x, y, zAngle);
-
+                        float xPlayer = BitConverter.ToSingle(buffer, 0);
+                        float yPlayer = BitConverter.ToSingle(buffer, 4);
+                        float zAnglePlayer = BitConverter.ToSingle(buffer, 8);
+                        return new PlayerCoordinates(xPlayer, yPlayer, zAnglePlayer);
+                    case (byte)OpCode.PlanetoidCoordinates:
+                        this.Stream.Read(buffer, 0, 13);
+                        Planets.Type planetoid = (Planets.Type)buffer[0];
+                        float xPlanetoid = BitConverter.ToSingle(buffer, 1);
+                        float yPlanetoid = BitConverter.ToSingle(buffer, 5);
+                        float zAnglePlanetoid = BitConverter.ToSingle(buffer, 9);
+                        return new PlanetoidCoordinates(planetoid, xPlanetoid, yPlanetoid, zAnglePlanetoid);
                     default:
                         return null;
                 }

@@ -1,6 +1,6 @@
 namespace Planets
 {
-    enum Planetoids : byte
+    public enum Type : byte
     {
         Planet,
         DarkDwarf,
