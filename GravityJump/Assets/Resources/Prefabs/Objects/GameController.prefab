@@ -1009,7 +1009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3471899768225424246}
-  - component: {fileID: 4190746165898235281}
+  - component: {fileID: 1558824782557661439}
   m_Layer: 0
   m_Name: LocalPlayerSpawner
   m_TagString: Untagged
@@ -1031,7 +1031,7 @@ Transform:
   m_Father: {fileID: 524706275908027905}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4190746165898235281
+--- !u!114 &1558824782557661439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1040,7 +1040,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2608808536005830261}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da8e84299a37b194390de2f3f658444c, type: 3}
+  m_Script: {fileID: 11500000, guid: ef8d43c6a7d7942aabd5c14a273928a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerObject: {fileID: 7587937021885771592, guid: 55adf5c6b85d54d50b9f64e3d3c16f8f,

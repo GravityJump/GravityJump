@@ -12,7 +12,8 @@ namespace Controllers
 
         Network.Connection Connection;
 
-        public Players.Spawner LocalPlayerSpawner { get; private set; }
+        public Players.LocalPlayerSpawner LocalPlayerSpawner { get; private set; }
+        public Players.RemotePlayerSpawner RemotePlayerSpawner { get; private set; }
         public Planets.Spawner planetSpawner { get; private set; }
         // public CollectibleSpawner collectibleSpawner { get; private set; }
         // public DecorSpawner decorSpawner { get; private set; }
@@ -22,7 +23,8 @@ namespace Controllers
         void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
-            this.LocalPlayerSpawner = GameObject.Find("GameController/LocalPlayerSpawner").GetComponent<Players.Spawner>();
+            this.LocalPlayerSpawner = GameObject.Find("GameController/LocalPlayerSpawner").GetComponent<Players.LocalPlayerSpawner>();
+            this.RemotePlayerSpawner = GameObject.Find("GameController/RemotePlayerSpawner").GetComponent<Players.RemotePlayerSpawner>();
             this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
 
@@ -69,6 +71,7 @@ namespace Controllers
             if (this.LocalPlayerSpawner.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
             {
                 this.LocalPlayerSpawner.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
+                this.RemotePlayerSpawner.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
                 this.planetSpawner.IsPlayerAlive = true;
             }
 

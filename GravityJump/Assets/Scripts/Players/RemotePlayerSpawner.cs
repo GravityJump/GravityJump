@@ -7,6 +7,7 @@ namespace Players
         void Awake()
         {
             this.Prefab = Resources.Load("Prefabs/Characters/RemotePlayer") as GameObject;
+            this.PlayerObject = null;
         }
     }
 }
