@@ -12,8 +12,6 @@ namespace Players
 
         protected override void SetClosestAttractiveBody(Planets.SpawningPoint point)
         {
-            Debug.Log(point.ToString());
-            Debug.Log(this.Prefab.ToString());
             this.Prefab.GetComponent<Local>().closestAttractiveBody = point.Planet.GetComponent<Physic.AttractiveBody>();
         }
     }
