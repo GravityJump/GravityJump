@@ -42,9 +42,9 @@ GameObject:
   - component: {fileID: 7587937021885771595}
   - component: {fileID: 7587937021885771591}
   - component: {fileID: 7587937021885771588}
-  - component: {fileID: 5142449972087190579}
+  - component: {fileID: 4392645078208849151}
   m_Layer: 9
-  m_Name: MainPlayer
+  m_Name: LocalPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,7 +151,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.18}
   m_Size: {x: 1.78, y: 2.14}
   m_Direction: 0
---- !u!114 &5142449972087190579
+--- !u!114 &4392645078208849151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +166,7 @@ MonoBehaviour:
   groundedCheck: {fileID: 7587937021867414669}
   groundMask:
     serializedVersion: 2
-    m_Bits: 257
+    m_Bits: 768
   attractableBodyCollider: {fileID: 7587937021885771588}
   closestAttractiveBody: {fileID: 0}
   currentAttractiveBody: {fileID: 0}

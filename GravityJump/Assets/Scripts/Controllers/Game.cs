@@ -12,7 +12,7 @@ namespace Controllers
 
         Network.Connection Connection;
 
-        public Players.Spawner PlayerController { get; private set; }
+        public Players.Spawner LocalPlayerSpawner { get; private set; }
         public Planets.Spawner planetSpawner { get; private set; }
         // public CollectibleSpawner collectibleSpawner { get; private set; }
         // public DecorSpawner decorSpawner { get; private set; }
@@ -22,7 +22,7 @@ namespace Controllers
         void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
-            this.PlayerController = GameObject.Find("GameController/MainPlayerController").GetComponent<Players.Spawner>();
+            this.LocalPlayerSpawner = GameObject.Find("GameController/LocalPlayerSpawner").GetComponent<Players.Spawner>();
             this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
             this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
 
@@ -54,7 +54,7 @@ namespace Controllers
         void Update()
         {
             this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
-            if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.PlayerController.PlayerObject != null && this.PlayerController.PlayerObject.transform.position.x < this.transform.position.x - 10))
+            if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.LocalPlayerSpawner.PlayerObject != null && this.LocalPlayerSpawner.PlayerObject.transform.position.x < this.transform.position.x - 10))
             {
                 if (this.Screens.Count() == 0)
                 {
@@ -66,9 +66,9 @@ namespace Controllers
                 }
             }
 
-            if (this.PlayerController.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
+            if (this.LocalPlayerSpawner.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
             {
-                this.PlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
+                this.LocalPlayerSpawner.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
                 this.planetSpawner.IsPlayerAlive = true;
             }
 
