@@ -5,7 +5,6 @@ namespace Planets
 {
     public class Spawner : ObjectManagement.Spawner
     {
-        private GameObject ActivePlanet;
         private float total_frequency;
 
         public SpawningPoint PlayerSpawningPlanet;
