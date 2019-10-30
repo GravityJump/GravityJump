@@ -8,7 +8,7 @@ namespace Physic
         public float Y { get; set; }
         public float ZAngle { get; set; }
 
-        public Coordinates2D(float x,float y, float zAngle)
+        public Coordinates2D(float x, float y, float zAngle)
         {
             this.X = x;
             this.Y = y;
@@ -17,7 +17,7 @@ namespace Physic
 
         public Vector2 getVector2()
         {
-            return new Vector2(X, Y);
+            return new Vector2(this.X, this.Y);
         }
     }
 }

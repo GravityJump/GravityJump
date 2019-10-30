@@ -47,7 +47,7 @@ namespace Controllers
 
             if (this.RemotePlayerSpawner.PlayerObject == null)
             {
-                this.RemotePlayerSpawner.InstantiatePlayer(this.PlanetSpawner.PlayerSpawningPlanet);
+                // this.RemotePlayerSpawner.InstantiatePlayer(this.PlanetSpawner.PlayerSpawningPlanet);
             }
 
             // If the user is the Host, or plays a solo game.
