@@ -98,20 +98,44 @@ namespace Controllers
                             if (Data.Storage.Connection != null)
                             {
                                 // Send assetPayload to Client
+                                this.Connection.Write(assetPayload);
                                 Debug.Log(BitConverter.ToString(assetPayload.GetBytes()));
                             }
                             spawner.PrepareNextAsset();
                         }
                     }
                 }
+                else
+                {
+                    // we listen to payloads sent by the Host
+                    Network.BasePayload payload = this.Connection.Read();
+                    if (payload != null)
+                    {
+                        if (payload.Code == Network.OpCode.Spawn)
+                        {
+                            this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
+                        }
+                    }
+                }
             }
         }
+
         private void SpawnOnPayloadReception(Network.SpawnerPayload assetPayload)
         {
-            // @TODO Implement
-            // Switch on payload type using ObjectManagement.SpawnerType
-            // Call the relevant spawner
-            // spawner.Spawn(assetPayload);
+            switch (assetPayload.spawnerType)
+            {
+                case ObjectManagement.SpawnerType.Planet:
+                    this.planetSpawner.Spawn(assetPayload);
+                    break;
+                case ObjectManagement.SpawnerType.Collectible:
+                    this.collectibleSpawner.Spawn(assetPayload);
+                    break;
+                case ObjectManagement.SpawnerType.Decor:
+                    this.decorSpawner.Spawn(assetPayload);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
