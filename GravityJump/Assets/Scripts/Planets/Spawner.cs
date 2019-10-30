@@ -5,50 +5,42 @@ namespace Planets
 {
     public class Spawner : ObjectManagement.Spawner
     {
-        private float total_frequency;
-
         public SpawningPoint PlayerSpawningPlanet;
 
         public override void InitiateSpawner()
         {
-            this.spawnerType = ObjectManagement.SpawnerType.Planet;
+            this.SpawnerType = ObjectManagement.SpawnerType.Planet;
 
-            this.AvailablePrefabs = new List<GameObject>();
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planet") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Cucumboid") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/DarkDwarf") as GameObject);
 
-            // Computing the sum of available planets' frequency
-            foreach (GameObject planet in this.AvailablePrefabs)
-            {
-                total_frequency += planet.GetComponent<Physic.AttractiveBody>().frequency;
-            }
             // Create a starting Planet
-            assetId = 0;
-            position = new Vector3(-3, 0, 0);
-            rotation = 0;
-            scaleRatio = 1;
+            this.AssetId = 0;
+            this.Position = new Vector3(-3, 0, 0);
+            this.Rotation = 0;
+            this.ScaleRatio = 1;
             GameObject generatedObject = Instantiate(
-                AvailablePrefabs[assetId],
-                position,
-                Quaternion.Euler(0, 0, rotation));
-            generatedObject.transform.localScale *= scaleRatio;
-            PlayerSpawningPlanet = new SpawningPoint(generatedObject, 0, 0);
+                AvailablePrefabs[this.AssetId],
+                this.Position,
+                Quaternion.Euler(0, 0, this.Rotation));
+            generatedObject.transform.localScale *= this.ScaleRatio;
+            this.PlayerSpawningPlanet = new SpawningPoint(generatedObject, 0, 0);
         }
         public override void PrepareNextAsset()
         {
             // Saving previous parameters
-            float r_last = scaleRatio;
-            float x_last = position.x;
-            float y_last = position.y;
-            GameObject ActivePlanet = AvailablePrefabs[assetId];
+            float r_last = this.ScaleRatio;
+            float x_last = this.Position.x;
+            float y_last = this.Position.y;
+            GameObject activePlanet = this.AvailablePrefabs[this.AssetId];
             // Deciding next planet and it size
-            SetRandomAssetId();
-            GameObject NextPlanet = AvailablePrefabs[assetId];
-            float r = NextPlanet.GetComponent<Physic.AttractiveBody>().GetRandomSize();
+            this.SetRandomAssetId();
+            GameObject nextPlanet = this.AvailablePrefabs[this.AssetId];
+            float r = nextPlanet.GetComponent<Physic.AttractiveBody>().GetRandomSize();
             // Deducing minimal and maximal distance to the next planet
-            float d_min = Mathf.Max(NextPlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r), ActivePlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r_last));
-            float d_max = Mathf.Min(NextPlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r), ActivePlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r_last));
+            float d_min = Mathf.Max(nextPlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r), activePlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r_last));
+            float d_max = Mathf.Min(nextPlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r), activePlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r_last));
             // Deciding next planet distance to previous one
             float d = d_min + (d_max - d_min) * Random.value;
             // Defining constraints for next planet's position
@@ -91,34 +83,13 @@ namespace Planets
             }
             // Computing the x position of next planet
             x = x_last + Mathf.Sin(teta) * (r_last + d + r);
-            scaleRatio = r;
-            position = new Vector3(x, y, 0);
-            rotation = Random.value * 360;
+            this.ScaleRatio = r;
+            this.Position = new Vector3(x, y, 0);
+            this.Rotation = Random.value * 360;
         }
-        private void SetRandomAssetId()
+        public override float GetFrequency(int assetId)
         {
-            // We select a random number between 0 and the sum of available planets frequencies
-            // This number will define the selected planet
-            float v = Random.value * total_frequency;
-            float f;
-            assetId = 0;
-            foreach (GameObject planet in this.AvailablePrefabs)
-            {
-                f = planet.GetComponent<Physic.AttractiveBody>().frequency;
-                if (v <= f)
-                {
-                    return;
-                }
-                else
-                {
-                    v -= f;
-                    assetId += 1;
-                }
-            }
-            // In case nothing got selected
-            // Should not happen as long as AvailablePrefabs and their frequencies remain unchanged
-            Debug.Log("No random planet could be selected");
-            assetId = 0;
+            return this.AvailablePrefabs[assetId].GetComponent<Physic.AttractiveBody>().Frequency;
         }
     }
 }

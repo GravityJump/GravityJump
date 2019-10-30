@@ -5,7 +5,7 @@ namespace Collectibles
     public abstract class Collectible : Physic.PhysicBody
     {
         protected GameObject target;
-        public float frequency = 1;
+        public float Frequency = 1;
 
         void OnTriggerEnter2D(Collider2D other)
         {
