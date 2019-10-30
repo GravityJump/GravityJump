@@ -6,7 +6,7 @@ namespace Physic
     public class AttractiveBody : PhysicBody
     {
         public static List<AttractiveBody> ActiveAttractiveBodies;
-        public float frequency;
+        public float Frequency;
         // All following colliders are attached to children of the current gameObject.
         // A trigger collider that represent the orbit of the planet.
         public Collider2D orbit;

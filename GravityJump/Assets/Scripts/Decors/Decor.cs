@@ -4,6 +4,6 @@ namespace Decors
 {
     public abstract class Decor : Physic.Body
     {
-        public float frequency = 1;
+        public float Frequency = 1;
     }
 }
