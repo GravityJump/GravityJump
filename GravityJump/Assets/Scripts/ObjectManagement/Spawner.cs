@@ -6,7 +6,7 @@ namespace ObjectManagement
     public enum SpawnerType : byte
     {
         Planet,
-        Colletible,
+        Collectible,
         Decor,
     }
     public abstract class Spawner : MonoBehaviour

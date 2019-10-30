@@ -16,7 +16,7 @@ namespace Collectibles
 
         public override void InitiateSpawner()
         {
-            this.spawnerType = ObjectManagement.SpawnerType.Colletible;
+            this.spawnerType = ObjectManagement.SpawnerType.Collectible;
             this.AvailablePrefabs = new List<GameObject>();
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Collectibles/Boost") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Collectibles/Minimizer") as GameObject);
