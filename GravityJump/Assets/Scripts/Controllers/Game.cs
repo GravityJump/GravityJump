@@ -40,19 +40,31 @@ namespace Controllers
 
         private void Update()
         {
+            // Instantiate the local player if not already done.
             if (this.LocalPlayerSpawner.PlayerObject == null && this.PlanetSpawner.PlayerSpawningPlanet != null)
             {
                 this.LocalPlayerSpawner.InstantiatePlayer(this.PlanetSpawner.PlayerSpawningPlanet);
-            }
 
-            if (this.RemotePlayerSpawner.PlayerObject == null)
-            {
-                // this.RemotePlayerSpawner.InstantiatePlayer(this.PlanetSpawner.PlayerSpawningPlanet);
+                // Send the player position to the client if in a multiplayer game.
+                if (this.Connection != null)
+                {
+                    this.Connection.Write(
+                        new Network.PlayerCoordinates(
+                            new Physic.Coordinates2D(
+                                this.LocalPlayerSpawner.PlayerObject.transform.position.x,
+                                this.LocalPlayerSpawner.PlayerObject.transform.position.y,
+                                0
+                            // @TODO: use the real angle value: this.LocalPlayerSpawner.PlayerObject.transform.rotation.
+                            )
+                        )
+                    );
+                }
             }
 
             // If the user is the Host, or plays a solo game.
-            if (this.Connection == null || this.IsHost)
+            if (this.Connection == null || (this.Connection != null && this.IsHost))
             {
+                // Spawn items.
                 foreach (ObjectManagement.Spawner spawner in this.Spawners)
                 {
                     if (spawner.ShouldSpawn())
@@ -60,10 +72,10 @@ namespace Controllers
                         Network.SpawnerPayload assetPayload = spawner.GetNextAssetPayload();
                         spawner.Spawn(assetPayload);
 
-                        // This is a multiplayer game.
+                        // In a multiplayer game...
                         if (this.Connection != null)
                         {
-                            // Send assetPayload to Client.
+                            // ...send the item data to the Client.
                             this.Connection.Write(assetPayload);
                             Debug.Log(BitConverter.ToString(assetPayload.GetBytes()));
                         }
@@ -72,15 +84,35 @@ namespace Controllers
                     }
                 }
             }
-            else
+
+            // In a multiplayer game...
+            if (this.Connection != null)
             {
-                // Listen to payloads sent by the Host.
-                Network.BasePayload payload = this.Connection.Read();
+                // ...listen to payloads coming from the other player.
+                Network.Payload payload = this.Connection.Read();
                 if (payload != null)
                 {
-                    if (payload.Code == Network.OpCode.Spawn)
+                    switch (((Network.BasePayload)payload).Code)
                     {
-                        this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
+                        case Network.OpCode.PlayerCoordinates:
+                            if (this.RemotePlayerSpawner.PlayerObject == null)
+                            {
+                                this.RemotePlayerSpawner.InstantiatePlayer(((Network.PlayerCoordinates)payload).coordinates2D);
+                            }
+                            else
+                            {
+                                Physic.Coordinates2D coordinates = ((Network.PlayerCoordinates)payload).coordinates2D;
+                                this.RemotePlayerSpawner.PlayerObject.transform.position = new Vector3(coordinates.X, coordinates.Y, coordinates.ZAngle);
+                            }
+                            break;
+                        case Network.OpCode.Spawn:
+                            if (!this.IsHost)
+                            {
+                                this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
