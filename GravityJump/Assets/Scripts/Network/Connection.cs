@@ -69,13 +69,16 @@ namespace Network
                         float yPlayer = BitConverter.ToSingle(buffer, 4);
                         float zAnglePlayer = BitConverter.ToSingle(buffer, 8);
                         return new PlayerCoordinates(xPlayer, yPlayer, zAnglePlayer);
-                    case (byte)OpCode.PlanetoidCoordinates:
-                        this.Stream.Read(buffer, 0, 13);
-                        Planets.Type planetoid = (Planets.Type)buffer[0];
-                        float xPlanetoid = BitConverter.ToSingle(buffer, 1);
-                        float yPlanetoid = BitConverter.ToSingle(buffer, 5);
-                        float zAnglePlanetoid = BitConverter.ToSingle(buffer, 9);
-                        return new PlanetoidCoordinates(planetoid, xPlanetoid, yPlanetoid, zAnglePlanetoid);
+                    case (byte)OpCode.Spawn:
+                        this.Stream.Read(buffer, 0, 23);
+                        ObjectManagement.SpawnerType spawnerType = (ObjectManagement.SpawnerType)buffer[0];
+                        int assetId = (int)buffer[1];
+                        float x = BitConverter.ToSingle(buffer, 2);
+                        float y = BitConverter.ToSingle(buffer, 6);
+                        float z = BitConverter.ToSingle(buffer, 10);
+                        float rotation = BitConverter.ToSingle(buffer, 14);
+                        float scaleRatio = BitConverter.ToSingle(buffer, 18);
+                        return new SpawnerPayload(spawnerType, assetId, new Vector3(x, y, z), rotation, scaleRatio);
                     default:
                         return null;
                 }
