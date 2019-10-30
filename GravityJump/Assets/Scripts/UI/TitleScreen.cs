@@ -10,6 +10,7 @@ namespace UI
         public override void Awake()
         {
             this.Panel = GameObject.Find("Canvas/TitleScreen");
+            this.Name = Names.Menu.Title;
         }
     }
 }

@@ -8,31 +8,30 @@ namespace Controllers
 {
     public class Menu : MonoBehaviour
     {
-        UI.Stack Screens;
+        private UI.Stack Screens { get; set; }
+        private UI.TitleScreen TitleScreen { get; set; }
+        private UI.GameModeSelectionScreen GameModeSelectionScreen { get; set; }
+        private UI.HostScreen HostScreen { get; set; }
+        private UI.JoinScreen JoinScreen { get; set; }
+        private UI.ChatScreen ChatScreen { get; set; }
+        private Network.Connection Connection { get; set; }
+        private bool Ready { get; set; }
+        private bool OtherPlayerReady { get; set; }
 
-        UI.TitleScreen TitleScreen;
-        UI.GameModeSelectionScreen GameModeSelectionScreen;
-        UI.HostScreen HostScreen;
-        UI.JoinScreen JoinScreen;
-        UI.ChatScreen ChatScreen;
-
-        Network.Connection Connection;
-        bool Ready = false;
-        bool OtherPlayerReady = false;
-
-        void Awake()
+        private void Awake()
         {
             this.TitleScreen = GameObject.Find("Canvas/TitleScreen").GetComponent<UI.TitleScreen>();
             this.GameModeSelectionScreen = GameObject.Find("Canvas/GameModeSelectionScreen").GetComponent<UI.GameModeSelectionScreen>();
             this.HostScreen = GameObject.Find("Canvas/HostScreen").GetComponent<UI.HostScreen>();
             this.JoinScreen = GameObject.Find("Canvas/JoinScreen").GetComponent<UI.JoinScreen>();
             this.ChatScreen = GameObject.Find("Canvas/ChatScreen").GetComponent<UI.ChatScreen>();
-
             this.Screens = new UI.Stack();
             this.Connection = null;
+            this.Ready = false;
+            this.OtherPlayerReady = false;
         }
 
-        void Start()
+        private void Start()
         {
             this.SetButtonsCallbacks();
 
@@ -45,7 +44,7 @@ namespace Controllers
             this.Screens.Push(this.TitleScreen);
         }
 
-        void SetButtonsCallbacks()
+        private void SetButtonsCallbacks()
         {
             this.GameModeSelectionScreen.HostButton.onClick.AddListener(() =>
             {
@@ -112,43 +111,42 @@ namespace Controllers
             });
         }
 
-        void Update()
+        private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            switch (((UI.BasicScreen)this.Screens.Top()).Name)
             {
-                if ((object)this.Screens.Top() == this.TitleScreen)
-                {
-                    this.Screens.Push(this.GameModeSelectionScreen);
-                }
-            }
+                case UI.Names.Menu.Title:
+                    if (Input.GetKeyDown(KeyCode.Return))
+                    {
+                        this.Screens.Push(this.GameModeSelectionScreen);
+                    }
+                    break;
+                case UI.Names.Menu.Host:
+                    if (this.Connection == null && this.HostScreen.GetConnection() != null)
+                    {
+                        this.Connection = this.HostScreen.GetConnection();
+                        this.Screens.Push(this.ChatScreen);
+                    }
+                    break;
+                case UI.Names.Menu.Chat:
+                    Network.BasePayload payload = this.Connection.Read();
+                    if (payload != null)
+                    {
+                        this.HandleMessage(payload);
+                    }
 
-            if ((object)this.Screens.Top() == this.HostScreen)
-            {
-                if (this.Connection == null && this.HostScreen.GetConnection() != null)
-                {
-                    this.Connection = this.HostScreen.GetConnection();
-                    this.Screens.Push(this.ChatScreen);
-                }
-            }
-
-            if ((object)this.Screens.Top() == this.ChatScreen)
-            {
-
-                Network.BasePayload payload = this.Connection.Read();
-                if (payload != null)
-                {
-                    this.HandleMessage(payload);
-                }
-
-                if (this.Ready && this.OtherPlayerReady)
-                {
-                    Data.Storage.Connection = this.Connection;
-                    SceneManager.LoadScene("GameScene");
-                }
+                    if (this.Ready && this.OtherPlayerReady)
+                    {
+                        Data.Storage.Connection = this.Connection;
+                        SceneManager.LoadScene("GameScene");
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
-        void HandleMessage(Network.BasePayload payload)
+        private void HandleMessage(Network.BasePayload payload)
         {
             switch (payload.Code)
             {
@@ -158,6 +156,8 @@ namespace Controllers
                 case Network.OpCode.Ready:
                     this.OtherPlayerReady = true;
                     this.ChatScreen.OtherPlayerReadyText.SetActive(this.OtherPlayerReady);
+                    break;
+                default:
                     break;
             }
         }

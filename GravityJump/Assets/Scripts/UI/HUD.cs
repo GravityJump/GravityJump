@@ -6,15 +6,15 @@ namespace UI
     public class HUD : MonoBehaviour
     {
         private float Distance { get; set; }
-        private Text DistanceText;
+        private Text DistanceText { get; set; }
 
-        void Awake()
+        private void Awake()
         {
             this.Distance = 0f;
             this.DistanceText = GameObject.Find("GameController/HUD/Distance").GetComponent<Text>();
         }
 
-        void Update()
+        private void Update()
         {
             this.DistanceText.text = $"Distance {this.Distance.ToString("0.00")} a.l.";
         }

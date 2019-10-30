@@ -5,12 +5,10 @@ namespace UI
 {
     public abstract class BasicScreen : MonoBehaviour, IGameState
     {
-        public GameObject Panel;
+        protected GameObject Panel { get; set; }
+        public Names.Menu Name { get; set; }
 
-        public virtual void Awake()
-        {
-            this.Panel = null;
-        }
+        public abstract void Awake();
 
         public virtual void Clear()
         {
