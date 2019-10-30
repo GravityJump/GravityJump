@@ -10,7 +10,8 @@ namespace Controllers
 
         Network.Connection Connection;
 
-        public Players.Spawner PlayerController { get; private set; }
+        public Players.LocalPlayerSpawner LocalPlayerSpawner { get; private set; }
+        public Players.RemotePlayerSpawner RemotePlayerSpawner { get; private set; }
         public Planets.Spawner planetSpawner { get; private set; }
         public Collectibles.Spawner collectibleSpawner { get; private set; }
         public Decors.Spawner decorSpawner { get; private set; }
@@ -22,7 +23,8 @@ namespace Controllers
         {
             this.spawners = new List<ObjectManagement.Spawner>();
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
-            this.PlayerController = GameObject.Find("GameController/MainPlayerController").GetComponent<Players.Spawner>();
+            this.LocalPlayerSpawner = GameObject.Find("GameController/LocalPlayerSpawner").GetComponent<Players.LocalPlayerSpawner>();
+            this.RemotePlayerSpawner = GameObject.Find("GameController/RemotePlayerSpawner").GetComponent<Players.RemotePlayerSpawner>();
             this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
             this.spawners.Add(planetSpawner);
             this.collectibleSpawner = GameObject.Find("GameController/CollectibleSpawner").GetComponent<Collectibles.Spawner>();
@@ -43,17 +45,20 @@ namespace Controllers
 
         void Update()
         {
-            if (this.PlayerController.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
+            if (this.LocalPlayerSpawner.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
             {
-                this.PlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
+                this.LocalPlayerSpawner.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
+                this.RemotePlayerSpawner.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
             }
 
             this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
-            this.HUD.UpdateDistance(0.1f, Time.deltaTime);
+            //if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.LocalPlayerSpawner.PlayerObject != null && this.LocalPlayerSpawner.PlayerObject.transform.position.x < this.transform.position.x - 10))
+                this.HUD.UpdateDistance(0.1f, Time.deltaTime);
             this.Speed.Increment(Time.deltaTime);
 
             // If the user is the Host, or plays a solo game
             if (Data.Storage.Connection == null || Data.Storage.IsHost)
+
             {
                 foreach (ObjectManagement.Spawner spawner in spawners)
                 {
@@ -85,7 +90,6 @@ namespace Controllers
                 }
             }
         }
-
         private void SpawnOnPayloadReception(Network.SpawnerPayload assetPayload)
         {
             switch (assetPayload.spawnerType)
