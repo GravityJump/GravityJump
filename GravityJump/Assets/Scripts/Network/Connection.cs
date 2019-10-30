@@ -10,8 +10,8 @@ namespace Network
 {
     public class Connection : TcpConfig
     {
-        TcpClient Client { get; set; }
-        NetworkStream Stream { get; set; }
+        private TcpClient Client { get; set; }
+        private NetworkStream Stream { get; set; }
         public IPAddress Ip { get; set; }
 
         public Connection(TcpClient client)

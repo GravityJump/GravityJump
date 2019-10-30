@@ -7,8 +7,8 @@ namespace Network
 {
     public class Listener : TcpConfig
     {
-        TcpListener TCPListener { get; set; }
-        TcpClient TCPClient { get; set; }
+        private TcpListener TCPListener { get; set; }
+        private TcpClient TCPClient { get; set; }
 
         public Listener()
         {
@@ -26,7 +26,7 @@ namespace Network
             th.Start();
         }
 
-        void WaitForConnection()
+        private void WaitForConnection()
         {
             Debug.Log("Waiting for new connections...");
             this.TCPClient = this.TCPListener.AcceptTcpClient();

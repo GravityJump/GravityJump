@@ -7,13 +7,12 @@ namespace UI
     public class GameModeSelectionScreen : BasicScreen
     {
         public readonly string Version = "0.0.1";
-
-        Button SoloButton { get; set; }
+        public Button SoloButton { get; set; }
         public Button HostButton { get; set; }
         public Button JoinButton { get; set; }
-        Button ExitButton { get; set; }
-        Text VersionText { get; set; }
-        Text Ip { get; set; }
+        private Button ExitButton { get; set; }
+        private Text VersionText { get; set; }
+        private Text Ip { get; set; }
 
         public override void Awake()
         {
@@ -24,6 +23,7 @@ namespace UI
             this.HostButton = GameObject.Find("Canvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
             this.JoinButton = GameObject.Find("Canvas/GameModeSelectionScreen/JoinButton").GetComponent<Button>();
             this.ExitButton = GameObject.Find("Canvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
+            this.Name = Names.Menu.GameModeSelection;
         }
 
         public void Start()
@@ -49,7 +49,7 @@ namespace UI
             this.CheckNetworkAvailability();
         }
 
-        void CheckNetworkAvailability()
+        private void CheckNetworkAvailability()
         {
             if (Network.Utils.IsInternetAvailable())
             {
@@ -68,7 +68,7 @@ namespace UI
             }
         }
 
-        void DisableMultiplayer(string reason)
+        private void DisableMultiplayer(string reason)
         {
             this.HostButton.interactable = false;
             this.JoinButton.interactable = false;

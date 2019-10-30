@@ -7,12 +7,12 @@ namespace UI
 {
     public class ChatScreen : BasicScreen
     {
-        public Button Send;
-        public Button Quit;
-        public Button Start;
-        public InputField Input;
-        public Text Conversation;
-        public GameObject OtherPlayerReadyText;
+        public Button Send { get; set; }
+        public Button Quit { get; set; }
+        public Button Start { get; set; }
+        public InputField Input { get; set; }
+        public Text Conversation { get; set; }
+        public GameObject OtherPlayerReadyText { get; set; }
 
         public override void Awake()
         {
@@ -23,6 +23,7 @@ namespace UI
             this.Start = GameObject.Find("Canvas/ChatScreen/StartButton").GetComponent<Button>();
             this.Conversation = GameObject.Find("Canvas/ChatScreen/Conversation").GetComponent<Text>();
             this.OtherPlayerReadyText = GameObject.Find("Canvas/ChatScreen/OtherPlayerReadyText");
+            this.Name = Names.Menu.Chat;
         }
 
         public override void OnStart()

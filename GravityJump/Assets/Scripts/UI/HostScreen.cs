@@ -7,13 +7,14 @@ namespace UI
     public class HostScreen : BasicScreen
     {
         public Button Back { get; set; }
-        Network.Listener Listener { get; set; }
+        private Network.Listener Listener { get; set; }
 
         public override void Awake()
         {
             this.Panel = GameObject.Find("Canvas/HostScreen");
             this.Back = GameObject.Find("Canvas/HostScreen/BackButton").GetComponent<Button>();
             this.Listener = new Network.Listener();
+            this.Name = Names.Menu.Host;
         }
 
         public override void OnStart()

@@ -8,7 +8,7 @@ namespace Controllers
     {
         public UI.HUD HUD { get; private set; }
 
-        Network.Connection Connection;
+        Network.Connection Connection { get; set; }
 
         public Players.LocalPlayerSpawner LocalPlayerSpawner { get; private set; }
         public Players.RemotePlayerSpawner RemotePlayerSpawner { get; private set; }
@@ -17,7 +17,7 @@ namespace Controllers
         public Decors.Spawner decorSpawner { get; private set; }
         public List<ObjectManagement.Spawner> spawners { get; private set; }
 
-        public Physic.Speed Speed;
+        public Physic.Speed Speed { get; set; }
 
         void Awake()
         {
@@ -31,16 +31,8 @@ namespace Controllers
             this.spawners.Add(collectibleSpawner);
             this.decorSpawner = GameObject.Find("GameController/DecorSpawner").GetComponent<Decors.Spawner>();
             this.spawners.Add(decorSpawner);
-            this.Connection = null;
+            this.Connection = Data.Storage.Connection; // will be null if solo game
             this.Speed = new Physic.Speed(1f);
-        }
-
-        void Start()
-        {
-            if (Data.Storage.Connection != null)
-            {
-                this.Connection = Data.Storage.Connection;
-            }
         }
 
         void Update()
@@ -53,7 +45,7 @@ namespace Controllers
 
             this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
             //if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.LocalPlayerSpawner.PlayerObject != null && this.LocalPlayerSpawner.PlayerObject.transform.position.x < this.transform.position.x - 10))
-                this.HUD.UpdateDistance(0.1f, Time.deltaTime);
+            this.HUD.UpdateDistance(0.1f, Time.deltaTime);
             this.Speed.Increment(Time.deltaTime);
 
             // If the user is the Host, or plays a solo game

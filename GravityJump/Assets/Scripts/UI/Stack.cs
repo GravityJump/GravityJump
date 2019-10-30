@@ -5,37 +5,37 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    class Stack
+    public class Stack
     {
-        System.Collections.Generic.Stack<IGameState> stack { get; set; }
+        private System.Collections.Generic.Stack<IGameState> InternalStack { get; set; }
 
         public Stack()
         {
-            this.stack = new System.Collections.Generic.Stack<IGameState>();
+            this.InternalStack = new System.Collections.Generic.Stack<IGameState>();
         }
 
         public IGameState Top()
         {
-            return this.stack.Peek();
+            return this.InternalStack.Peek();
         }
 
         public void Push(IGameState gameState)
         {
-            if (this.stack.Count > 0)
+            if (this.InternalStack.Count > 0)
             {
                 this.Top().OnPause();
             }
 
-            this.stack.Push(gameState);
+            this.InternalStack.Push(gameState);
             this.Top().OnStart();
         }
 
         public IGameState Pop()
         {
-            IGameState gameState = this.stack.Pop();
+            IGameState gameState = this.InternalStack.Pop();
             gameState.OnStop();
 
-            if (this.stack.Count > 0)
+            if (this.InternalStack.Count > 0)
             {
                 this.Top().OnResume();
             }
@@ -45,7 +45,7 @@ namespace UI
 
         public int Count()
         {
-            return this.stack.Count;
+            return this.InternalStack.Count;
         }
     }
 }
