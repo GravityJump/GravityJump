@@ -53,8 +53,7 @@ namespace Controllers
                             new Physic.Coordinates2D(
                                 this.LocalPlayerSpawner.PlayerObject.transform.position.x,
                                 this.LocalPlayerSpawner.PlayerObject.transform.position.y,
-                                0
-                            // @TODO: use the real angle value: this.LocalPlayerSpawner.PlayerObject.transform.rotation.
+                                this.LocalPlayerSpawner.PlayerObject.transform.rotation.eulerAngles.z
                             )
                         )
                     );
@@ -102,7 +101,8 @@ namespace Controllers
                             else
                             {
                                 Physic.Coordinates2D coordinates = ((Network.PlayerCoordinates)payload).coordinates2D;
-                                this.RemotePlayerSpawner.PlayerObject.transform.position = new Vector3(coordinates.X, coordinates.Y, coordinates.ZAngle);
+                                this.RemotePlayerSpawner.PlayerObject.transform.position = new Vector3(coordinates.X, coordinates.Y, 0);
+                                this.RemotePlayerSpawner.PlayerObject.transform.rotation = Quaternion.Euler(0, 0, coordinates.ZAngle);
                             }
                             break;
                         case Network.OpCode.Spawn:
