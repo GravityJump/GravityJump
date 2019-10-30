@@ -6,9 +6,6 @@ namespace Controllers
 {
     public class Game : MonoBehaviour
     {
-        UI.Stack Screens;
-
-        UI.PauseScreen PauseScreen;
         public UI.HUD HUD { get; private set; }
 
         Network.Connection Connection;
@@ -32,89 +29,58 @@ namespace Controllers
             this.spawners.Add(collectibleSpawner);
             this.decorSpawner = GameObject.Find("GameController/DecorSpawner").GetComponent<Decors.Spawner>();
             this.spawners.Add(decorSpawner);
-            this.PauseScreen = GameObject.Find("GameController/HUD/PauseScreen").GetComponent<UI.PauseScreen>();
             this.Connection = null;
-            this.Screens = new UI.Stack();
             this.Speed = new Physic.Speed(1f);
         }
 
         void Start()
         {
-            this.PauseScreen.Clear();
-            this.SetButtonsCallbacks();
-
             if (Data.Storage.Connection != null)
             {
                 this.Connection = Data.Storage.Connection;
             }
         }
 
-        void SetButtonsCallbacks()
-        {
-            this.PauseScreen.Resume.onClick.AddListener(() =>
-            {
-                this.Screens.Pop();
-            });
-        }
-
         void Update()
         {
-            // Checking for Pause mode
-            if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.PlayerController.PlayerObject != null && this.PlayerController.PlayerObject.transform.position.x < this.transform.position.x - 14))
+            if (this.PlayerController.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
             {
-                if (this.Screens.Count() == 0)
-                {
-                    // Pause
-                    this.Screens.Push(this.PauseScreen);
-                }
-                else
-                {
-                    // Unpause
-                    this.Screens.Pop();
-                }
+                this.PlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
             }
-            // If game is unpaused
-            if (this.Screens.Count() == 0)
+
+            this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
+            this.HUD.UpdateDistance(0.1f, Time.deltaTime);
+            this.Speed.Increment(Time.deltaTime);
+
+            // If the user is the Host, or plays a solo game
+            if (Data.Storage.Connection == null || Data.Storage.IsHost)
             {
-                if (this.PlayerController.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
+                foreach (ObjectManagement.Spawner spawner in spawners)
                 {
-                    this.PlayerController.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
-                }
-
-                this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
-                this.HUD.UpdateDistance(0.1f, Time.deltaTime);
-                this.Speed.Increment(Time.deltaTime);
-
-                // If the user is the Host, or plays a solo game
-                if (Data.Storage.Connection == null || Data.Storage.IsHost)
-                {
-                    foreach (ObjectManagement.Spawner spawner in spawners)
+                    if (spawner.ShouldSpawn())
                     {
-                        if (spawner.ShouldSpawn())
+                        Network.SpawnerPayload assetPayload = spawner.GetNextAssetPayload();
+                        spawner.Spawn(assetPayload);
+                        // if this is not a solo game
+                        if (Data.Storage.Connection != null)
                         {
-                            Network.SpawnerPayload assetPayload = spawner.GetNextAssetPayload();
-                            spawner.Spawn(assetPayload);
-                            // if this is not a solo game
-                            if (Data.Storage.Connection != null)
-                            {
-                                // Send assetPayload to Client
-                                this.Connection.Write(assetPayload);
-                                Debug.Log(BitConverter.ToString(assetPayload.GetBytes()));
-                            }
-                            spawner.PrepareNextAsset();
+                            // Send assetPayload to Client
+                            this.Connection.Write(assetPayload);
+                            Debug.Log(BitConverter.ToString(assetPayload.GetBytes()));
                         }
+                        spawner.PrepareNextAsset();
                     }
                 }
-                else
+            }
+            else
+            {
+                // we listen to payloads sent by the Host
+                Network.BasePayload payload = this.Connection.Read();
+                if (payload != null)
                 {
-                    // we listen to payloads sent by the Host
-                    Network.BasePayload payload = this.Connection.Read();
-                    if (payload != null)
+                    if (payload.Code == Network.OpCode.Spawn)
                     {
-                        if (payload.Code == Network.OpCode.Spawn)
-                        {
-                            this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
-                        }
+                        this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
                     }
                 }
             }
