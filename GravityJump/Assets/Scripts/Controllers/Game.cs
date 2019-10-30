@@ -6,94 +6,134 @@ namespace Controllers
 {
     public class Game : MonoBehaviour
     {
-        public UI.HUD HUD { get; private set; }
+        private UI.HUD HUD { get; set; }
+        private Network.Connection Connection { get; set; }
+        private Players.LocalPlayerSpawner LocalPlayerSpawner { get; set; }
+        private Players.RemotePlayerSpawner RemotePlayerSpawner { get; set; }
+        private Planets.Spawner PlanetSpawner { get; set; }
+        private Collectibles.Spawner CollectibleSpawner { get; set; }
+        private Decors.Spawner DecorSpawner { get; set; }
+        private List<ObjectManagement.Spawner> Spawners { get; set; }
+        private Physic.Speed Speed { get; set; }
+        private bool IsHost { get; set; }
 
-        Network.Connection Connection { get; set; }
-
-        public Players.LocalPlayerSpawner LocalPlayerSpawner { get; private set; }
-        public Players.RemotePlayerSpawner RemotePlayerSpawner { get; private set; }
-        public Planets.Spawner planetSpawner { get; private set; }
-        public Collectibles.Spawner collectibleSpawner { get; private set; }
-        public Decors.Spawner decorSpawner { get; private set; }
-        public List<ObjectManagement.Spawner> spawners { get; private set; }
-
-        public Physic.Speed Speed { get; set; }
-
-        void Awake()
+        private void Awake()
         {
-            this.spawners = new List<ObjectManagement.Spawner>();
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
+
             this.LocalPlayerSpawner = GameObject.Find("GameController/LocalPlayerSpawner").GetComponent<Players.LocalPlayerSpawner>();
             this.RemotePlayerSpawner = GameObject.Find("GameController/RemotePlayerSpawner").GetComponent<Players.RemotePlayerSpawner>();
-            this.planetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
-            this.spawners.Add(planetSpawner);
-            this.collectibleSpawner = GameObject.Find("GameController/CollectibleSpawner").GetComponent<Collectibles.Spawner>();
-            this.spawners.Add(collectibleSpawner);
-            this.decorSpawner = GameObject.Find("GameController/DecorSpawner").GetComponent<Decors.Spawner>();
-            this.spawners.Add(decorSpawner);
-            this.Connection = Data.Storage.Connection; // will be null if solo game
+            this.PlanetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
+            this.CollectibleSpawner = GameObject.Find("GameController/CollectibleSpawner").GetComponent<Collectibles.Spawner>();
+            this.DecorSpawner = GameObject.Find("GameController/DecorSpawner").GetComponent<Decors.Spawner>();
+
+            this.Spawners = new List<ObjectManagement.Spawner>();
+            this.Spawners.Add(this.PlanetSpawner);
+            this.Spawners.Add(this.CollectibleSpawner);
+            this.Spawners.Add(this.DecorSpawner);
+
+            this.Connection = Data.Storage.Connection; // Will be null in a solo game.
+            this.IsHost = Data.Storage.IsHost;
+
             this.Speed = new Physic.Speed(1f);
         }
 
-        void Update()
+        private void Update()
         {
-            if (this.LocalPlayerSpawner.PlayerObject == null && this.planetSpawner.PlayerSpawningPlanet != null)
+            // Instantiate the local player if not already done.
+            if (this.LocalPlayerSpawner.PlayerObject == null && this.PlanetSpawner.PlayerSpawningPlanet != null)
             {
-                this.LocalPlayerSpawner.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
-                this.RemotePlayerSpawner.InstantiatePlayer(this.planetSpawner.PlayerSpawningPlanet);
+                this.LocalPlayerSpawner.InstantiatePlayer(this.PlanetSpawner.PlayerSpawningPlanet);
+
+                // Send the player position to the client if in a multiplayer game.
+                if (this.Connection != null)
+                {
+                    this.Connection.Write(
+                        new Network.PlayerCoordinates(
+                            new Physic.Coordinates2D(
+                                this.LocalPlayerSpawner.PlayerObject.transform.position.x,
+                                this.LocalPlayerSpawner.PlayerObject.transform.position.y,
+                                0
+                            // @TODO: use the real angle value: this.LocalPlayerSpawner.PlayerObject.transform.rotation.
+                            )
+                        )
+                    );
+                }
             }
 
-            this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0);
-            //if (Input.GetKeyDown(KeyCode.Escape) || (this.Screens.Count() == 0 && this.LocalPlayerSpawner.PlayerObject != null && this.LocalPlayerSpawner.PlayerObject.transform.position.x < this.transform.position.x - 10))
-            this.HUD.UpdateDistance(0.1f, Time.deltaTime);
-            this.Speed.Increment(Time.deltaTime);
-
-            // If the user is the Host, or plays a solo game
-            if (Data.Storage.Connection == null || Data.Storage.IsHost)
-
+            // If the user is the Host, or plays a solo game.
+            if (this.Connection == null || (this.Connection != null && this.IsHost))
             {
-                foreach (ObjectManagement.Spawner spawner in spawners)
+                // Spawn items.
+                foreach (ObjectManagement.Spawner spawner in this.Spawners)
                 {
                     if (spawner.ShouldSpawn())
                     {
                         Network.SpawnerPayload assetPayload = spawner.GetNextAssetPayload();
                         spawner.Spawn(assetPayload);
-                        // if this is not a solo game
-                        if (Data.Storage.Connection != null)
+
+                        // In a multiplayer game...
+                        if (this.Connection != null)
                         {
-                            // Send assetPayload to Client
+                            // ...send the item data to the Client.
                             this.Connection.Write(assetPayload);
                             Debug.Log(BitConverter.ToString(assetPayload.GetBytes()));
                         }
+
                         spawner.PrepareNextAsset();
                     }
                 }
             }
-            else
+
+            // In a multiplayer game...
+            if (this.Connection != null)
             {
-                // we listen to payloads sent by the Host
-                Network.BasePayload payload = this.Connection.Read();
+                // ...listen to payloads coming from the other player.
+                Network.Payload payload = this.Connection.Read();
                 if (payload != null)
                 {
-                    if (payload.Code == Network.OpCode.Spawn)
+                    switch (((Network.BasePayload)payload).Code)
                     {
-                        this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
+                        case Network.OpCode.PlayerCoordinates:
+                            if (this.RemotePlayerSpawner.PlayerObject == null)
+                            {
+                                this.RemotePlayerSpawner.InstantiatePlayer(((Network.PlayerCoordinates)payload).coordinates2D);
+                            }
+                            else
+                            {
+                                Physic.Coordinates2D coordinates = ((Network.PlayerCoordinates)payload).coordinates2D;
+                                this.RemotePlayerSpawner.PlayerObject.transform.position = new Vector3(coordinates.X, coordinates.Y, coordinates.ZAngle);
+                            }
+                            break;
+                        case Network.OpCode.Spawn:
+                            if (!this.IsHost)
+                            {
+                                this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
+
+            this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0); // `transform` is a field of `MonoBehaviour`.
+            this.HUD.UpdateDistance(0.1f, Time.deltaTime);
+            this.Speed.Increment(Time.deltaTime);
         }
+
         private void SpawnOnPayloadReception(Network.SpawnerPayload assetPayload)
         {
             switch (assetPayload.spawnerType)
             {
                 case ObjectManagement.SpawnerType.Planet:
-                    this.planetSpawner.Spawn(assetPayload);
+                    this.PlanetSpawner.Spawn(assetPayload);
                     break;
                 case ObjectManagement.SpawnerType.Collectible:
-                    this.collectibleSpawner.Spawn(assetPayload);
+                    this.CollectibleSpawner.Spawn(assetPayload);
                     break;
                 case ObjectManagement.SpawnerType.Decor:
-                    this.decorSpawner.Spawn(assetPayload);
+                    this.DecorSpawner.Spawn(assetPayload);
                     break;
                 default:
                     break;

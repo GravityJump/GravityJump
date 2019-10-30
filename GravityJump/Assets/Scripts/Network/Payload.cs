@@ -93,6 +93,12 @@ namespace Network
             this.coordinates2D = new Physic.Coordinates2D(x, y, zAngle);
         }
 
+        public PlayerCoordinates(Physic.Coordinates2D coordinates)
+        {
+            this.Code = OpCode.PlayerCoordinates;
+            this.coordinates2D = coordinates;
+        }
+
         public override byte[] GetBytes()
         {
             List<byte> payload = new List<byte>();

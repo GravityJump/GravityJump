@@ -4,13 +4,19 @@ namespace Players
 {
     public class LocalPlayerSpawner : Spawner
     {
-        void Awake()
+        private void Awake()
         {
             this.Prefab = Resources.Load("Prefabs/Characters/LocalPlayer") as GameObject;
             this.PlayerObject = null;
         }
 
-        protected override void SetClosestAttractiveBody(Planets.SpawningPoint point)
+        public void InstantiatePlayer(Planets.SpawningPoint point)
+        {
+            this.SetClosestAttractiveBody(point);
+            this.PlayerObject = Instantiate(this.Prefab, new Vector3(point.X, point.Y, 0), Quaternion.Euler(0, 0, Random.value * 360));
+        }
+
+        private void SetClosestAttractiveBody(Planets.SpawningPoint point)
         {
             this.Prefab.GetComponent<Local>().closestAttractiveBody = point.Planet.GetComponent<Physic.AttractiveBody>();
         }
