@@ -116,13 +116,13 @@ namespace Controllers
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                if (this.Screens.Top() == this.TitleScreen)
+                if ((object)this.Screens.Top() == this.TitleScreen)
                 {
                     this.Screens.Push(this.GameModeSelectionScreen);
                 }
             }
 
-            if (this.Screens.Top() == this.HostScreen)
+            if ((object)this.Screens.Top() == this.HostScreen)
             {
                 if (this.Connection == null && this.HostScreen.GetConnection() != null)
                 {
@@ -131,7 +131,7 @@ namespace Controllers
                 }
             }
 
-            if (this.Screens.Top() == this.ChatScreen)
+            if ((object)this.Screens.Top() == this.ChatScreen)
             {
 
                 Network.BasePayload payload = this.Connection.Read();
