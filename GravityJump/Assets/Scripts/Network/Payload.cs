@@ -1,6 +1,7 @@
 using System.Text;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Network
 {
@@ -10,7 +11,7 @@ namespace Network
         Message,
         Ready,
         PlayerCoordinates,
-        PlanetoidCoordinates,
+        Spawn,
     }
 
     public interface Payload
@@ -108,32 +109,41 @@ namespace Network
         }
     }
 
-    public class PlanetoidCoordinates : BasePayload
+    public class SpawnerPayload : BasePayload
     {
-        public Physic.Coordinates2D coordinates2D;
-        public Planets.Type planetoid;
+        public Vector3 position;
+        public float rotation;
+        public float scaleRatio;
+        public ObjectManagement.SpawnerType spawnerType;
+        public int assetId;
 
-        public PlanetoidCoordinates(Planets.Type planetoid, float x, float y, float zAngle)
+        public SpawnerPayload(ObjectManagement.SpawnerType spawnerType, int assetId, Vector3 position, float rotation, float scaleRatio)
         {
-            this.Code = OpCode.PlayerCoordinates;
-            this.coordinates2D = new Physic.Coordinates2D(x, y, zAngle);
-            this.planetoid = planetoid;
+            this.Code = OpCode.Spawn;
+            this.spawnerType = spawnerType;
+            this.assetId = assetId;
+            this.position = position;
+            this.rotation = rotation;
+            this.scaleRatio = scaleRatio;
         }
 
         public override byte[] GetBytes()
         {
             List<byte> payload = new List<byte>();
             payload.Add((byte)this.Code);
-            payload.Add((byte)this.planetoid);
-            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.X));
-            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.Y));
-            payload.AddRange(BitConverter.GetBytes(this.coordinates2D.ZAngle));
+            payload.Add((byte)this.spawnerType);
+            payload.Add((byte)this.assetId);
+            payload.AddRange(BitConverter.GetBytes(this.position.x));
+            payload.AddRange(BitConverter.GetBytes(this.position.y));
+            payload.AddRange(BitConverter.GetBytes(this.position.z));
+            payload.AddRange(BitConverter.GetBytes(this.rotation));
+            payload.AddRange(BitConverter.GetBytes(this.scaleRatio));
             return payload.ToArray();
         }
 
         public override int Length()
         {
-            return 2 + 3 * 4;
+            return 3 + 5 * 4;
         }
     }
 }
