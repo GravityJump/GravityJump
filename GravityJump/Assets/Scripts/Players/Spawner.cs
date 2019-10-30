@@ -7,7 +7,7 @@ namespace Players
         protected GameObject Prefab;
         public GameObject PlayerObject;
 
-        void Awake()
+        private void Awake()
         {
             this.Prefab = Resources.Load("Prefabs/Characters/LocalPlayer") as GameObject;
             this.PlayerObject = null;
