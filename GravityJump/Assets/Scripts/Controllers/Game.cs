@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System;
 
 namespace Controllers
@@ -111,6 +112,10 @@ namespace Controllers
                                 this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
                             }
                             break;
+                        case Network.OpCode.Death:
+                            // Come back to menu if the other died.
+                            SceneManager.LoadScene("Menu");
+                            break;
                         default:
                             break;
                     }
@@ -120,6 +125,19 @@ namespace Controllers
             this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0); // `transform` is a field of `MonoBehaviour`.
             this.HUD.UpdateDistance(0.1f, Time.deltaTime);
             this.Speed.Increment(Time.deltaTime);
+
+            // Check if the player is in the danger zone.
+            if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -8)
+            {
+                // If multiplayer, warn the other that death occured.
+                if (this.Connection != null)
+                {
+                    this.Connection.Write(new Network.Death());
+                }
+
+                // @TODO: Game Over animation
+                SceneManager.LoadScene("Menu");
+            }
         }
 
         private void SpawnOnPayloadReception(Network.SpawnerPayload assetPayload)

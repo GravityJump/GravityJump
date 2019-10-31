@@ -12,6 +12,7 @@ namespace Network
         Ready,
         PlayerCoordinates,
         Spawn,
+        Death,
     }
 
     public interface Payload
@@ -150,6 +151,24 @@ namespace Network
         public override int Length()
         {
             return 3 + 5 * 4;
+        }
+    }
+
+    public class Death : BasePayload
+    {
+        public Death()
+        {
+            this.Code = OpCode.Death;
+        }
+
+        public override byte[] GetBytes()
+        {
+            return new byte[] { (byte)OpCode.Death };
+        }
+
+        public override int Length()
+        {
+            return 1;
         }
     }
 }
