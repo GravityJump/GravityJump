@@ -4817,7 +4817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce492dac00f74c029801054ff2b543a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 0.1
+  Frequency: 0.1
 --- !u!50 &1181142273263617930
 Rigidbody2D:
   serializedVersion: 4

@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c51d988bd751cbca0b577e8ab2dca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 0.9
+  Frequency: 0.8
   orbit: {fileID: 7032528148352919603}
   ground: {fileID: 7032528147691917326}
   normalShape: {fileID: 7032528147406349519}
