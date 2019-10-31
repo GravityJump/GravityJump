@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System;
 
 namespace Controllers
@@ -120,6 +121,13 @@ namespace Controllers
             this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0); // `transform` is a field of `MonoBehaviour`.
             this.HUD.UpdateDistance(0.1f, Time.deltaTime);
             this.Speed.Increment(Time.deltaTime);
+
+            // Check if the player is in the danger zone.
+            if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -8)
+            {
+                // @TODO: Game Over
+                SceneManager.LoadScene("Menu");
+            }
         }
 
         private void SpawnOnPayloadReception(Network.SpawnerPayload assetPayload)
