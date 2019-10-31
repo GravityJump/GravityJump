@@ -115,6 +115,7 @@ namespace Controllers
                         case Network.OpCode.Death:
                             // Come back to menu if the other died.
                             SceneManager.LoadScene("Menu");
+                            break;
                         default:
                             break;
                     }
