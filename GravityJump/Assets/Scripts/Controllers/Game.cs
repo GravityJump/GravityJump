@@ -112,6 +112,9 @@ namespace Controllers
                                 this.SpawnOnPayloadReception(payload as Network.SpawnerPayload);
                             }
                             break;
+                        case Network.OpCode.Death:
+                            // Come back to menu if the other died.
+                            SceneManager.LoadScene("Menu");
                         default:
                             break;
                     }
@@ -125,8 +128,14 @@ namespace Controllers
             // Check if the player is in the danger zone.
             if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -8)
             {
-                // @TODO: Game Over
+                // @TODO: Game Over animation
                 SceneManager.LoadScene("Menu");
+
+                // If multiplayer, warn the other that death occured.
+                if (this.Connection != null)
+                {
+                    this.Connection.Write(new Network.Death());
+                }
             }
         }
 
