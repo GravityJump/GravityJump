@@ -129,14 +129,14 @@ namespace Controllers
             // Check if the player is in the danger zone.
             if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -8)
             {
-                // @TODO: Game Over animation
-                SceneManager.LoadScene("Menu");
-
                 // If multiplayer, warn the other that death occured.
                 if (this.Connection != null)
                 {
                     this.Connection.Write(new Network.Death());
                 }
+
+                // @TODO: Game Over animation
+                SceneManager.LoadScene("Menu");
             }
         }
 
