@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75d5e7c395808d3d80744a91da12ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 0.9
+  Frequency: 0.9
   speed: {x: 0, y: 0, z: 0}
 --- !u!96 &6262787385835397422
 TrailRenderer:

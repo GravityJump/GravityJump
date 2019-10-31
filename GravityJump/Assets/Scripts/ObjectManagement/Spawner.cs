@@ -21,12 +21,12 @@ namespace ObjectManagement
         protected void Awake()
         {
             this.AvailablePrefabs = new List<GameObject>();
+            this.InitiateSpawner();
             this.TotalFrequency = 0;
             for (int index = 0; index < this.AvailablePrefabs.Count; index++)
             {
                 this.TotalFrequency += this.GetFrequency(index);
             }
-            this.InitiateSpawner();
             this.PrepareNextAsset();
         }
         public bool ShouldSpawn()
@@ -55,7 +55,7 @@ namespace ObjectManagement
             for (int index = 0; index < this.AvailablePrefabs.Count; index++)
             {
                 f = GetFrequency(index);
-                if (v > f)
+                if (f >= v)
                 {
                     this.AssetId = index;
                     return;
@@ -64,7 +64,7 @@ namespace ObjectManagement
             }
             // In case nothing got selected
             // Should not happen as long as AvailablePrefabs and their frequencies remain unchanged
-            Debug.Log("No random prefab could be selected");
+            Debug.Log($"No random {this.SpawnerType} could be selected.");
         }
         abstract public void PrepareNextAsset();
         abstract public void InitiateSpawner();
