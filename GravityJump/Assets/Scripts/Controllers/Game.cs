@@ -114,6 +114,7 @@ namespace Controllers
                             break;
                         case Network.OpCode.Death:
                             // Come back to menu if the other died.
+                            Data.Storage.LocalScore = this.HUD.Distance;
                             SceneManager.LoadScene("Menu");
                             break;
                         default:
@@ -132,10 +133,11 @@ namespace Controllers
                 // If multiplayer, warn the other that death occured.
                 if (this.Connection != null)
                 {
-                    this.Connection.Write(new Network.Death());
+                    this.Connection.Write(new Network.Death(this.HUD.Distance));
                 }
 
                 // @TODO: Game Over animation
+                Data.Storage.LocalScore = this.HUD.Distance;
                 SceneManager.LoadScene("Menu");
             }
         }

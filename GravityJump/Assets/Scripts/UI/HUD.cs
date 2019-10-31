@@ -5,7 +5,7 @@ namespace UI
 {
     public class HUD : MonoBehaviour
     {
-        private float Distance { get; set; }
+        public float Distance { get; set; }
         private Text DistanceText { get; set; }
 
         private void Awake()

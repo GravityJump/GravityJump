@@ -156,19 +156,25 @@ namespace Network
 
     public class Death : BasePayload
     {
-        public Death()
+        public float Score { get; private set; }
+
+        public Death(float score)
         {
             this.Code = OpCode.Death;
+            this.Score = score;
         }
 
         public override byte[] GetBytes()
         {
-            return new byte[] { (byte)OpCode.Death };
+            List<byte> payload = new List<byte>();
+            payload.Add((byte)this.Code);
+            payload.AddRange(BitConverter.GetBytes(this.Score));
+            return payload.ToArray();
         }
 
         public override int Length()
         {
-            return 1;
+            return 1 + 4;
         }
     }
 }
