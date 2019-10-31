@@ -64,7 +64,7 @@ namespace ObjectManagement
             }
             // In case nothing got selected
             // Should not happen as long as AvailablePrefabs and their frequencies remain unchanged
-            Debug.Log("No random " + this.SpawnerType.ToString() + " could be selected (" + this.TotalFrequency.ToString() + " - " + this.AssetId.ToString());
+            Debug.Log($"No random {this.SpawnerType} could be selected.");
         }
         abstract public void PrepareNextAsset();
         abstract public void InitiateSpawner();
