@@ -102,8 +102,8 @@ namespace Controllers
                             else
                             {
                                 Physic.Coordinates2D coordinates = ((Network.PlayerCoordinates)payload).coordinates2D;
-                                this.RemotePlayerSpawner.PlayerObject.transform.position = new Vector3(coordinates.X, coordinates.Y, 0);
-                                this.RemotePlayerSpawner.PlayerObject.transform.rotation = Quaternion.Euler(0, 0, coordinates.ZAngle);
+                                this.RemotePlayerSpawner.coordinates2D = coordinates;
+
                             }
                             break;
                         case Network.OpCode.Spawn:
