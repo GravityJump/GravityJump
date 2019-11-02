@@ -101,7 +101,6 @@ namespace Controllers
                             {
                                 Physic.Coordinates2D coordinates = ((Network.PlayerCoordinates)payload).coordinates2D;
                                 this.RemotePlayerSpawner.coordinates2D = coordinates;
-
                             }
                             break;
                         case Network.OpCode.Spawn:
