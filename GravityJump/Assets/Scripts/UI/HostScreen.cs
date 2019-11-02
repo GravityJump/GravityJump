@@ -21,14 +21,12 @@ namespace UI
         {
             this.Panel.SetActive(true);
             this.Listener.Start();
-            Data.Storage.IsHost = true;
         }
 
         public override void OnStop()
         {
             this.Listener.Stop();
             this.Panel.SetActive(false);
-            Data.Storage.IsHost = false;
         }
 
         public Network.Connection GetConnection()
