@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Physic
 {
-    public abstract class AttractableBody : PhysicBody
+    public class AttractableBody : PhysicBody
     {
         [SerializeField] private Transform groundedCheck;
         [SerializeField] private LayerMask groundMask;
@@ -26,7 +26,7 @@ namespace Physic
         protected bool isGrounded;
         protected JumpState jump;
         protected float horizontalInertia;
-        protected float horizontalSpeed;
+        public float horizontalSpeed { get; set; }
 
         protected void Awake()
         {
@@ -150,7 +150,7 @@ namespace Physic
             Landing
         }
 
-        protected void Jump()
+        public void Jump()
         {
             if (jump == JumpState.Grounded)
             {
@@ -166,7 +166,7 @@ namespace Physic
             }
         }
 
-        protected void TakeOff()
+        public void TakeOff()
         {
             if (jump == JumpState.Jumping && !isGrounded)
             {
