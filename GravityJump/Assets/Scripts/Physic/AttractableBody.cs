@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Physic
 {
+    // This script is responsible for computing physics on the gameObject it is attached to.
+    // It will provides action methods that can be used to apply physical effects on the body (example: add a force to throw it away)
+    // It has a playerMovingState that can be used to get information on the current behavior of the body (example: jumping, moving, ...)
     public class AttractableBody : PhysicBody
     {
         private Transform groundedCheck;
@@ -137,6 +140,7 @@ namespace Physic
         }
 
         // Actions
+        // These methods can be called to apply actions on the body (ex: to apply a force)
 
         public void Throw(Vector2 force)
         {

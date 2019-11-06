@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace Physic
 {
+    // This class is the model representing the current move state of a player. It can be walking, jumping, falling,...
+    // States are described in the MovingState enum.
+    // Use status methods to get pre-processed information on the current state (example: is it jumping ?)
+    // Use action methods to update the moving state.
     public class PlayerMovingState
     {
         private float landingDelay = 0.2f;
