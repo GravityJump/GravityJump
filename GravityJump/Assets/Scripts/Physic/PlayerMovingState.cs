@@ -45,6 +45,11 @@ namespace Physic
             }
         }
 
+        public void Throw()
+        {
+            this.movingState = MovingState.InFlight;
+        }
+
         public void TakeOff()
         {
             if (this.movingState == MovingState.Jumping && !isGrounded)

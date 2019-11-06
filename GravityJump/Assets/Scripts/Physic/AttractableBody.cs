@@ -135,5 +135,13 @@ namespace Physic
             rb2D.position += horizontalPositionMove;
             horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
         }
+
+        // Actions
+
+        public void Throw(Vector2 force)
+        {
+            this.rb2D.AddForce(force);
+            this.playerMovingState.Throw();
+        }
     }
 }
