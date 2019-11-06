@@ -6,8 +6,12 @@ namespace Collectibles
     {
         override public void OnCollect()
         {
-            target.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector3(1000, 0, 0));
-            Destroy(gameObject);
+            Physic.AttractableBody attractableBody = target.gameObject.GetComponent<Physic.AttractableBody>();
+            if (attractableBody != null)
+            {
+                attractableBody.Throw(new Vector2(1000, 0));
+                Destroy(gameObject);
+            }
         }
     }
 }

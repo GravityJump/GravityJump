@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Physic
 {
+    // This script is responsible for computing physics on the gameObject it is attached to.
+    // It will provides action methods that can be used to apply physical effects on the body (example: add a force to throw it away)
+    // It has a playerMovingState that can be used to get information on the current behavior of the body (example: jumping, moving, ...)
     public class AttractableBody : PhysicBody
     {
         private Transform groundedCheck;
@@ -24,8 +27,7 @@ namespace Physic
         protected float minGravitySpeedLimit = -10f;
 
         // State variables
-        protected bool isGrounded;
-        public JumpState jump { get; private set; }
+        public PlayerMovingState playerMovingState { get; private set; }
         protected float horizontalInertia;
         public float horizontalSpeed { get; set; }
 
@@ -33,9 +35,10 @@ namespace Physic
         {
             this.rb2D = GetComponent<Rigidbody2D>();
             this.groundedCheck = this.gameObject.transform.Find("GroundedCheck");
-            this.groundMask = LayerMask.GetMask("Planetoid", "Character");
+            this.groundMask = LayerMask.GetMask("Planetoid");
             this.attractableBodyCollider = GetComponent<Collider2D>();
             this.spriteRenderer = GetComponent<SpriteRenderer>();
+            this.playerMovingState = new PlayerMovingState();
         }
         
         private void OnTriggerStay2D(Collider2D collision)
@@ -46,7 +49,7 @@ namespace Physic
             {
                 AttractiveBody collisionAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
                 if (
-                    (jump == JumpState.Jumping || jump == JumpState.InFlight || jump == JumpState.Falling)
+                    !playerMovingState.IsOnGround()
                     && collisionAttractiveBody.id != currentAttractiveBody.id
                     && closestAttractiveBody.id == currentAttractiveBody.id
                 )
@@ -59,8 +62,8 @@ namespace Physic
 
         protected void FixedUpdate()
         {
-            bool wasGrounded = isGrounded;
-            isGrounded = false;
+            bool wasGrounded = playerMovingState.isGrounded;
+            playerMovingState.isGrounded = false;
 
             // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
             // This can be done using layers instead but Sample Assets will not overwrite your project settings.
@@ -69,27 +72,23 @@ namespace Physic
             {
                 if (colliders[i].gameObject != gameObject)
                 {
-                    isGrounded = true;
+                    playerMovingState.isGrounded = true;
                     if (!wasGrounded)
                     {
                         switch (colliders[i].gameObject.layer)
                         {
                             case 8:
                                 // Planetoid
-                                StartCoroutine("Land");
+                                StartCoroutine(playerMovingState.Land());
                                 currentAttractiveBody = colliders[i].gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
-                                break;
-                            case 9:
-                                // Player
-                                Bounce();
                                 break;
                         }
                     }
                 }
             }
-            if (!isGrounded)
+            if (!playerMovingState.isGrounded)
             {
-                TakeOff();
+                playerMovingState.TakeOff();
             }
 
             if (horizontalSpeed > 0.01f)
@@ -97,16 +96,16 @@ namespace Physic
             else if (horizontalSpeed < -0.01f)
                 spriteRenderer.flipX = true;
 
-            Move(horizontalSpeed, jump, Time.fixedDeltaTime);
+            Move(horizontalSpeed, Time.fixedDeltaTime);
         }
 
-        protected void Move(float move, JumpState jump, float time)
+        protected void Move(float move, float time)
         {
             ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(closestAttractiveBody.normalShape);
             Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
             float groundToNormalDistance = -closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
-            if (jump == JumpState.Jumping)
+            if (playerMovingState.IsJumping())
             {
                 rb2D.velocity = new Vector2();
                 // Cancel gravity speed modifier and impulse force to jump
@@ -120,10 +119,10 @@ namespace Physic
             // We keep gravity acceleration after landing to stick the attractable body to the ground.
             if (transform.InverseTransformVector(rb2D.velocity).y < 0.1)
             {
-                Fall();
+                playerMovingState.Fall();
             }
 
-            if (isGrounded)
+            if (playerMovingState.isGrounded)
             {
                 transform.up = groundNormal;
             }
@@ -140,56 +139,13 @@ namespace Physic
             horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
         }
 
-        public enum JumpState
-        {
-            Grounded,
-            Jumping,
-            InFlight,
-            Falling,
-            Landing
-        }
+        // Actions
+        // These methods can be called to apply actions on the body (ex: to apply a force)
 
-        public void Jump()
+        public void Throw(Vector2 force)
         {
-            if (jump == JumpState.Grounded)
-            {
-                jump = JumpState.Jumping;
-            }
-        }
-
-        public void Bounce()
-        {
-            if (jump == JumpState.Falling)
-            {
-                jump = JumpState.Jumping;
-            }
-        }
-
-        public void TakeOff()
-        {
-            if (jump == JumpState.Jumping && !isGrounded)
-            {
-                jump = JumpState.InFlight;
-            }
-        }
-
-        public void Fall()
-        {
-            if (jump == JumpState.InFlight)
-            {
-                jump = JumpState.Falling;
-            }
-        }
-
-        // Use this function as a Coroutine: StartCoroutine("Land");
-        public IEnumerator Land()
-        {
-            if (jump == JumpState.Falling)
-            {
-                jump = JumpState.Landing;
-                yield return new WaitForSeconds(landingDelay);
-                jump = JumpState.Grounded;
-            }
+            this.rb2D.AddForce(force);
+            this.playerMovingState.Throw();
         }
     }
 }
