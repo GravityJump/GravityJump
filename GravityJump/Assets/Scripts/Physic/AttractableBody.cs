@@ -25,7 +25,7 @@ namespace Physic
 
         // State variables
         protected bool isGrounded;
-        protected JumpState jump;
+        public JumpState jump { get; private set; }
         protected float horizontalInertia;
         public float horizontalSpeed { get; set; }
 
@@ -157,7 +157,7 @@ namespace Physic
             }
         }
 
-        protected void Bounce()
+        public void Bounce()
         {
             if (jump == JumpState.Falling)
             {
@@ -173,7 +173,7 @@ namespace Physic
             }
         }
 
-        protected void Fall()
+        public void Fall()
         {
             if (jump == JumpState.InFlight)
             {
@@ -182,7 +182,7 @@ namespace Physic
         }
 
         // Use this function as a Coroutine: StartCoroutine("Land");
-        protected IEnumerator Land()
+        public IEnumerator Land()
         {
             if (jump == JumpState.Falling)
             {
