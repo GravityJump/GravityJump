@@ -35,7 +35,7 @@ namespace Physic
         {
             this.rb2D = GetComponent<Rigidbody2D>();
             this.groundedCheck = this.gameObject.transform.Find("GroundedCheck");
-            this.groundMask = LayerMask.GetMask("Planetoid", "Character");
+            this.groundMask = LayerMask.GetMask("Planetoid");
             this.attractableBodyCollider = GetComponent<Collider2D>();
             this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.playerMovingState = new PlayerMovingState();
