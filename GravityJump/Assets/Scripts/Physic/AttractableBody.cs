@@ -4,18 +4,19 @@ using UnityEngine;
 
 namespace Physic
 {
-    public abstract class AttractableBody : PhysicBody
+    public class AttractableBody : PhysicBody
     {
-        [SerializeField] private Transform groundedCheck;
-        [SerializeField] private LayerMask groundMask;
+        private Transform groundedCheck;
+        private LayerMask groundMask;
         // This should be a collider slightly below the ground collider, to keep the normal upward.
-        [SerializeField] private Collider2D attractableBodyCollider;
-        [SerializeField] public AttractiveBody closestAttractiveBody;
-        [SerializeField] public AttractiveBody currentAttractiveBody;
-        [SerializeField] protected float runSpeed = 7f;
-        [SerializeField] protected float jumpForce = 10f;
+        private Collider2D attractableBodyCollider;
+
+        public AttractiveBody closestAttractiveBody { get; set; }
+        public AttractiveBody currentAttractiveBody { get; set; }
 
         // Physics constants
+        protected float runSpeed = 7f;
+        protected float jumpForce = 10f;
         protected float groundedRadius = 0.1f;
         protected float landingDelay = 0.2f;
         protected float inertiaForce = 0.8f;
@@ -24,21 +25,19 @@ namespace Physic
 
         // State variables
         protected bool isGrounded;
-        protected JumpState jump;
+        public JumpState jump { get; private set; }
         protected float horizontalInertia;
-        protected float horizontalSpeed;
+        public float horizontalSpeed { get; set; }
 
         protected void Awake()
         {
-            rb2D = GetComponent<Rigidbody2D>();
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            int defaultLayerMask = LayerMask.GetMask("Planetoid", "Character");
-            if (groundMask.value != defaultLayerMask)
-            {
-                Debug.LogWarning($"groundMask for attractableBody {this.name} is different from the default layer mask: {defaultLayerMask}");
-            }
+            this.rb2D = GetComponent<Rigidbody2D>();
+            this.groundedCheck = this.gameObject.transform.Find("GroundedCheck");
+            this.groundMask = LayerMask.GetMask("Planetoid", "Character");
+            this.attractableBodyCollider = GetComponent<Collider2D>();
+            this.spriteRenderer = GetComponent<SpriteRenderer>();
         }
-
+        
         private void OnTriggerStay2D(Collider2D collision)
         {
             if (
@@ -150,7 +149,7 @@ namespace Physic
             Landing
         }
 
-        protected void Jump()
+        public void Jump()
         {
             if (jump == JumpState.Grounded)
             {
@@ -158,7 +157,7 @@ namespace Physic
             }
         }
 
-        protected void Bounce()
+        public void Bounce()
         {
             if (jump == JumpState.Falling)
             {
@@ -166,7 +165,7 @@ namespace Physic
             }
         }
 
-        protected void TakeOff()
+        public void TakeOff()
         {
             if (jump == JumpState.Jumping && !isGrounded)
             {
@@ -174,7 +173,7 @@ namespace Physic
             }
         }
 
-        protected void Fall()
+        public void Fall()
         {
             if (jump == JumpState.InFlight)
             {
@@ -183,7 +182,7 @@ namespace Physic
         }
 
         // Use this function as a Coroutine: StartCoroutine("Land");
-        protected IEnumerator Land()
+        public IEnumerator Land()
         {
             if (jump == JumpState.Falling)
             {
