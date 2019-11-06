@@ -31,14 +31,6 @@ namespace Physic
             }
         }
 
-        public void Bounce()
-        {
-            if (this.movingState == MovingState.Falling)
-            {
-                this.movingState = MovingState.Jumping;
-            }
-        }
-
         public void TakeOff()
         {
             if (this.movingState == MovingState.Jumping && !isGrounded)

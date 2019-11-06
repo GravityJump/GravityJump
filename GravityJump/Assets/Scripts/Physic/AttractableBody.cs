@@ -79,10 +79,6 @@ namespace Physic
                                 StartCoroutine("Land");
                                 currentAttractiveBody = colliders[i].gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
                                 break;
-                            case 9:
-                                // Player
-                                Bounce();
-                                break;
                         }
                     }
                 }
