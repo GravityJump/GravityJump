@@ -23,6 +23,20 @@ namespace Physic
             Landing
         }
 
+        // Status methods
+
+        public bool IsJumping()
+        {
+            return movingState == MovingState.Jumping;
+        }
+
+        public bool IsOnGround()
+        {
+            return movingState == MovingState.Grounded || movingState == MovingState.Landing;
+        }
+
+        // Action methods
+
         public void Jump()
         {
             if (this.movingState == MovingState.Grounded)
