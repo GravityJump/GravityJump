@@ -29,9 +29,29 @@ namespace Physic
 
         // Status methods
 
+        public bool IsGrounded()
+        {
+            return movingState == MovingState.Grounded;
+        }
+
         public bool IsJumping()
         {
             return movingState == MovingState.Jumping;
+        }
+
+        public bool IsInFlight()
+        {
+            return movingState == MovingState.InFlight;
+        }
+
+        public bool IsFalling()
+        {
+            return movingState == MovingState.Falling;
+        }
+
+        public bool IsLanding()
+        {
+            return movingState == MovingState.Landing;
         }
 
         public bool IsOnGround()
