@@ -18,7 +18,7 @@ namespace Physic
         public AttractiveBody currentAttractiveBody { get; set; }
 
         // Physics constants
-        protected float runSpeed = 3.5f * Data.Storage.SpeedFactor;
+        protected float runSpeed = 2.7f * Data.Storage.SpeedFactor;
         protected float jumpForce = 10f;
         protected float groundedRadius = 0.1f;
         protected float landingDelay = 0.2f;
