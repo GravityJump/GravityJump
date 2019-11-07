@@ -7,7 +7,7 @@ namespace Animation
     public class PlayerAnimator : Animator
     {
         private Physic.AttractableBody AttractableBody;
-        // This enum represent animation types. They must be named after the animation name in the dictionary (and the folder name in file system)
+        // This enum represent animation types. They must be named after the animation name in the dictionary (and the folder name in file system).
         private enum AnimationType
         {
             Idle,
@@ -35,7 +35,7 @@ namespace Animation
             TimeSinceLastImage += Time.deltaTime;
             switch (AttractableBody.playerMovingState.movingState)
             {
-                case Physic.PlayerMovingState.MovingState.Grounded:
+                case Physic.PlayerMovingState.MovingState.Idle:
                     this.PlayAnimation(AnimationType.Idle);
                     break;
                 case Physic.PlayerMovingState.MovingState.Walking:

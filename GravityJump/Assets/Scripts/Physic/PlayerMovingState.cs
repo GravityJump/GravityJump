@@ -15,12 +15,12 @@ namespace Physic
 
         public PlayerMovingState()
         {
-            this.movingState = MovingState.Grounded;
+            this.movingState = MovingState.Idle;
         }
 
         public enum MovingState
         {
-            Grounded,
+            Idle,
             Walking,
             Jumping,
             InFlight,
@@ -32,7 +32,7 @@ namespace Physic
 
         public bool IsGrounded()
         {
-            return movingState == MovingState.Grounded;
+            return movingState == MovingState.Idle;
         }
 
 
@@ -63,14 +63,14 @@ namespace Physic
 
         public bool IsOnGround()
         {
-            return movingState == MovingState.Grounded || movingState == MovingState.Walking || movingState == MovingState.Landing;
+            return movingState == MovingState.Idle || movingState == MovingState.Walking || movingState == MovingState.Landing;
         }
 
         // Action methods
 
         public void Walk()
         {
-            if (this.movingState == MovingState.Grounded)
+            if (this.movingState == MovingState.Idle)
             {
                 this.movingState = MovingState.Walking;
             }
@@ -80,13 +80,13 @@ namespace Physic
         {
             if(this.movingState == MovingState.Walking)
             {
-                this.movingState = MovingState.Grounded;
+                this.movingState = MovingState.Idle;
             }
         }
 
         public void Jump()
         {
-            if (this.movingState == MovingState.Grounded || this.movingState == MovingState.Walking)
+            if (this.movingState == MovingState.Idle || this.movingState == MovingState.Walking)
             {
                 this.movingState = MovingState.Jumping;
             }
@@ -120,7 +120,7 @@ namespace Physic
             {
                 this.movingState = MovingState.Landing;
                 yield return new WaitForSeconds(landingDelay);
-                this.movingState = MovingState.Grounded;
+                this.movingState = MovingState.Idle;
             }
         }
     }
