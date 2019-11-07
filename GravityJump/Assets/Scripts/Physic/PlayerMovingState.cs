@@ -21,6 +21,7 @@ namespace Physic
         public enum MovingState
         {
             Grounded,
+            Walking,
             Jumping,
             InFlight,
             Falling,
@@ -32,6 +33,12 @@ namespace Physic
         public bool IsGrounded()
         {
             return movingState == MovingState.Grounded;
+        }
+
+
+        public bool IsWalking()
+        {
+            return movingState == MovingState.Walking;
         }
 
         public bool IsJumping()
@@ -56,14 +63,30 @@ namespace Physic
 
         public bool IsOnGround()
         {
-            return movingState == MovingState.Grounded || movingState == MovingState.Landing;
+            return movingState == MovingState.Grounded || movingState == MovingState.Walking || movingState == MovingState.Landing;
         }
 
         // Action methods
 
-        public void Jump()
+        public void Walk()
         {
             if (this.movingState == MovingState.Grounded)
+            {
+                this.movingState = MovingState.Walking;
+            }
+        }
+
+        public void Stop()
+        {
+            if(this.movingState == MovingState.Walking)
+            {
+                this.movingState = MovingState.Grounded;
+            }
+        }
+
+        public void Jump()
+        {
+            if (this.movingState == MovingState.Grounded || this.movingState == MovingState.Walking)
             {
                 this.movingState = MovingState.Jumping;
             }
