@@ -7,11 +7,12 @@ namespace Animation
     public class PlayerAnimator : Animator
     {
         private Physic.AttractableBody AttractableBody;
-        // This struct links animation types to their name in Animations dictionary (and folder name in file system)
-        private struct AnimationTypes
+        // This enum represent animation types. They must be named after the animation name in the dictionary (and the folder name in file system)
+        private enum AnimationTypes
         {
-            public const string Idle = "Idle";
-            public const string Jump = "Jump";
+            Idle,
+            Walk,
+            Jump,
         }
 
         protected override string GameObjectAnimationsDirectoryName => "Player";
@@ -27,19 +28,19 @@ namespace Animation
             switch (AttractableBody.playerMovingState.movingState)
             {
                 case Physic.PlayerMovingState.MovingState.Grounded:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Idle][0];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Idle.ToString("g")][0];
                     break;
                 case Physic.PlayerMovingState.MovingState.Jumping:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][1];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump.ToString("g")][1];
                     break;
                 case Physic.PlayerMovingState.MovingState.InFlight:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][2];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump.ToString("g")][2];
                     break;
                 case Physic.PlayerMovingState.MovingState.Falling:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][3];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump.ToString("g")][3];
                     break;
                 case Physic.PlayerMovingState.MovingState.Landing:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][1];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump.ToString("g")][1];
                     break;
             }
         }
