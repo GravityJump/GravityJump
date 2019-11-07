@@ -142,6 +142,19 @@ namespace Physic
         // Actions
         // These methods can be called to apply actions on the body (ex: to apply a force)
 
+        public void Walk(float speed)
+        {
+            this.horizontalSpeed = speed;
+            if (Math.Abs(speed) > 0)
+            {
+                this.playerMovingState.Walk();
+            }
+            else
+            {
+                this.playerMovingState.Stop();
+            }
+        }
+
         public void Throw(Vector2 force)
         {
             this.rb2D.AddForce(force);

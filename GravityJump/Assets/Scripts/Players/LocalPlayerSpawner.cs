@@ -29,7 +29,7 @@ namespace Players
         {
             if (this.PlayerObject != null)
             {
-                this.AttractableBody.horizontalSpeed = Input.GetAxisRaw("Horizontal");
+                this.AttractableBody.Walk(Input.GetAxisRaw("Horizontal"));
 
                 if (Input.GetButton("Jump"))
                 {
