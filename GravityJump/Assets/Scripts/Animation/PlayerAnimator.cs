@@ -7,8 +7,14 @@ namespace Animation
     public class PlayerAnimator : Animator
     {
         private Physic.AttractableBody AttractableBody;
+        // This struct links animation types to their name in Animations dictionary (and folder name in file system)
+        private struct AnimationTypes
+        {
+            public const string Idle = "Idle";
+            public const string Jump = "Jump";
+        }
 
-        protected override string AnimationDirectoryPath => "Animation/Player/";
+        protected override string GameObjectAnimationsDirectoryName => "Player";
 
         private new void Awake()
         {
@@ -21,19 +27,19 @@ namespace Animation
             switch (AttractableBody.playerMovingState.movingState)
             {
                 case Physic.PlayerMovingState.MovingState.Grounded:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations["Jump"][0];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Idle][0];
                     break;
                 case Physic.PlayerMovingState.MovingState.Jumping:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations["Jump"][1];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][1];
                     break;
                 case Physic.PlayerMovingState.MovingState.InFlight:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations["Jump"][2];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][2];
                     break;
                 case Physic.PlayerMovingState.MovingState.Falling:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations["Jump"][3];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][3];
                     break;
                 case Physic.PlayerMovingState.MovingState.Landing:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations["Jump"][1];
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][1];
                     break;
             }
         }
