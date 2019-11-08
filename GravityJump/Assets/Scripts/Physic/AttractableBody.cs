@@ -18,7 +18,7 @@ namespace Physic
         public AttractiveBody currentAttractiveBody { get; set; }
 
         // Physics constants
-        protected float runSpeed = 7f;
+        protected float runSpeed = 2.7f * Data.Storage.SpeedFactor;
         protected float jumpForce = 10f;
         protected float groundedRadius = 0.1f;
         protected float landingDelay = 0.2f;
@@ -141,6 +141,19 @@ namespace Physic
 
         // Actions
         // These methods can be called to apply actions on the body (ex: to apply a force)
+
+        public void Walk(float speed)
+        {
+            this.horizontalSpeed = speed;
+            if (Math.Abs(speed) > 0)
+            {
+                this.playerMovingState.Walk();
+            }
+            else
+            {
+                this.playerMovingState.Stop();
+            }
+        }
 
         public void Throw(Vector2 force)
         {

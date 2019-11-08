@@ -7,12 +7,20 @@ namespace Animation
     public class PlayerAnimator : Animator
     {
         private Physic.AttractableBody AttractableBody;
-        // This struct links animation types to their name in Animations dictionary (and folder name in file system)
-        private struct AnimationTypes
+        // This enum represent animation types. They must be named after the animation name in the dictionary (and the folder name in file system).
+        private enum AnimationType
         {
-            public const string Idle = "Idle";
-            public const string Jump = "Jump";
+            Idle,
+            Walking,
+            Jumping,
+            InFlight,
+            Falling,
+            Landing,
         }
+        private AnimationType currentAnimationPlayed;
+        private float SecondPerImage = 1/12f * Data.Storage.SpeedFactor;
+        private float TimeSinceLastImage;
+        private int currentFrameIndex;
 
         protected override string GameObjectAnimationsDirectoryName => "Player";
 
@@ -24,23 +32,48 @@ namespace Animation
 
         private void Update()
         {
+            TimeSinceLastImage += Time.deltaTime;
             switch (AttractableBody.playerMovingState.movingState)
             {
-                case Physic.PlayerMovingState.MovingState.Grounded:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Idle][0];
+                case Physic.PlayerMovingState.MovingState.Idle:
+                    this.PlayAnimation(AnimationType.Idle);
+                    break;
+                case Physic.PlayerMovingState.MovingState.Walking:
+                    this.PlayAnimation(AnimationType.Walking);
                     break;
                 case Physic.PlayerMovingState.MovingState.Jumping:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][1];
+                    this.PlayAnimation(AnimationType.Jumping);
                     break;
                 case Physic.PlayerMovingState.MovingState.InFlight:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][2];
+                    this.PlayAnimation(AnimationType.InFlight);
                     break;
                 case Physic.PlayerMovingState.MovingState.Falling:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][3];
+                    this.PlayAnimation(AnimationType.Falling);
                     break;
                 case Physic.PlayerMovingState.MovingState.Landing:
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = Animations[AnimationTypes.Jump][1];
+                    this.PlayAnimation(AnimationType.Landing);
                     break;
+            }
+        }
+
+        private void PlayAnimation(AnimationType type)
+        {
+            Sprite[] animationSprites = Animations[type.ToString("g")];
+            if (currentAnimationPlayed == type)
+            {
+                if (TimeSinceLastImage >= SecondPerImage)
+                {
+                    currentFrameIndex = (currentFrameIndex + 1) % animationSprites.Length;
+                    this.gameObject.GetComponent<SpriteRenderer>().sprite = animationSprites[currentFrameIndex];
+                    TimeSinceLastImage = 0;
+                }
+
+            } else
+            {
+                currentAnimationPlayed = type;
+                currentFrameIndex = 0;
+                this.gameObject.GetComponent<SpriteRenderer>().sprite = animationSprites[currentFrameIndex];
+                TimeSinceLastImage = 0;
             }
         }
     }
