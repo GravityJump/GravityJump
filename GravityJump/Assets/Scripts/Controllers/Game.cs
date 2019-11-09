@@ -8,6 +8,7 @@ namespace Controllers
     public class Game : MonoBehaviour
     {
         private UI.HUD HUD { get; set; }
+        private Audio.MusicPlayer MusicPlayer { get; set; }
         private Network.Connection Connection { get; set; }
         private Players.LocalPlayerSpawner LocalPlayerSpawner { get; set; }
         private Players.RemotePlayerSpawner RemotePlayerSpawner { get; set; }
@@ -23,6 +24,7 @@ namespace Controllers
         private void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
+            this.MusicPlayer = this.gameObject.AddComponent<Audio.MusicPlayer>();
 
             this.LocalPlayerSpawner = GameObject.Find("GameController/LocalPlayerSpawner").GetComponent<Players.LocalPlayerSpawner>();
             this.RemotePlayerSpawner = GameObject.Find("GameController/RemotePlayerSpawner").GetComponent<Players.RemotePlayerSpawner>();
@@ -41,6 +43,11 @@ namespace Controllers
             this.TimeSinceLastPositionSending = 0f;
 
             this.Speed = new Physic.Speed(1f);
+        }
+
+        private void Start()
+        {
+            this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Game, true);
         }
 
         private void Update()
