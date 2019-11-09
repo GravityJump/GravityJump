@@ -80,9 +80,7 @@ namespace Network
                         float scaleRatio = BitConverter.ToSingle(buffer, 18);
                         return new SpawnerPayload(spawnerType, assetId, new Vector3(x, y, z), rotation, scaleRatio);
                     case (byte)OpCode.Death:
-                        this.Stream.Read(buffer, 0, 4);
-                        float score = BitConverter.ToSingle(buffer, 0);
-                        return new Death(score);
+                        return new Death();
                     default:
                         return null;
                 }
