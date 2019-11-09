@@ -5,10 +5,9 @@ using System;
 
 namespace Controllers
 {
-    public class Game : MonoBehaviour
+    public class Game : BaseController
     {
         private UI.HUD HUD { get; set; }
-        private Network.Connection Connection { get; set; }
         private Players.LocalPlayerSpawner LocalPlayerSpawner { get; set; }
         private Players.RemotePlayerSpawner RemotePlayerSpawner { get; set; }
         private Planets.Spawner PlanetSpawner { get; set; }
@@ -21,7 +20,7 @@ namespace Controllers
         private float PositionSendingFrequency { get; set; } // The number of position message sent per second
         private float TimeSinceLastPositionSending { get; set; }
 
-        private void Awake()
+        private new void Awake()
         {
             this.HUD = GameObject.Find("GameController/HUD").GetComponent<UI.HUD>();
 
@@ -43,6 +42,13 @@ namespace Controllers
             this.TimeSinceLastPositionSending = 0f;
 
             this.Speed = new Physic.Speed(1f);
+
+            base.Awake();
+        }
+
+        private void Start()
+        {
+            this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Game, true);
         }
 
         private void Update()

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Controllers
 {
-    public class Menu : MonoBehaviour
+    public class Menu : BaseController
     {
         private UI.Stack Screens { get; set; }
         private UI.TitleScreen TitleScreen { get; set; }
@@ -14,11 +14,10 @@ namespace Controllers
         private UI.HostScreen HostScreen { get; set; }
         private UI.JoinScreen JoinScreen { get; set; }
         private UI.ChatScreen ChatScreen { get; set; }
-        private Network.Connection Connection { get; set; }
         private bool Ready { get; set; }
         private bool OtherPlayerReady { get; set; }
 
-        private void Awake()
+        private new void Awake()
         {
             this.TitleScreen = GameObject.Find("Canvas/TitleScreen").GetComponent<UI.TitleScreen>();
             this.GameModeSelectionScreen = GameObject.Find("Canvas/GameModeSelectionScreen").GetComponent<UI.GameModeSelectionScreen>();
@@ -29,6 +28,8 @@ namespace Controllers
             this.Connection = null;
             this.Ready = false;
             this.OtherPlayerReady = false;
+
+            base.Awake();
         }
 
         private void Start()
@@ -42,6 +43,8 @@ namespace Controllers
             this.ChatScreen.Clear();
 
             this.Screens.Push(this.TitleScreen);
+
+            this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Menu, true);
         }
 
         private void SetButtonsCallbacks()
