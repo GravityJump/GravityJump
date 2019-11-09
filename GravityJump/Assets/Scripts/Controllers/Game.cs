@@ -15,11 +15,12 @@ namespace Controllers
         private Planets.Spawner PlanetSpawner { get; set; }
         private Collectibles.Spawner CollectibleSpawner { get; set; }
         private Decors.Spawner DecorSpawner { get; set; }
+        private Backgrounds.Manager BackgroundManager { get; set; }
         private List<ObjectManagement.Spawner> Spawners { get; set; }
         private Physic.Speed Speed { get; set; }
         private bool IsHost { get; set; }
         private float PositionSendingFrequency { get; set; } // The number of position message sent per second
-        private float TimeSinceLastPositionSending { get; set; } 
+        private float TimeSinceLastPositionSending { get; set; }
 
         private void Awake()
         {
@@ -31,6 +32,7 @@ namespace Controllers
             this.PlanetSpawner = GameObject.Find("GameController/PlanetSpawner").GetComponent<Planets.Spawner>();
             this.CollectibleSpawner = GameObject.Find("GameController/CollectibleSpawner").GetComponent<Collectibles.Spawner>();
             this.DecorSpawner = GameObject.Find("GameController/DecorSpawner").GetComponent<Decors.Spawner>();
+            this.BackgroundManager = GameObject.Find("GameController/BackgroundManager").GetComponent<Backgrounds.Manager>();
 
             this.Spawners = new List<ObjectManagement.Spawner>();
             this.Spawners.Add(this.PlanetSpawner);
@@ -118,8 +120,7 @@ namespace Controllers
                             break;
                         case Network.OpCode.Death:
                             // Come back to menu if the other died.
-                            Data.Storage.LocalScore = this.HUD.Distance;
-                            SceneManager.LoadScene("Menu");
+                            this.GameOver(true);
                             break;
                         default:
                             break;
@@ -144,12 +145,10 @@ namespace Controllers
                 // If multiplayer, warn the other that death occured.
                 if (this.Connection != null)
                 {
-                    this.Connection.Write(new Network.Death(this.HUD.Distance));
+                    this.Connection.Write(new Network.Death());
                 }
 
-                // @TODO: Game Over animation
-                Data.Storage.LocalScore = this.HUD.Distance;
-                SceneManager.LoadScene("Menu");
+                this.GameOver(false);
             }
         }
 
@@ -186,6 +185,25 @@ namespace Controllers
                 default:
                     break;
             }
+        }
+
+        private void GameOver(bool didWin)
+        {
+            this.HUD.GameOver(didWin);
+            StartCoroutine(this.BackToMenu());
+
+            if (this.Connection != null)
+            {
+                this.Connection.Close();
+                Data.Storage.Connection = null;
+                Data.Storage.IsHost = false;
+            }
+        }
+
+        private System.Collections.IEnumerator BackToMenu()
+        {
+            yield return new WaitForSeconds(3);
+            SceneManager.LoadScene("Menu");
         }
     }
 }

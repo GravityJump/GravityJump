@@ -17,19 +17,6 @@ namespace UI
             this.Name = Names.Menu.Host;
         }
 
-        public override void OnPause()
-        {
-            this.Listener.Stop();
-            this.Panel.SetActive(false);
-        }
-
-        public override void OnResume()
-        {
-            this.Panel.SetActive(true);
-            this.Listener.Start();
-            Data.Storage.IsHost = true;
-        }
-
         public override void OnStart()
         {
             this.Panel.SetActive(true);
@@ -42,6 +29,12 @@ namespace UI
             this.Listener.Stop();
             this.Panel.SetActive(false);
             Data.Storage.IsHost = false;
+        }
+
+        public override void OnPause()
+        {
+            this.Listener.Stop();
+            this.Panel.SetActive(false);
         }
 
         public Network.Connection GetConnection()
