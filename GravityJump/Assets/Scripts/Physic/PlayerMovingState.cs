@@ -9,9 +9,9 @@ namespace Physic
     // Use action methods to update the moving state.
     public class PlayerMovingState
     {
+        private float jumpingDelay = 0.1f;
         private float landingDelay = 0.2f;
         public MovingState movingState { get; private set; }
-        public bool isGrounded { get; set; }
 
         public PlayerMovingState()
         {
@@ -30,11 +30,10 @@ namespace Physic
 
         // Status methods
 
-        public bool IsGrounded()
+        public bool IsIdle()
         {
             return movingState == MovingState.Idle;
         }
-
 
         public bool IsWalking()
         {
@@ -66,6 +65,11 @@ namespace Physic
             return movingState == MovingState.Idle || movingState == MovingState.Walking || movingState == MovingState.Landing;
         }
 
+        public bool CanMoveHorizontally()
+        {
+            return movingState != MovingState.Jumping && movingState != MovingState.Landing;
+        }
+
         // Action methods
 
         public void Walk()
@@ -84,11 +88,13 @@ namespace Physic
             }
         }
 
-        public void Jump()
+        public IEnumerator Jump()
         {
             if (this.movingState == MovingState.Idle || this.movingState == MovingState.Walking)
             {
                 this.movingState = MovingState.Jumping;
+                yield return new WaitForSeconds(jumpingDelay);
+                this.TakeOff();
             }
         }
 
@@ -99,7 +105,7 @@ namespace Physic
 
         public void TakeOff()
         {
-            if (this.movingState == MovingState.Jumping && !isGrounded)
+            if (this.movingState == MovingState.Jumping)
             {
                 this.movingState = MovingState.InFlight;
             }
@@ -116,7 +122,7 @@ namespace Physic
         // Use this function as a Coroutine: StartCoroutine("Land");
         public IEnumerator Land()
         {
-            if (this.movingState == MovingState.Falling)
+            if (this.movingState == MovingState.InFlight || this.movingState == MovingState.Falling)
             {
                 this.movingState = MovingState.Landing;
                 yield return new WaitForSeconds(landingDelay);
