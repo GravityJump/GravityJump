@@ -151,6 +151,11 @@ namespace Physic
             }
         }
 
+        public void Jump()
+        {
+            StartCoroutine(this.playerMovingState.Jump());
+        }
+
         public void Throw(Vector2 force)
         {
             this.rb2D.AddForce(force);

@@ -33,11 +33,7 @@ namespace Players
 
                 if (Input.GetButton("Jump"))
                 {
-                    this.AttractableBody.playerMovingState.Jump();
-                }
-                else if (Input.GetButtonUp("Jump"))
-                {
-                    this.AttractableBody.playerMovingState.TakeOff();
+                    this.AttractableBody.Jump();
                 }
             }
         }

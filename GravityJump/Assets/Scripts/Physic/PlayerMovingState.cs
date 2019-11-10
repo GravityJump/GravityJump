@@ -9,6 +9,7 @@ namespace Physic
     // Use action methods to update the moving state.
     public class PlayerMovingState
     {
+        private float jumpingDelay = 0.1f;
         private float landingDelay = 0.2f;
         public MovingState movingState { get; private set; }
         public bool isGrounded { get; set; }
@@ -30,11 +31,10 @@ namespace Physic
 
         // Status methods
 
-        public bool IsGrounded()
+        public bool IsIdle()
         {
             return movingState == MovingState.Idle;
         }
-
 
         public bool IsWalking()
         {
@@ -84,11 +84,13 @@ namespace Physic
             }
         }
 
-        public void Jump()
+        public IEnumerator Jump()
         {
             if (this.movingState == MovingState.Idle || this.movingState == MovingState.Walking)
             {
                 this.movingState = MovingState.Jumping;
+                yield return new WaitForSeconds(jumpingDelay);
+                this.TakeOff();
             }
         }
 
@@ -99,7 +101,7 @@ namespace Physic
 
         public void TakeOff()
         {
-            if (this.movingState == MovingState.Jumping && !isGrounded)
+            if (this.movingState == MovingState.Jumping)
             {
                 this.movingState = MovingState.InFlight;
             }
