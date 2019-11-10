@@ -16,7 +16,7 @@ namespace Physic
         // Physics constants
         protected float runSpeed = 2.7f * Data.Storage.SpeedFactor;
         protected float jumpForce = 10f;
-        protected float groundedRadius = 0.1f;
+        protected float groundedDistance = 0.1f;
         protected float landingDelay = 0.2f;
         protected float inertiaForce = 0.8f;
         protected float gravityForce = 10f;
@@ -41,7 +41,7 @@ namespace Physic
 
             this.CheckGround();
 
-            Move(HorizontalSpeed, Time.fixedDeltaTime);
+            this.Move(HorizontalSpeed, Time.fixedDeltaTime);
         }
 
         protected void Move(float move, float time)
@@ -50,38 +50,41 @@ namespace Physic
             Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
             float groundToNormalDistance = -closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
-            if (PlayerMovingState.IsOnGround())
+            if (this.PlayerMovingState.IsOnGround())
             {
-                transform.up = groundNormal;
+                this.transform.up = groundNormal;
             }
             else
             {
-                transform.up = transform.up + ((Vector3)groundNormal - transform.up) * time * 10;
+                this.transform.up = this.transform.up + ((Vector3)groundNormal - this.transform.up) * time * 10;
             }
 
-            if (PlayerMovingState.IsJumping())
+            if (this.PlayerMovingState.IsJumping())
             {
-                rb2D.velocity = new Vector2();
+                this.rb2D.velocity = new Vector2();
                 // Cancel gravity speed modifier and impulse force to jump
-                rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                this.rb2D.AddRelativeForce(new Vector2(0, this.jumpForce), ForceMode2D.Impulse);
             }
             else
             {
-                rb2D.AddRelativeForce(new Vector2(0, -rb2D.mass * gravityForce));
+                this.rb2D.AddRelativeForce(new Vector2(0, -this.rb2D.mass * this.gravityForce));
             }
 
-            if (transform.InverseTransformVector(rb2D.velocity).y < 0.1)
+            if (this.transform.InverseTransformVector(this.rb2D.velocity).y < 0.1)
             {
-                PlayerMovingState.Fall();
+                this.PlayerMovingState.Fall();
             }
 
             if (this.PlayerMovingState.CanMoveHorizontally())
             {
                 var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-                float horizontalMove = move * runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
-                Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * horizontalInertia) * moveAlongGround;
-                rb2D.position += horizontalPositionMove;
-                horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
+                float horizontalMove = move * this.runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
+                Vector2 horizontalPositionMove = ((1 - this.inertiaForce) * horizontalMove + this.inertiaForce * this.horizontalInertia) * moveAlongGround;
+
+                this.rb2D.position += horizontalPositionMove;
+
+                float newHorizontalInertia = this.inertiaForce * this.horizontalInertia + (1 - this.inertiaForce) * horizontalMove;
+                this.horizontalInertia = Math.Abs(newHorizontalInertia) > 0.01f ? newHorizontalInertia : 0;
             }
         }
 
@@ -104,9 +107,9 @@ namespace Physic
         private void CheckGround()
         {
             ColliderDistance2D attractableBodyToAttractiveBodyGroundDistance = this.attractableBodyCollider.Distance(this.closestAttractiveBody.ground);
-            if (attractableBodyToAttractiveBodyGroundDistance.distance < groundedRadius)
+            if (attractableBodyToAttractiveBodyGroundDistance.distance < this.groundedDistance)
             {
-                StartCoroutine(PlayerMovingState.Land());
+                StartCoroutine(this.PlayerMovingState.Land());
             }
         }
 
