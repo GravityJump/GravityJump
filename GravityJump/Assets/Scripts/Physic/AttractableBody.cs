@@ -9,8 +9,6 @@ namespace Physic
     // It has a playerMovingState that can be used to get information on the current behavior of the body (example: jumping, moving, ...)
     public class AttractableBody : PhysicBody
     {
-        private Transform groundedCheck;
-        private LayerMask groundMask;
         private Collider2D attractableBodyCollider;
 
         public AttractiveBody closestAttractiveBody { get; set; }
@@ -32,8 +30,6 @@ namespace Physic
         protected void Awake()
         {
             this.rb2D = GetComponent<Rigidbody2D>();
-            this.groundedCheck = this.gameObject.transform.Find("GroundedCheck");
-            this.groundMask = LayerMask.GetMask("Planetoid");
             this.attractableBodyCollider = GetComponent<Collider2D>();
             this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.playerMovingState = new PlayerMovingState();
@@ -43,33 +39,7 @@ namespace Physic
         {
             this.UpdateClosestAttractiveBody();
 
-            bool wasGrounded = playerMovingState.isGrounded;
-            playerMovingState.isGrounded = false;
-
-            // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-            // This can be done using layers instead but Sample Assets will not overwrite your project settings.
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(groundedCheck.position, groundedRadius, groundMask);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                if (colliders[i].gameObject != gameObject)
-                {
-                    playerMovingState.isGrounded = true;
-                    if (!wasGrounded)
-                    {
-                        switch (colliders[i].gameObject.layer)
-                        {
-                            case 8:
-                                // Planetoid
-                                StartCoroutine(playerMovingState.Land());
-                                break;
-                        }
-                    }
-                }
-            }
-            if (!playerMovingState.isGrounded)
-            {
-                playerMovingState.TakeOff();
-            }
+            this.CheckGround(); 
 
             if (horizontalSpeed > 0.01f)
                 spriteRenderer.flipX = false;
@@ -102,7 +72,7 @@ namespace Physic
                 playerMovingState.Fall();
             }
 
-            if (playerMovingState.isGrounded)
+            if (playerMovingState.IsOnGround())
             {
                 transform.up = groundNormal;
             }
@@ -132,6 +102,15 @@ namespace Physic
                     closestDistance = distance;
                     this.closestAttractiveBody = attractiveBody;
                 }
+            }
+        }
+
+        private void CheckGround()
+        {
+            ColliderDistance2D attractableBodyToAttractiveBodyGroundDistance = this.attractableBodyCollider.Distance(this.closestAttractiveBody.ground);
+            if (attractableBodyToAttractiveBodyGroundDistance.distance < groundedRadius)
+            {
+                StartCoroutine(playerMovingState.Land());
             }
         }
 

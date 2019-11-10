@@ -12,7 +12,6 @@ namespace Physic
         private float jumpingDelay = 0.1f;
         private float landingDelay = 0.2f;
         public MovingState movingState { get; private set; }
-        public bool isGrounded { get; set; }
 
         public PlayerMovingState()
         {
@@ -118,7 +117,7 @@ namespace Physic
         // Use this function as a Coroutine: StartCoroutine("Land");
         public IEnumerator Land()
         {
-            if (this.movingState == MovingState.Falling)
+            if (this.movingState == MovingState.InFlight || this.movingState == MovingState.Falling)
             {
                 this.movingState = MovingState.Landing;
                 yield return new WaitForSeconds(landingDelay);
