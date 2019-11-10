@@ -11,11 +11,9 @@ namespace Physic
     {
         private Transform groundedCheck;
         private LayerMask groundMask;
-        // This should be a collider slightly below the ground collider, to keep the normal upward.
         private Collider2D attractableBodyCollider;
 
         public AttractiveBody closestAttractiveBody { get; set; }
-        public AttractiveBody currentAttractiveBody { get; set; }
 
         // Physics constants
         protected float runSpeed = 2.7f * Data.Storage.SpeedFactor;
@@ -40,28 +38,11 @@ namespace Physic
             this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.playerMovingState = new PlayerMovingState();
         }
-        
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            if (
-                collision.gameObject.layer == LayerMask.NameToLayer("Orbit")
-            )
-            {
-                AttractiveBody collisionAttractiveBody = collision.gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
-                if (
-                    !playerMovingState.IsOnGround()
-                    && collisionAttractiveBody.id != currentAttractiveBody.id
-                    && closestAttractiveBody.id == currentAttractiveBody.id
-                )
-                {
-                    closestAttractiveBody = collisionAttractiveBody;
-                    rb2D.velocity = new Vector2(0, 0);
-                }
-            }
-        }
 
         protected void FixedUpdate()
         {
+            this.UpdateClosestAttractiveBody();
+
             bool wasGrounded = playerMovingState.isGrounded;
             playerMovingState.isGrounded = false;
 
@@ -80,7 +61,6 @@ namespace Physic
                             case 8:
                                 // Planetoid
                                 StartCoroutine(playerMovingState.Land());
-                                currentAttractiveBody = colliders[i].gameObject.transform.parent.gameObject.GetComponent<AttractiveBody>();
                                 break;
                         }
                     }
@@ -137,6 +117,22 @@ namespace Physic
 
             rb2D.position += horizontalPositionMove;
             horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
+        }
+
+        private void UpdateClosestAttractiveBody()
+        {
+            float closestDistance = Mathf.Infinity;
+            GameObject[] attractiveBodyGameObjects = GameObject.FindGameObjectsWithTag("AttractiveBody");
+            foreach (GameObject attractiveBodyGameObject in attractiveBodyGameObjects)
+            {
+                AttractiveBody attractiveBody = attractiveBodyGameObject.GetComponent<AttractiveBody>();
+                float distance = attractiveBody.ground.Distance(this.attractableBodyCollider).distance;
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    this.closestAttractiveBody = attractiveBody;
+                }
+            }
         }
 
         // Actions
