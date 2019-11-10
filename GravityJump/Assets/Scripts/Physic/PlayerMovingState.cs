@@ -65,6 +65,11 @@ namespace Physic
             return movingState == MovingState.Idle || movingState == MovingState.Walking || movingState == MovingState.Landing;
         }
 
+        public bool CanMoveHorizontally()
+        {
+            return movingState != MovingState.Jumping && movingState != MovingState.Landing;
+        }
+
         // Action methods
 
         public void Walk()

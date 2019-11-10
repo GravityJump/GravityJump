@@ -50,6 +50,15 @@ namespace Physic
             Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
             float groundToNormalDistance = -closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
+            if (PlayerMovingState.IsOnGround())
+            {
+                transform.up = groundNormal;
+            }
+            else
+            {
+                transform.up = transform.up + ((Vector3)groundNormal - transform.up) * time * 10;
+            }
+
             if (PlayerMovingState.IsJumping())
             {
                 rb2D.velocity = new Vector2();
@@ -60,28 +69,20 @@ namespace Physic
             {
                 rb2D.AddRelativeForce(new Vector2(0, -rb2D.mass * gravityForce));
             }
-            // Add gravity acceleration every time. Limit max speed to avoid extreme behaviors.
-            // We keep gravity acceleration after landing to stick the attractable body to the ground.
+
             if (transform.InverseTransformVector(rb2D.velocity).y < 0.1)
             {
                 PlayerMovingState.Fall();
             }
 
-            if (PlayerMovingState.IsOnGround())
+            if (this.PlayerMovingState.CanMoveHorizontally())
             {
-                transform.up = groundNormal;
+                var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
+                float horizontalMove = move * runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
+                Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * horizontalInertia) * moveAlongGround;
+                rb2D.position += horizontalPositionMove;
+                horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
             }
-            else
-            {
-                transform.up = transform.up + ((Vector3)groundNormal - transform.up) * time * 10;
-            }
-
-            var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-            float horizontalMove = move * runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
-            Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * horizontalInertia) * moveAlongGround;
-
-            rb2D.position += horizontalPositionMove;
-            horizontalInertia = Math.Abs(inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove) > 0.01f ? inertiaForce * horizontalInertia + (1 - inertiaForce) * horizontalMove : 0;
         }
 
         private void UpdateClosestAttractiveBody()
