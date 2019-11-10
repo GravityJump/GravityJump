@@ -40,7 +40,7 @@ namespace Physic
             this.Move(HorizontalSpeed, Time.fixedDeltaTime);
         }
 
-        // Function responsible for moving the body
+        // Function responsible for moving the body vertically (jump force and gravity) and horizontally (walk)
         protected void Move(float horizontalMoveValue, float time)
         {
             ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(ClosestAttractiveBody.normalShape);
@@ -85,6 +85,8 @@ namespace Physic
             }
         }
 
+        // This method is responsible for finding and updating the closest AttractiveBody.
+        // It uses the distance between this gameObject collider and the AttractiveBody ground colliders.
         private void UpdateClosestAttractiveBody()
         {
             float closestDistance = Mathf.Infinity;
@@ -101,6 +103,7 @@ namespace Physic
             }
         }
 
+        // This method is responsible for checking if the player has reached the ground, and calling the Land action.
         private void CheckGround()
         {
             ColliderDistance2D attractableBodyToAttractiveBodyGroundDistance = this.attractableBodyCollider.Distance(this.ClosestAttractiveBody.ground);
