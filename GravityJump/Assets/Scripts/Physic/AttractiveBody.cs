@@ -8,8 +8,6 @@ namespace Physic
         public static List<AttractiveBody> ActiveAttractiveBodies;
         public float Frequency;
         // All following colliders are attached to children of the current gameObject.
-        // A trigger collider that represent the orbit of the planet.
-        public Collider2D orbit;
         // A rigidbody collider that represent the ground on which the player will walk.
         public Collider2D ground;
         // A trigger collider, slightly below the ground collider. It is used to compute the normal to the ground.
