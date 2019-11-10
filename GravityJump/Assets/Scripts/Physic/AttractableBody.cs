@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace Physic
@@ -11,18 +10,15 @@ namespace Physic
     {
         private Collider2D attractableBodyCollider;
 
-        public AttractiveBody closestAttractiveBody { get; set; }
-
-        // Physics constants
-        protected float runSpeed = 2.7f * Data.Storage.SpeedFactor;
-        protected float jumpForce = 10f;
-        protected float groundedDistance = 0.1f;
-        protected float landingDelay = 0.2f;
-        protected float inertiaForce = 0.8f;
-        protected float gravityForce = 10f;
-        protected float minGravitySpeedLimit = -10f;
+        // Physics values and constants
+        private readonly float runSpeed = 2.7f * Data.Storage.SpeedFactor;
+        private const float jumpForce = 10f;
+        private const float groundedDistance = 0.1f;
+        private const float inertiaForce = 0.8f;
+        private const float gravityForce = 10f;
 
         // State variables
+        public AttractiveBody ClosestAttractiveBody { get; set; }
         public PlayerMovingState PlayerMovingState { get; private set; }
         public float HorizontalSpeed { get; private set; }
         protected float horizontalInertia;
@@ -46,9 +42,9 @@ namespace Physic
 
         protected void Move(float move, float time)
         {
-            ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(closestAttractiveBody.normalShape);
+            ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(ClosestAttractiveBody.normalShape);
             Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
-            float groundToNormalDistance = -closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
+            float groundToNormalDistance = -ClosestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
             if (this.PlayerMovingState.IsOnGround())
             {
@@ -63,11 +59,11 @@ namespace Physic
             {
                 this.rb2D.velocity = new Vector2();
                 // Cancel gravity speed modifier and impulse force to jump
-                this.rb2D.AddRelativeForce(new Vector2(0, this.jumpForce), ForceMode2D.Impulse);
+                this.rb2D.AddRelativeForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
             else
             {
-                this.rb2D.AddRelativeForce(new Vector2(0, -this.rb2D.mass * this.gravityForce));
+                this.rb2D.AddRelativeForce(new Vector2(0, -this.rb2D.mass * gravityForce));
             }
 
             if (this.transform.InverseTransformVector(this.rb2D.velocity).y < 0.1)
@@ -79,11 +75,11 @@ namespace Physic
             {
                 var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
                 float horizontalMove = move * this.runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
-                Vector2 horizontalPositionMove = ((1 - this.inertiaForce) * horizontalMove + this.inertiaForce * this.horizontalInertia) * moveAlongGround;
+                Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * this.horizontalInertia) * moveAlongGround;
 
                 this.rb2D.position += horizontalPositionMove;
 
-                float newHorizontalInertia = this.inertiaForce * this.horizontalInertia + (1 - this.inertiaForce) * horizontalMove;
+                float newHorizontalInertia = inertiaForce * this.horizontalInertia + (1 - inertiaForce) * horizontalMove;
                 this.horizontalInertia = Math.Abs(newHorizontalInertia) > 0.01f ? newHorizontalInertia : 0;
             }
         }
@@ -99,15 +95,15 @@ namespace Physic
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    this.closestAttractiveBody = attractiveBody;
+                    this.ClosestAttractiveBody = attractiveBody;
                 }
             }
         }
 
         private void CheckGround()
         {
-            ColliderDistance2D attractableBodyToAttractiveBodyGroundDistance = this.attractableBodyCollider.Distance(this.closestAttractiveBody.ground);
-            if (attractableBodyToAttractiveBodyGroundDistance.distance < this.groundedDistance)
+            ColliderDistance2D attractableBodyToAttractiveBodyGroundDistance = this.attractableBodyCollider.Distance(this.ClosestAttractiveBody.ground);
+            if (attractableBodyToAttractiveBodyGroundDistance.distance < groundedDistance)
             {
                 StartCoroutine(this.PlayerMovingState.Land());
             }

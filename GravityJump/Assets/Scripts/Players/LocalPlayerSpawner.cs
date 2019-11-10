@@ -22,7 +22,7 @@ namespace Players
 
         private void SetClosestAttractiveBody(Planets.SpawningPoint point)
         {
-            this.AttractableBody.closestAttractiveBody = point.Planet.GetComponent<Physic.AttractiveBody>();
+            this.AttractableBody.ClosestAttractiveBody = point.Planet.GetComponent<Physic.AttractiveBody>();
         }
 
         void Update()
