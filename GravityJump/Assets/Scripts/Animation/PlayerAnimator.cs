@@ -33,6 +33,7 @@ namespace Animation
         private void Update()
         {
             TimeSinceLastImage += Time.deltaTime;
+
             switch (AttractableBody.playerMovingState.movingState)
             {
                 case Physic.PlayerMovingState.MovingState.Idle:
@@ -54,6 +55,11 @@ namespace Animation
                     this.PlayAnimation(AnimationType.Landing);
                     break;
             }
+
+            if (this.AttractableBody.HorizontalSpeed > 0.01f)
+                this.gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            else if (this.AttractableBody.HorizontalSpeed < -0.01f)
+                this.gameObject.GetComponent<SpriteRenderer>().flipX = true;
         }
 
         private void PlayAnimation(AnimationType type)

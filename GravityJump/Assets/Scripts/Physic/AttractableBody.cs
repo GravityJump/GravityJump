@@ -24,8 +24,8 @@ namespace Physic
 
         // State variables
         public PlayerMovingState playerMovingState { get; private set; }
+        public float HorizontalSpeed { get; private set; }
         protected float horizontalInertia;
-        public float horizontalSpeed { get; set; }
 
         protected void Awake()
         {
@@ -39,14 +39,9 @@ namespace Physic
         {
             this.UpdateClosestAttractiveBody();
 
-            this.CheckGround(); 
+            this.CheckGround();
 
-            if (horizontalSpeed > 0.01f)
-                spriteRenderer.flipX = false;
-            else if (horizontalSpeed < -0.01f)
-                spriteRenderer.flipX = true;
-
-            Move(horizontalSpeed, Time.fixedDeltaTime);
+            Move(HorizontalSpeed, Time.fixedDeltaTime);
         }
 
         protected void Move(float move, float time)
@@ -119,7 +114,7 @@ namespace Physic
 
         public void Walk(float speed)
         {
-            this.horizontalSpeed = speed;
+            this.HorizontalSpeed = speed;
             if (Math.Abs(speed) > 0)
             {
                 this.playerMovingState.Walk();
