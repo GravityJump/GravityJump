@@ -9,8 +9,12 @@ namespace Collectibles
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            target = other.gameObject;
-            OnCollect();
+            if (other.gameObject.GetComponent<Physic.AttractableBody>() != null)
+            {
+                target = other.gameObject;
+                OnCollect();
+            }
+            Destroy(gameObject);
         }
 
         public abstract void OnCollect();
