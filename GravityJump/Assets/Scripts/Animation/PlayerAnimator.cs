@@ -34,7 +34,7 @@ namespace Animation
         {
             TimeSinceLastImage += Time.deltaTime;
 
-            switch (AttractableBody.playerMovingState.movingState)
+            switch (AttractableBody.PlayerMovingState.movingState)
             {
                 case Physic.PlayerMovingState.MovingState.Idle:
                     this.PlayAnimation(AnimationType.Idle);

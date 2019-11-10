@@ -23,7 +23,7 @@ namespace Physic
         protected float minGravitySpeedLimit = -10f;
 
         // State variables
-        public PlayerMovingState playerMovingState { get; private set; }
+        public PlayerMovingState PlayerMovingState { get; private set; }
         public float HorizontalSpeed { get; private set; }
         protected float horizontalInertia;
 
@@ -32,7 +32,7 @@ namespace Physic
             this.rb2D = GetComponent<Rigidbody2D>();
             this.attractableBodyCollider = GetComponent<Collider2D>();
             this.spriteRenderer = GetComponent<SpriteRenderer>();
-            this.playerMovingState = new PlayerMovingState();
+            this.PlayerMovingState = new PlayerMovingState();
         }
 
         protected void FixedUpdate()
@@ -50,7 +50,7 @@ namespace Physic
             Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
             float groundToNormalDistance = -closestAttractiveBody.getDistanceBetweenNormalAndGround().distance;
 
-            if (playerMovingState.IsJumping())
+            if (PlayerMovingState.IsJumping())
             {
                 rb2D.velocity = new Vector2();
                 // Cancel gravity speed modifier and impulse force to jump
@@ -64,10 +64,10 @@ namespace Physic
             // We keep gravity acceleration after landing to stick the attractable body to the ground.
             if (transform.InverseTransformVector(rb2D.velocity).y < 0.1)
             {
-                playerMovingState.Fall();
+                PlayerMovingState.Fall();
             }
 
-            if (playerMovingState.IsOnGround())
+            if (PlayerMovingState.IsOnGround())
             {
                 transform.up = groundNormal;
             }
@@ -105,7 +105,7 @@ namespace Physic
             ColliderDistance2D attractableBodyToAttractiveBodyGroundDistance = this.attractableBodyCollider.Distance(this.closestAttractiveBody.ground);
             if (attractableBodyToAttractiveBodyGroundDistance.distance < groundedRadius)
             {
-                StartCoroutine(playerMovingState.Land());
+                StartCoroutine(PlayerMovingState.Land());
             }
         }
 
@@ -117,23 +117,23 @@ namespace Physic
             this.HorizontalSpeed = speed;
             if (Math.Abs(speed) > 0)
             {
-                this.playerMovingState.Walk();
+                this.PlayerMovingState.Walk();
             }
             else
             {
-                this.playerMovingState.Stop();
+                this.PlayerMovingState.Stop();
             }
         }
 
         public void Jump()
         {
-            StartCoroutine(this.playerMovingState.Jump());
+            StartCoroutine(this.PlayerMovingState.Jump());
         }
 
         public void Throw(Vector2 force)
         {
             this.rb2D.AddForce(force);
-            this.playerMovingState.Throw();
+            this.PlayerMovingState.Throw();
         }
     }
 }
