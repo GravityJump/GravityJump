@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 290c8df8fe2a54d5bba606fb1d37908c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Frequency: 1
+  Frequency: 0.1
   ratio: 0.75
 --- !u!198 &5293444368561936427
 ParticleSystem:
