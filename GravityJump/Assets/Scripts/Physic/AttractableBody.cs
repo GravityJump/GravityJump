@@ -5,13 +5,13 @@ namespace Physic
 {
     // This script is responsible for computing physics on the gameObject it is attached to.
     // It will provides action methods that can be used to apply physical effects on the body (example: add a force to throw it away)
-    // It has a playerMovingState that can be used to get information on the current behavior of the body (example: jumping, moving, ...)
+    // It has a PlayerMovingState that can be used to get information on the current behavior of the body (example: jumping, moving, ...)
     public class AttractableBody : PhysicBody
     {
         private Collider2D attractableBodyCollider;
 
         // Physics values and constants
-        private readonly float runSpeed = 2.7f * Data.Storage.SpeedFactor;
+        private readonly float walkSpeed = 2.7f * Data.Storage.SpeedFactor;
         private const float jumpForce = 10f;
         private const float groundedDistance = 0.1f;
         private const float inertiaForce = 0.8f;
@@ -40,7 +40,8 @@ namespace Physic
             this.Move(HorizontalSpeed, Time.fixedDeltaTime);
         }
 
-        protected void Move(float move, float time)
+        // Function responsible for moving the body
+        protected void Move(float horizontalMoveValue, float time)
         {
             ColliderDistance2D attractableToAttractiveBodyNormalDistance = attractableBodyCollider.Distance(ClosestAttractiveBody.normalShape);
             Vector2 groundNormal = attractableToAttractiveBodyNormalDistance.normal.normalized;
@@ -74,7 +75,7 @@ namespace Physic
             if (this.PlayerMovingState.CanMoveHorizontally())
             {
                 var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-                float horizontalMove = move * this.runSpeed * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
+                float horizontalMove = horizontalMoveValue * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
                 Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * this.horizontalInertia) * moveAlongGround;
 
                 this.rb2D.position += horizontalPositionMove;
@@ -112,10 +113,11 @@ namespace Physic
         // Actions
         // These methods can be called to apply actions on the body (ex: to apply a force)
 
-        public void Walk(float speed)
+        // walkingDirection must be a value im {-1, 0 ,1} indicating to which direction the player is moving (0 if idle)
+        public void Walk(float walkingDirection)
         {
-            this.HorizontalSpeed = speed;
-            if (Math.Abs(speed) > 0)
+            this.HorizontalSpeed = walkingDirection * this.walkSpeed;
+            if (Math.Abs(walkingDirection) > 0)
             {
                 this.PlayerMovingState.Walk();
             }
