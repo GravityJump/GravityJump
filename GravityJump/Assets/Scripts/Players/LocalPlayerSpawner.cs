@@ -36,10 +36,11 @@ namespace Players
                     this.AttractableBody.Jump();
                 }
 
-                if (Input.GetButton("Sprint"))
+                if (Input.GetButtonDown("Sprint"))
                 {
                     Data.Storage.PlayerSpeedFactor *= 2.0f;
-                } else
+                }
+                else if (Input.GetButtonUp("Sprint"))
                 {
                     Data.Storage.PlayerSpeedFactor /= 2.0f;
                 }
