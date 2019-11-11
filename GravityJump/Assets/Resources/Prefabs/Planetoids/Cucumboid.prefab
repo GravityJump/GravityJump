@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c51d988bd751cbca0b577e8ab2dca0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Frequency: 0.05
+  Frequency: 0.02
   ground: {fileID: 4259395862274863919}
   normalShape: {fileID: 4259395862344068051}
   default_size: 0.5

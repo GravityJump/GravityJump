@@ -8,7 +8,7 @@ namespace Collectibles
         public override void PrepareNextAsset()
         {
             this.SetRandomAssetId();
-            this.Position = new Vector3(this.transform.position.x + Random.value * 10 + 3, (Random.value - 0.5f), 0);
+            this.Position = new Vector3(this.transform.position.x + Random.value * 10 + 3, (Random.value - 0.5f) * 10, 0);
             this.Rotation = 0;
             this.ScaleRatio = 1;
         }

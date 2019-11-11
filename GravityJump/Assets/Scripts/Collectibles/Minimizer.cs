@@ -8,7 +8,6 @@ namespace Collectibles
         override public void OnCollect()
         {
             target.gameObject.transform.localScale *= ratio;
-            Destroy(gameObject);
         }
     }
 }
