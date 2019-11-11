@@ -11,7 +11,7 @@ namespace Physic
         private Collider2D attractableBodyCollider;
 
         // Physics values and constants
-        private readonly float walkSpeed = 2.7f * Data.Storage.PlayerSpeed;
+        private float WalkSpeed => 2.7f * Data.Storage.PlayerSpeed;
         private const float jumpForce = 10f;
         private const float groundedDistance = 0.1f;
         private const float inertiaForce = 0.8f;
@@ -119,7 +119,7 @@ namespace Physic
         // walkingDirection must be a value im {-1, 0 ,1} indicating to which direction the player is moving (0 if idle)
         public void Walk(float walkingDirection)
         {
-            this.HorizontalSpeed = walkingDirection * this.walkSpeed;
+            this.HorizontalSpeed = walkingDirection * this.WalkSpeed;
             if (Math.Abs(walkingDirection) > 0)
             {
                 this.PlayerMovingState.Walk();
