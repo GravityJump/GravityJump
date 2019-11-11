@@ -134,7 +134,7 @@ namespace Controllers
 
             }
 
-            this.transform.Translate(this.Speed.Value * Time.deltaTime, 0, 0); // `transform` is a field of `MonoBehaviour`.
+            this.transform.Translate(Data.Storage.GameSpeed * Time.deltaTime, 0, 0); // `transform` is a field of `MonoBehaviour`.
             this.HUD.UpdateDistance(0.1f, Time.deltaTime);
             this.Speed.Increment(Time.deltaTime);
 
