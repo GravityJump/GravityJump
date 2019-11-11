@@ -709,9 +709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021f73f3695b8c3078dc91eacb14480c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 0}
-  Back: {fileID: 0}
-  Join: {fileID: 0}
 --- !u!1 &482032993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2380,13 +2377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f7436e7611de0cd91fd5f899c678c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 0}
-  Send: {fileID: 0}
-  Quit: {fileID: 0}
-  Start: {fileID: 0}
-  Input: {fileID: 0}
-  Conversation: {fileID: 0}
-  OtherPlayerReadyText: {fileID: 0}
 --- !u!114 &1342738340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2718,7 +2708,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e731c760d005c41ca46f56529af7215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 0}
 --- !u!1 &1570452728
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,7 +3320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e517a05d84235aea9e6ca12edb11af0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 0}
 --- !u!1 &1681146802
 GameObject:
   m_ObjectHideFlags: 0
@@ -3574,7 +3562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f8e2db837593f38ac382837c2a9145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 0}
 --- !u!1 &1878345964
 GameObject:
   m_ObjectHideFlags: 0
@@ -4326,7 +4313,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 20230a1dc8b2b4837bde0fe4b5ab254c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
