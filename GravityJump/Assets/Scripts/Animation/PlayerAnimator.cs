@@ -18,7 +18,7 @@ namespace Animation
             Landing,
         }
         private AnimationType currentAnimationPlayed;
-        private float SecondPerImage = 1/12f * Data.Storage.PlayerSpeed;
+        private readonly float SecondPerImage = 1/12f * 1/Data.Storage.PlayerSpeed;
         private float TimeSinceLastImage;
         private int currentFrameIndex;
 
