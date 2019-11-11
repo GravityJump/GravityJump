@@ -11,7 +11,7 @@ namespace Physic
         private Collider2D attractableBodyCollider;
 
         // Physics values and constants
-        private readonly float walkSpeed = 2.7f * Data.Storage.SpeedFactor;
+        private readonly float walkSpeed = 2.7f * Data.Storage.PlayerSpeed;
         private const float jumpForce = 10f;
         private const float groundedDistance = 0.1f;
         private const float inertiaForce = 0.8f;
