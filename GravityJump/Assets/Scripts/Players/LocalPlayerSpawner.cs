@@ -15,7 +15,7 @@ namespace Players
         public void InstantiatePlayer(Planets.SpawningPoint point)
         {
             this.PlayerObject = Instantiate(this.Prefab, new Vector3(point.X, point.Y, 0), Quaternion.Euler(0, 0, Random.value * 360));
-            this.AttractableBody = this.PlayerObject.GetComponent<Physic.AttractableBody>();
+            this.AttractableBody = this.PlayerObject.AddComponent<Physic.AttractableBody>();
             this.PlayerObject.AddComponent<Animation.PlayerAnimator>();
             this.SetClosestAttractiveBody(point);
         }
