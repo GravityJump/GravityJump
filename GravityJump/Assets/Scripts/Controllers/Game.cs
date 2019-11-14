@@ -15,7 +15,7 @@ namespace Controllers
         private Decors.Spawner DecorSpawner { get; set; }
         private Backgrounds.Manager BackgroundManager { get; set; }
         private List<ObjectManagement.Spawner> Spawners { get; set; }
-        public Physic.Speed Speed { get; private set; }
+        public Physic.GameSpeed GameSpeed { get; private set; }
         private bool IsHost { get; set; }
         private float PositionSendingFrequency { get; set; } // The number of position message sent per second
         private float TimeSinceLastPositionSending { get; set; }
@@ -41,7 +41,7 @@ namespace Controllers
             this.PositionSendingFrequency = 10f;
             this.TimeSinceLastPositionSending = 0f;
 
-            this.Speed = new Physic.Speed(1f);
+            this.GameSpeed = new Physic.GameSpeed(1f);
 
             base.Awake();
         }
@@ -134,9 +134,9 @@ namespace Controllers
 
             }
 
-            this.transform.Translate(Data.Storage.GameSpeed * Time.deltaTime, 0, 0); // `transform` is a field of `MonoBehaviour`.
+            this.transform.Translate(this.GameSpeed.ScrollingSpeed * Time.deltaTime, 0, 0); // `transform` is a field of `MonoBehaviour`.
             this.HUD.UpdateDistance(0.1f, Time.deltaTime);
-            this.Speed.Increment(Time.deltaTime);
+            this.GameSpeed.Increment(Time.deltaTime);
 
             // Check if the player is in the danger zone.
             if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -13)

@@ -18,8 +18,9 @@ namespace Animation
             Landing,
         }
         private AnimationType currentAnimationPlayed;
-        private float SecondPerImage => 1/12f * 1/Data.Storage.PlayerSpeed;
-        private float TimeSinceLastImage;
+        public Physic.GameSpeed GameSpeed;
+        private float SecondPerImage => 1/12f * 1/GameSpeed.PlayerSpeed;
+        private float timeSinceLastImage;
         private int currentFrameIndex;
 
         protected override string GameObjectAnimationsDirectoryName => "Player";
@@ -32,7 +33,7 @@ namespace Animation
 
         private void Update()
         {
-            TimeSinceLastImage += Time.deltaTime;
+            timeSinceLastImage += Time.deltaTime;
 
             switch (AttractableBody.PlayerMovingState.movingState)
             {
@@ -67,11 +68,11 @@ namespace Animation
             Sprite[] animationSprites = Animations[type.ToString("g")];
             if (currentAnimationPlayed == type)
             {
-                if (TimeSinceLastImage >= SecondPerImage)
+                if (timeSinceLastImage >= SecondPerImage)
                 {
                     currentFrameIndex = (currentFrameIndex + 1) % animationSprites.Length;
                     this.gameObject.GetComponent<SpriteRenderer>().sprite = animationSprites[currentFrameIndex];
-                    TimeSinceLastImage = 0;
+                    timeSinceLastImage = 0;
                 }
 
             } else
@@ -79,7 +80,7 @@ namespace Animation
                 currentAnimationPlayed = type;
                 currentFrameIndex = 0;
                 this.gameObject.GetComponent<SpriteRenderer>().sprite = animationSprites[currentFrameIndex];
-                TimeSinceLastImage = 0;
+                timeSinceLastImage = 0;
             }
         }
     }

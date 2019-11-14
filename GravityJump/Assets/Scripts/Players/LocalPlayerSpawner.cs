@@ -17,7 +17,8 @@ namespace Players
             Planets.SpawningPoint point = gameController.PlanetSpawner.PlayerSpawningPlanet;
             this.PlayerObject = Instantiate(this.Prefab, new Vector3(point.X, point.Y, 0), Quaternion.Euler(0, 0, Random.value * 360));
             this.AttractableBody = this.PlayerObject.AddComponent<Physic.AttractableBody>();
-            this.PlayerObject.AddComponent<Animation.PlayerAnimator>();
+            this.AttractableBody.GameSpeed = gameController.GameSpeed;
+            this.PlayerObject.AddComponent<Animation.PlayerAnimator>().GameSpeed = gameController.GameSpeed;
             this.SetClosestAttractiveBody(point);
         }
 
@@ -39,11 +40,11 @@ namespace Players
 
                 if (Input.GetButtonDown("Sprint"))
                 {
-                    Data.Storage.PlayerSpeedFactor *= 2.0f;
+                    this.AttractableBody.GameSpeed.PlayerSpeedFactor *= 2.0f;
                 }
                 else if (Input.GetButtonUp("Sprint"))
                 {
-                    Data.Storage.PlayerSpeedFactor /= 2.0f;
+                    this.AttractableBody.GameSpeed.PlayerSpeedFactor /= 2.0f;
                 }
             }
         }

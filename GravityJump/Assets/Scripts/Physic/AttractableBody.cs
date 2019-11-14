@@ -11,7 +11,8 @@ namespace Physic
         private Collider2D attractableBodyCollider;
 
         // Physics values and constants
-        private float WalkSpeed => 2.7f * Data.Storage.PlayerSpeed;
+        public GameSpeed GameSpeed { get; set; }
+        private float WalkSpeed => 2.7f * GameSpeed.PlayerSpeed;
         private const float jumpForce = 10f;
         private const float groundedDistance = 0.1f;
         private const float inertiaForce = 0.8f;
@@ -27,7 +28,6 @@ namespace Physic
         {
             this.rb2D = GetComponent<Rigidbody2D>();
             this.attractableBodyCollider = GetComponent<Collider2D>();
-            this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.PlayerMovingState = new PlayerMovingState();
         }
 
