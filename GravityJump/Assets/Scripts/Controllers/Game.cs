@@ -10,12 +10,12 @@ namespace Controllers
         private UI.HUD HUD { get; set; }
         private Players.LocalPlayerSpawner LocalPlayerSpawner { get; set; }
         private Players.RemotePlayerSpawner RemotePlayerSpawner { get; set; }
-        private Planets.Spawner PlanetSpawner { get; set; }
+        public Planets.Spawner PlanetSpawner { get; private set; }
         private Collectibles.Spawner CollectibleSpawner { get; set; }
         private Decors.Spawner DecorSpawner { get; set; }
         private Backgrounds.Manager BackgroundManager { get; set; }
         private List<ObjectManagement.Spawner> Spawners { get; set; }
-        private Physic.Speed Speed { get; set; }
+        public Physic.Speed Speed { get; private set; }
         private bool IsHost { get; set; }
         private float PositionSendingFrequency { get; set; } // The number of position message sent per second
         private float TimeSinceLastPositionSending { get; set; }
@@ -58,7 +58,7 @@ namespace Controllers
             // Instantiate the local player if not already done.
             if (this.LocalPlayerSpawner.PlayerObject == null && this.PlanetSpawner.PlayerSpawningPlanet != null)
             {
-                this.LocalPlayerSpawner.InstantiatePlayer(this.PlanetSpawner.PlayerSpawningPlanet);
+                this.LocalPlayerSpawner.InstantiatePlayer(this);
 
                 // Send the player position to the client if in a multiplayer game.
                 if (this.Connection != null)
