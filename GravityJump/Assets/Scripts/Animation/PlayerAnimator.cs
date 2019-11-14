@@ -18,9 +18,7 @@ namespace Animation
             Landing,
         }
         private AnimationType currentAnimationPlayed;
-        private float SecondPerImage = 1/12f * Data.Storage.SpeedFactor;
-        private float TimeSinceLastImage;
-        private int currentFrameIndex;
+        private new readonly float SecondPerImage = 1/12f * Data.Storage.SpeedFactor;
 
         protected override string GameObjectAnimationsDirectoryName => "Player";
 
@@ -67,19 +65,13 @@ namespace Animation
             Sprite[] animationSprites = Animations[type.ToString("g")];
             if (currentAnimationPlayed == type)
             {
-                if (TimeSinceLastImage >= SecondPerImage)
-                {
-                    currentFrameIndex = (currentFrameIndex + 1) % animationSprites.Length;
-                    this.gameObject.GetComponent<SpriteRenderer>().sprite = animationSprites[currentFrameIndex];
-                    TimeSinceLastImage = 0;
-                }
+                this.DisplayNextSprite(animationSprites);
 
             } else
             {
+                // Set the animation to new type and display it from the beginning
                 currentAnimationPlayed = type;
-                currentFrameIndex = 0;
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = animationSprites[currentFrameIndex];
-                TimeSinceLastImage = 0;
+                this.DisplayFirstSprite(animationSprites);
             }
         }
     }
