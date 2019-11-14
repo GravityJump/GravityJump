@@ -42,3 +42,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Blackhole
+    uniqueID: 3611835959
+    locked: 0
