@@ -40,11 +40,11 @@ namespace Players
 
                 if (Input.GetButtonDown("Sprint"))
                 {
-                    this.AttractableBody.GameSpeed.PlayerSpeedFactor *= 2.0f;
+                    this.AttractableBody.MultiplyPlayerSpeedFactor(2.0f);
                 }
                 else if (Input.GetButtonUp("Sprint"))
                 {
-                    this.AttractableBody.GameSpeed.PlayerSpeedFactor /= 2.0f;
+                    this.AttractableBody.MultiplyPlayerSpeedFactor(1/2f);
                 }
             }
         }

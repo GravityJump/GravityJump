@@ -140,5 +140,10 @@ namespace Physic
             this.rb2D.AddForce(force);
             this.PlayerMovingState.Throw();
         }
+
+        public void MultiplyPlayerSpeedFactor(float factor)
+        {
+            this.GameSpeed.PlayerSpeedFactor *= factor;
+        }
     }
 }
