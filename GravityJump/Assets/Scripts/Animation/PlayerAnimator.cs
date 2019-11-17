@@ -18,8 +18,7 @@ namespace Animation
             Landing,
         }
         private AnimationType currentAnimationPlayed;
-        public Physic.GameSpeed GameSpeed;
-        protected new float SecondPerImage => 1/12f * 1/GameSpeed.PlayerSpeed;
+        protected override float SecondPerImage => 1/12f * 1/this.AttractableBody.GameSpeed.PlayerSpeed;
 
         protected override string GameObjectAnimationsDirectoryName => "Player";
 

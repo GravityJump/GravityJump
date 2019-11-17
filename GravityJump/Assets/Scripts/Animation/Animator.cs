@@ -29,7 +29,7 @@ namespace Animation
         // Note: the animation name will be the name of the folder containing the animation sprites, in Resources
         protected Dictionary<string, Sprite[]> Animations;
 
-        protected float SecondPerImage => 1 / 12f;
+        protected virtual float SecondPerImage => 1 / 12f;
         protected float TimeSinceLastImage;
         protected int currentFrameIndex;
 
