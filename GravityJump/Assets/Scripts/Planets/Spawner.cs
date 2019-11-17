@@ -16,6 +16,7 @@ namespace Planets
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/DarkDwarf") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Candy") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Donut") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Lollipop1") as GameObject);
 
             // Create a starting Planet
             this.AssetId = 0;
