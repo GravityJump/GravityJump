@@ -18,7 +18,7 @@ namespace Players
             this.PlayerObject = Instantiate(this.Prefab, new Vector3(point.X, point.Y, 0), Quaternion.Euler(0, 0, Random.value * 360));
             this.AttractableBody = this.PlayerObject.AddComponent<Physic.AttractableBody>();
             this.AttractableBody.GameSpeed = gameController.GameSpeed;
-            this.PlayerObject.AddComponent<Animation.PlayerAnimator>().GameSpeed = gameController.GameSpeed;
+            this.PlayerObject.AddComponent<Animation.PlayerAnimator>();
             this.SetClosestAttractiveBody(point);
         }
 

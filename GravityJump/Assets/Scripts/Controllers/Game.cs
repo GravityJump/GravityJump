@@ -139,7 +139,7 @@ namespace Controllers
             this.GameSpeed.Increment(Time.deltaTime);
 
             // Check if the player is in the danger zone.
-            if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -13)
+            if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -11)
             {
                 // If multiplayer, warn the other that death occured.
                 if (this.Connection != null)

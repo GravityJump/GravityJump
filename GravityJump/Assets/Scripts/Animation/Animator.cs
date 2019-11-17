@@ -29,6 +29,10 @@ namespace Animation
         // Note: the animation name will be the name of the folder containing the animation sprites, in Resources
         protected Dictionary<string, Sprite[]> Animations;
 
+        protected virtual float SecondPerImage => 1 / 12f;
+        protected float TimeSinceLastImage;
+        protected int currentFrameIndex;
+
         protected void Awake()
         {
             this.Animations = new Dictionary<string, Sprite[]>();
@@ -40,6 +44,28 @@ namespace Animation
                 string animationType = new DirectoryInfo(animationDirectory).Name;
                 string path = $"Animation/{GameObjectAnimationsDirectoryName}/{animationType}";
                 this.Animations.Add(animationType, Resources.LoadAll<Sprite>(path));
+            }
+        }
+
+        protected void DisplaySprite(Sprite sprite)
+        {
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+            this.TimeSinceLastImage = 0;
+        }
+
+        protected void DisplayFirstSprite(Sprite[] animationSprites)
+        {
+            // Reset the animation and display it
+            this.currentFrameIndex = 0;
+            this.DisplaySprite(animationSprites[currentFrameIndex]);
+        }
+
+        protected void DisplayNextSprite(Sprite[] animationSprites)
+        {
+            if (this.TimeSinceLastImage >= this.SecondPerImage)
+            {
+                this.currentFrameIndex = (this.currentFrameIndex + 1) % animationSprites.Length;
+                this.DisplaySprite(animationSprites[currentFrameIndex]);
             }
         }
     }

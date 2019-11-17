@@ -42,3 +42,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BlackholeBack
+    uniqueID: 3611835959
+    locked: 0
+  - name: Planetoid
+    uniqueID: 1405771693
+    locked: 0
+  - name: Player
+    uniqueID: 3773717947
+    locked: 0
+  - name: BlackholeFront
+    uniqueID: 1302058051
+    locked: 0
