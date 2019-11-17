@@ -18,7 +18,8 @@ namespace Animation
             Landing,
         }
         private AnimationType currentAnimationPlayed;
-        private new readonly float SecondPerImage = 1/12f * Data.Storage.SpeedFactor;
+        public Physic.GameSpeed GameSpeed;
+        protected new float SecondPerImage => 1/12f * 1/GameSpeed.PlayerSpeed;
 
         protected override string GameObjectAnimationsDirectoryName => "Player";
 
@@ -66,7 +67,6 @@ namespace Animation
             if (currentAnimationPlayed == type)
             {
                 this.DisplayNextSprite(animationSprites);
-
             } else
             {
                 // Set the animation to new type and display it from the beginning

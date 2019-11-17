@@ -11,7 +11,8 @@ namespace Physic
         private Collider2D attractableBodyCollider;
 
         // Physics values and constants
-        private readonly float walkSpeed = 2.7f * Data.Storage.SpeedFactor;
+        public GameSpeed GameSpeed { get; set; }
+        private float WalkSpeed => 2.7f * GameSpeed.PlayerSpeed;
         private const float jumpForce = 10f;
         private const float groundedDistance = 0.1f;
         private const float inertiaForce = 0.8f;
@@ -27,7 +28,6 @@ namespace Physic
         {
             this.rb2D = GetComponent<Rigidbody2D>();
             this.attractableBodyCollider = GetComponent<Collider2D>();
-            this.spriteRenderer = GetComponent<SpriteRenderer>();
             this.PlayerMovingState = new PlayerMovingState();
         }
 
@@ -119,7 +119,7 @@ namespace Physic
         // walkingDirection must be a value im {-1, 0 ,1} indicating to which direction the player is moving (0 if idle)
         public void Walk(float walkingDirection)
         {
-            this.HorizontalSpeed = walkingDirection * this.walkSpeed;
+            this.HorizontalSpeed = walkingDirection * this.WalkSpeed;
             if (Math.Abs(walkingDirection) > 0)
             {
                 this.PlayerMovingState.Walk();
@@ -139,6 +139,11 @@ namespace Physic
         {
             this.rb2D.AddForce(force);
             this.PlayerMovingState.Throw();
+        }
+
+        public void MultiplyPlayerSpeedFactor(float factor)
+        {
+            this.GameSpeed.PlayerSpeedFactor *= factor;
         }
     }
 }
