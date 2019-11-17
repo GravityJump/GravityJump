@@ -18,6 +18,7 @@ namespace Planets
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Donut") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Lollipop1") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Lollipop2") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Cupcake") as GameObject);
 
             // Create a starting Planet
             this.AssetId = 0;
