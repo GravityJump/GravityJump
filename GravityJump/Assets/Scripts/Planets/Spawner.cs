@@ -11,10 +11,11 @@ namespace Planets
         {
             this.SpawnerType = ObjectManagement.SpawnerType.Planet;
 
-            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planet") as GameObject);
-            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/HotPlanet") as GameObject);
-            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Cucumboid") as GameObject);
-            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/DarkDwarf") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Candy") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Donut") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Lollipop1") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Lollipop2") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Cupcake") as GameObject);
 
             // Create a starting Planet
             this.AssetId = 0;
