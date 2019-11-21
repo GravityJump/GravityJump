@@ -143,7 +143,7 @@ namespace Controllers
             // Check if the player is in the danger zone.
             if (this.LocalPlayerSpawner.PlayerObject.transform.position.x - this.transform.position.x < -11)
             {
-                // If multiplayer, warn the other that death occured.
+                // If multiplayer, warn the other that death occurred.
                 if (this.Connection != null)
                 {
                     this.Connection.Write(new Network.Death());
@@ -193,13 +193,15 @@ namespace Controllers
 
         private void GameOver(bool didWin)
         {
-            if (!IsGameOver) {
+            if (!IsGameOver)
+            {
                 IsGameOver = true;
 
                 if (didWin)
                 {
                     this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Win, false);
-                } else
+                }
+                else
                 {
                     this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Death, false);
                 }

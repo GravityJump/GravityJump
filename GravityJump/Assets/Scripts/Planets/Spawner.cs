@@ -71,16 +71,16 @@ namespace Planets
 
             }
             // Finding an angle satisfying all constraints
-            float teta = angle_min;
+            float theta = angle_min;
             int attempts = 0;
             float y = y_last;
             float x = x_last;
-            while (attempts < 20 && (teta <= angle_min || teta >= angle_max || Mathf.Abs(y) > y_limit || Mathf.Abs(teta - Mathf.PI / 2) < angle_margin))
+            while (attempts < 20 && (theta <= angle_min || theta >= angle_max || Mathf.Abs(y) > y_limit || Mathf.Abs(theta - Mathf.PI / 2) < angle_margin))
             {
                 attempts += 1;
-                teta = angle_min + (angle_max - angle_min) * Random.value;
+                theta = angle_min + (angle_max - angle_min) * Random.value;
                 // Computing the y position of next planet
-                y = y_last + Mathf.Cos(teta) * (r_last + d + r);
+                y = y_last + Mathf.Cos(theta) * (r_last + d + r);
             }
             // If no compromise could be made, bringing next planet closer to center of camera
             if (attempts == 20)
@@ -88,17 +88,17 @@ namespace Planets
                 Debug.Log("No random position could be selected");
                 if (y_last < 0)
                 {
-                    teta = Mathf.PI / 4;
+                    theta = Mathf.PI / 4;
                 }
                 else
                 {
-                    teta = 3 * Mathf.PI / 4;
+                    theta = 3 * Mathf.PI / 4;
                 }
                 // Computing the y position of next planet
-                y = y_last + Mathf.Cos(teta) * (r_last + d + r);
+                y = y_last + Mathf.Cos(theta) * (r_last + d + r);
             }
             // Computing the x position of next planet
-            x = x_last + Mathf.Sin(teta) * (r_last + d + r);
+            x = x_last + Mathf.Sin(theta) * (r_last + d + r);
             this.ScaleRatio = r;
             this.Position = new Vector3(x, y, 0);
             this.Rotation = Random.value * 360;
