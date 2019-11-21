@@ -6,7 +6,6 @@ namespace UI
 {
     public class GameModeSelectionScreen : BasicScreen
     {
-        public readonly string Version = "0.0.1";
         public Button SoloButton { get; set; }
         public Button HostButton { get; set; }
         public Button JoinButton { get; set; }
@@ -18,7 +17,6 @@ namespace UI
         public override void Awake()
         {
             this.Panel = GameObject.Find("Canvas/GameModeSelectionScreen");
-            this.VersionText = GameObject.Find("Canvas/GameModeSelectionScreen/Version").GetComponent<Text>();
             this.Ip = GameObject.Find("Canvas/GameModeSelectionScreen/Ip").GetComponent<Text>();
             this.SoloButton = GameObject.Find("Canvas/GameModeSelectionScreen/SoloButton").GetComponent<Button>();
             this.HostButton = GameObject.Find("Canvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
@@ -30,8 +28,6 @@ namespace UI
 
         public void Start()
         {
-            this.VersionText.text = $"Version {this.Version}";
-
             this.SoloButton.onClick.AddListener(() =>
             {
                 SceneManager.LoadScene("GameScene");
@@ -46,7 +42,6 @@ namespace UI
         public override void OnStart()
         {
             this.Panel.SetActive(true);
-            this.VersionText.gameObject.SetActive(true);
             this.Ip.gameObject.SetActive(true);
             this.CheckNetworkAvailability();
         }
