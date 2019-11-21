@@ -10,12 +10,12 @@ namespace Controllers
     {
         private new void Awake()
         {
-
+            base.Awake();
         }
 
         private void Start()
         {
-
+            this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Menu, true);
         }
     }
 }
