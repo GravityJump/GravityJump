@@ -4,7 +4,7 @@ using System;
 
 namespace Audio
 {
-    // This class is resonsible for loading music assets from Resources, and exposing methods to play them.
+    // This class is responsible for loading music assets from Resources, and exposing methods to play them.
     public class MusicPlayer : MonoBehaviour
     {
         public AudioSource AudioSource { get; private set; }

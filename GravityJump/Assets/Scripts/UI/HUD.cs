@@ -41,9 +41,9 @@ namespace UI
             this.DistanceText.text = $"Distance {this.Distance.ToString("0.00")} a.l.";
         }
 
-        public void UpdateDistance(float instantaniousSpeed, float timeDelta)
+        public void UpdateDistance(float instantaneousSpeed, float timeDelta)
         {
-            this.Distance += instantaniousSpeed * timeDelta;
+            this.Distance += instantaneousSpeed * timeDelta;
         }
     }
 }
