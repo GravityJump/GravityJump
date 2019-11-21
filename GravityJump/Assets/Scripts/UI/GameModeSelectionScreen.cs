@@ -10,6 +10,7 @@ namespace UI
         public Button SoloButton { get; set; }
         public Button HostButton { get; set; }
         public Button JoinButton { get; set; }
+        public Button CreditsButton { get; set; }
         private Button ExitButton { get; set; }
         private Text VersionText { get; set; }
         private Text Ip { get; set; }
@@ -23,6 +24,7 @@ namespace UI
             this.HostButton = GameObject.Find("Canvas/GameModeSelectionScreen/HostButton").GetComponent<Button>();
             this.JoinButton = GameObject.Find("Canvas/GameModeSelectionScreen/JoinButton").GetComponent<Button>();
             this.ExitButton = GameObject.Find("Canvas/GameModeSelectionScreen/ExitButton").GetComponent<Button>();
+            this.CreditsButton = GameObject.Find("Canvas/GameModeSelectionScreen/CreditsButton").GetComponent<Button>();
             this.Name = Names.Menu.GameModeSelection;
         }
 
