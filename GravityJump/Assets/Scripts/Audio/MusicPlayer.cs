@@ -16,6 +16,8 @@ namespace Audio
         {
             Menu,
             Game,
+            Death,
+            Win,
         }
 
         // Use this for initialization
@@ -31,6 +33,7 @@ namespace Audio
 
         public void Play(MusicClip musicClip, bool loop)
         {
+            this.AudioSource.Stop();
             this.AudioSource.clip = this.MusicClips[musicClip];
             this.AudioSource.loop = loop;
             this.AudioSource.Play();

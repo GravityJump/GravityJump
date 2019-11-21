@@ -188,6 +188,15 @@ namespace Controllers
 
         private void GameOver(bool didWin)
         {
+            if (didWin)
+            {
+                this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Win, false);
+            } else
+            {
+                Debug.Log("Lost music");
+                this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Death, false);
+            }
+
             this.HUD.GameOver(didWin);
             StartCoroutine(this.BackToMenu());
 
