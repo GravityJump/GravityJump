@@ -149,6 +149,9 @@ namespace Controllers
 
                 this.GameOver(false);
             }
+            // Switching universe at defined audio time 59 109, taking into account the Spawner delay
+            float delay = (this.PlanetSpawner.transform.position.x - 10f - this.transform.position.x) / this.GameSpeed.ScrollingSpeed;
+            this.PlanetSpawner.SwitchUniverse(this.MusicPlayer.AudioSource.time < 59 - delay || this.MusicPlayer.AudioSource.time > 108 - delay);
         }
 
         private void SendLocalPlayerPosition()

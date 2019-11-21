@@ -7,7 +7,7 @@ namespace Audio
     // This class is resonsible for loading music assets from Resources, and exposing methods to play them.
     public class MusicPlayer : MonoBehaviour
     {
-        private AudioSource AudioSource;
+        public AudioSource AudioSource { get; private set; }
         private Dictionary<MusicClip, AudioClip> MusicClips;
         private const string MusicResourcesPath = "Audio/";
 
