@@ -198,6 +198,7 @@ namespace Controllers
             }
 
             this.HUD.GameOver(didWin);
+            this.LocalPlayerSpawner.FreezeInput();
             StartCoroutine(this.BackToMenu());
 
             if (this.Connection != null)

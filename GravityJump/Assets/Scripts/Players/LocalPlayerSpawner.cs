@@ -4,12 +4,14 @@ namespace Players
 {
     public class LocalPlayerSpawner : Spawner
     {
-        private Physic.AttractableBody AttractableBody;
+        private Physic.AttractableBody AttractableBody { get; set; }
+        private bool IsDead { get; set; }
 
         private void Awake()
         {
             this.Prefab = Resources.Load("Prefabs/Characters/LocalPlayer") as GameObject;
             this.PlayerObject = null;
+            this.IsDead = false;
         }
 
         public void InstantiatePlayer(Controllers.Game gameController)
@@ -27,9 +29,14 @@ namespace Players
             this.AttractableBody.ClosestAttractiveBody = point.Planet.GetComponent<Physic.AttractiveBody>();
         }
 
-        void Update()
+        public void FreezeInput()
         {
-            if (this.PlayerObject != null)
+            this.IsDead = true;
+        }
+
+        public void Update()
+        {
+            if (this.PlayerObject != null && !this.IsDead)
             {
                 this.AttractableBody.Walk(Input.GetAxisRaw("Horizontal"));
 
@@ -44,7 +51,7 @@ namespace Players
                 }
                 else if (Input.GetButtonUp("Sprint"))
                 {
-                    this.AttractableBody.MultiplyPlayerSpeedFactor(1/2f);
+                    this.AttractableBody.MultiplyPlayerSpeedFactor(1 / 2f);
                 }
             }
         }
