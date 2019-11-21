@@ -85,7 +85,6 @@ namespace Controllers
                         {
                             // ...send the item data to the Client.
                             this.Connection.Write(assetPayload);
-                            Debug.Log(BitConverter.ToString(assetPayload.GetBytes()));
                         }
 
                         spawner.PrepareNextAsset();
