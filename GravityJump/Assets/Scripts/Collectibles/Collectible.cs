@@ -4,14 +4,14 @@ namespace Collectibles
 {
     public abstract class Collectible : Physic.PhysicBody
     {
-        protected GameObject target;
+        protected GameObject target { get; set; }
         public float Frequency = 1;
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.GetComponent<Physic.AttractableBody>() != null)
+            if (other.gameObject.GetComponent<Physic.AttractableBody>() != null || other.gameObject.tag == "RemotePlayer")
             {
-                target = other.gameObject;
+                this.target = other.gameObject;
                 OnCollect();
             }
             Destroy(gameObject);
