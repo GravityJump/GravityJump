@@ -1623,7 +1623,7 @@ GameObject:
   - component: {fileID: 711553225}
   - component: {fileID: 711553224}
   m_Layer: 5
-  m_Name: TutoButton
+  m_Name: HelpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

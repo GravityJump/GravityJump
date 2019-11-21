@@ -76,7 +76,7 @@ namespace Controllers
             {
                 this.Screens.Push(this.CreditsScreen);
             });
-            this.GameModeSelectionScreen.TutoButton.onClick.AddListener(() =>
+            this.GameModeSelectionScreen.HelpButton.onClick.AddListener(() =>
             {
                 this.Screens.Push(this.HelpScreen);
             });
