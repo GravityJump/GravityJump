@@ -11,6 +11,14 @@ namespace Planets
         {
             this.SpawnerType = ObjectManagement.SpawnerType.Planet;
 
+            // Planets prefabs
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet1") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet2") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet3") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet4") as GameObject);
+            this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet5") as GameObject);
+
+            // Treats prefabs
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Candy") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Donut") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Lollipop1") as GameObject);
