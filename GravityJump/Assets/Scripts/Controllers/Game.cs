@@ -19,6 +19,7 @@ namespace Controllers
         private bool IsHost { get; set; }
         private float PositionSendingFrequency { get; set; } // The number of position message sent per second
         private float TimeSinceLastPositionSending { get; set; }
+        private bool IsGameOver { get; set; }
 
         private new void Awake()
         {
@@ -42,6 +43,7 @@ namespace Controllers
             this.TimeSinceLastPositionSending = 0f;
 
             this.GameSpeed = new Physic.GameSpeed(1f);
+            this.IsGameOver = false;
 
             base.Awake();
         }
@@ -188,30 +190,33 @@ namespace Controllers
 
         private void GameOver(bool didWin)
         {
-            if (didWin)
-            {
-                this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Win, false);
-            } else
-            {
-                Debug.Log("Lost music");
-                this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Death, false);
-            }
+            if (!IsGameOver) {
+                IsGameOver = true;
 
-            this.HUD.GameOver(didWin);
-            this.LocalPlayerSpawner.FreezeInput();
-            StartCoroutine(this.BackToMenu());
+                if (didWin)
+                {
+                    this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Win, false);
+                } else
+                {
+                    this.MusicPlayer.Play(Audio.MusicPlayer.MusicClip.Death, false);
+                }
 
-            if (this.Connection != null)
-            {
-                this.Connection.Close();
-                Data.Storage.Connection = null;
-                Data.Storage.IsHost = false;
+                this.HUD.GameOver(didWin);
+                this.LocalPlayerSpawner.FreezeInput();
+                StartCoroutine(this.BackToMenu());
+
+                if (this.Connection != null)
+                {
+                    this.Connection.Close();
+                    Data.Storage.Connection = null;
+                    Data.Storage.IsHost = false;
+                }
             }
         }
 
         private System.Collections.IEnumerator BackToMenu()
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(4.5f);
             SceneManager.LoadScene("Menu");
         }
     }
