@@ -189,6 +189,7 @@ namespace Controllers
         private void GameOver(bool didWin)
         {
             this.HUD.GameOver(didWin);
+            this.LocalPlayerSpawner.FreezeInput();
             StartCoroutine(this.BackToMenu());
 
             if (this.Connection != null)

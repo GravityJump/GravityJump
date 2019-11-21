@@ -29,7 +29,12 @@ namespace Players
             this.AttractableBody.ClosestAttractiveBody = point.Planet.GetComponent<Physic.AttractiveBody>();
         }
 
-        void Update()
+        public void FreezeInput()
+        {
+            this.IsDead = true;
+        }
+
+        public void Update()
         {
             if (this.PlayerObject != null && !this.IsDead)
             {
