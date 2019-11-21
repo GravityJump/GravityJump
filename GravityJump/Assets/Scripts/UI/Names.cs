@@ -10,6 +10,7 @@ namespace UI
             Join,
             Chat,
             Credits,
+            Help,
         }
     }
 }
