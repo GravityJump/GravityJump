@@ -14,6 +14,7 @@ namespace Controllers
         private UI.HostScreen HostScreen { get; set; }
         private UI.JoinScreen JoinScreen { get; set; }
         private UI.ChatScreen ChatScreen { get; set; }
+        private UI.CreditsScreen CreditsScreen { get; set; }
         private bool Ready { get; set; }
         private bool OtherPlayerReady { get; set; }
 
@@ -24,6 +25,8 @@ namespace Controllers
             this.HostScreen = GameObject.Find("Canvas/HostScreen").GetComponent<UI.HostScreen>();
             this.JoinScreen = GameObject.Find("Canvas/JoinScreen").GetComponent<UI.JoinScreen>();
             this.ChatScreen = GameObject.Find("Canvas/ChatScreen").GetComponent<UI.ChatScreen>();
+            this.CreditsScreen = GameObject.Find("Canvas/CreditsScreen").GetComponent<UI.CreditsScreen>();
+
             this.Screens = new UI.Stack();
             this.Connection = null;
             this.Ready = false;
@@ -41,6 +44,7 @@ namespace Controllers
             this.HostScreen.Clear();
             this.JoinScreen.Clear();
             this.ChatScreen.Clear();
+            this.CreditsScreen.Clear();
 
             this.Screens.Push(this.TitleScreen);
 
@@ -64,6 +68,10 @@ namespace Controllers
             this.GameModeSelectionScreen.JoinButton.onClick.AddListener(() =>
             {
                 this.Screens.Push(this.JoinScreen);
+            });
+            this.GameModeSelectionScreen.CreditsButton.onClick.AddListener(() =>
+            {
+                this.Screens.Push(this.CreditsScreen);
             });
             this.HostScreen.Back.onClick.AddListener(() =>
             {
@@ -111,6 +119,10 @@ namespace Controllers
                 this.Ready = true;
                 this.Connection.Write(new Network.Ready());
                 this.ChatScreen.Start.interactable = false;
+            });
+            this.CreditsScreen.Back.onClick.AddListener(() =>
+            {
+                this.Screens.Pop();
             });
         }
 

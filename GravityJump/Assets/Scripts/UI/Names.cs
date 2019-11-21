@@ -9,6 +9,7 @@ namespace UI
             Host,
             Join,
             Chat,
+            Credits,
         }
     }
 }
