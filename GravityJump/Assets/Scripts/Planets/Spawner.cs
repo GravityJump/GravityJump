@@ -5,7 +5,9 @@ namespace Planets
 {
     public class Spawner : ObjectManagement.Spawner
     {
-        public SpawningPoint PlayerSpawningPlanet;
+        public SpawningPoint PlayerSpawningPlanet { get; set; }
+        private int UniverseDefaultPrefabSize { get; set; }
+        public bool IsUniverseDefault { get; private set; }
 
         public override void InitiateSpawner()
         {
@@ -17,6 +19,10 @@ namespace Planets
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet3") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet4") as GameObject);
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Planets/Planet5") as GameObject);
+
+            // Spawner starts on default mode
+            this.IsUniverseDefault = true;
+            this.UniverseDefaultPrefabSize = this.AvailablePrefabs.Count;
 
             // Treats prefabs
             this.AvailablePrefabs.Add(Resources.Load("Prefabs/Planetoids/Treats/Candy") as GameObject);
@@ -99,7 +105,26 @@ namespace Planets
         }
         public override float GetFrequency(int assetId)
         {
+            if (this.IsUniverseDefault && assetId >= this.UniverseDefaultPrefabSize)
+            {
+                // Preventing non default planets from spawning
+                return 0f;
+
+            }
+            else if (!this.IsUniverseDefault && assetId < this.UniverseDefaultPrefabSize)
+            {
+                // Preventing default planets from spawning
+                return 0f;
+            }
             return this.AvailablePrefabs[assetId].GetComponent<Physic.AttractiveBody>().Frequency;
+        }
+        public void SwitchUniverse(bool status)
+        {
+            if (status != this.IsUniverseDefault)
+            {
+                this.IsUniverseDefault = status;
+                this.SumFrequency();
+            }
         }
     }
 }

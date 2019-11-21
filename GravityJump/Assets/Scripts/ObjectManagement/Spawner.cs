@@ -13,7 +13,7 @@ namespace ObjectManagement
     {
         protected List<GameObject> AvailablePrefabs { get; set; }
         protected int AssetId { get; set; }
-        private float TotalFrequency { get; set; }
+        protected float TotalFrequency { get; set; }
         protected Vector3 Position { get; set; }
         protected float Rotation { get; set; }
         protected float ScaleRatio { get; set; }
@@ -22,12 +22,16 @@ namespace ObjectManagement
         {
             this.AvailablePrefabs = new List<GameObject>();
             this.InitiateSpawner();
+            this.SumFrequency();
+            this.PrepareNextAsset();
+        }
+        protected void SumFrequency()
+        {
             this.TotalFrequency = 0;
             for (int index = 0; index < this.AvailablePrefabs.Count; index++)
             {
                 this.TotalFrequency += this.GetFrequency(index);
             }
-            this.PrepareNextAsset();
         }
         public bool ShouldSpawn()
         {
@@ -55,7 +59,7 @@ namespace ObjectManagement
             for (int index = 0; index < this.AvailablePrefabs.Count; index++)
             {
                 f = GetFrequency(index);
-                if (f >= v)
+                if (f > v)
                 {
                     this.AssetId = index;
                     return;
