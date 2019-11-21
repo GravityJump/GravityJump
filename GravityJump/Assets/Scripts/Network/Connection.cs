@@ -10,8 +10,11 @@ namespace Network
 {
     public class Connection : TcpConfig
     {
+        private readonly int buffer_size = 4096;
+
         private TcpClient Client { get; set; }
         private NetworkStream Stream { get; set; }
+        private byte[] Buffer { get; set; }
         public IPAddress Ip { get; set; }
 
         public Connection(TcpClient client)
@@ -19,6 +22,7 @@ namespace Network
             this.Client = client;
             this.Stream = this.Client.GetStream();
             this.Ip = ((IPEndPoint)this.Client.Client.RemoteEndPoint).Address;
+            this.Buffer = new byte[this.buffer_size];
         }
 
         public Connection(IPAddress ip)
@@ -26,6 +30,7 @@ namespace Network
             this.Client = new TcpClient(ip.ToString(), this.Port);
             this.Stream = this.Client.GetStream();
             this.Ip = ip;
+            this.Buffer = new byte[this.buffer_size];
             Debug.Log($"Connection established with {this.Ip.ToString()}");
         }
 
@@ -51,33 +56,31 @@ namespace Network
         {
             if (this.Stream.DataAvailable)
             {
-                byte[] buffer = new byte[256];
-
-                this.Stream.Read(buffer, 0, 1);
-                switch (buffer[0])
+                this.Stream.Read(this.Buffer, 0, 1);
+                switch (this.Buffer[0])
                 {
                     case (byte)OpCode.Message:
-                        this.Stream.Read(buffer, 0, 4);
-                        int msgLength = BitConverter.ToInt32(buffer, 0);
-                        this.Stream.Read(buffer, 0, msgLength);
-                        return new Message(Encoding.UTF8.GetString(buffer));
+                        this.Stream.Read(this.Buffer, 0, 4);
+                        int msgLength = BitConverter.ToInt32(this.Buffer, 0);
+                        this.Stream.Read(this.Buffer, 0, msgLength);
+                        return new Message(Encoding.UTF8.GetString(this.Buffer));
                     case (byte)OpCode.Ready:
                         return new Ready();
                     case (byte)OpCode.PlayerCoordinates:
-                        this.Stream.Read(buffer, 0, 12);
-                        float xPlayer = BitConverter.ToSingle(buffer, 0);
-                        float yPlayer = BitConverter.ToSingle(buffer, 4);
-                        float zAnglePlayer = BitConverter.ToSingle(buffer, 8);
+                        this.Stream.Read(this.Buffer, 0, 12);
+                        float xPlayer = BitConverter.ToSingle(this.Buffer, 0);
+                        float yPlayer = BitConverter.ToSingle(this.Buffer, 4);
+                        float zAnglePlayer = BitConverter.ToSingle(this.Buffer, 8);
                         return new PlayerCoordinates(xPlayer, yPlayer, zAnglePlayer);
                     case (byte)OpCode.Spawn:
-                        this.Stream.Read(buffer, 0, 23);
-                        ObjectManagement.SpawnerType spawnerType = (ObjectManagement.SpawnerType)buffer[0];
-                        int assetId = (int)buffer[1];
-                        float x = BitConverter.ToSingle(buffer, 2);
-                        float y = BitConverter.ToSingle(buffer, 6);
-                        float z = BitConverter.ToSingle(buffer, 10);
-                        float rotation = BitConverter.ToSingle(buffer, 14);
-                        float scaleRatio = BitConverter.ToSingle(buffer, 18);
+                        this.Stream.Read(this.Buffer, 0, 23);
+                        ObjectManagement.SpawnerType spawnerType = (ObjectManagement.SpawnerType)this.Buffer[0];
+                        int assetId = (int)this.Buffer[1];
+                        float x = BitConverter.ToSingle(this.Buffer, 2);
+                        float y = BitConverter.ToSingle(this.Buffer, 6);
+                        float z = BitConverter.ToSingle(this.Buffer, 10);
+                        float rotation = BitConverter.ToSingle(this.Buffer, 14);
+                        float scaleRatio = BitConverter.ToSingle(this.Buffer, 18);
                         return new SpawnerPayload(spawnerType, assetId, new Vector3(x, y, z), rotation, scaleRatio);
                     case (byte)OpCode.Death:
                         return new Death();
