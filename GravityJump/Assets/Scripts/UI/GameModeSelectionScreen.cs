@@ -6,9 +6,9 @@ namespace UI
 {
     public class GameModeSelectionScreen : BasicScreen
     {
-        private Button TutoButton { get; set; }
         private Button SoloButton { get; set; }
         private Button ExitButton { get; set; }
+        public Button TutoButton { get; set; }
         public Button HostButton { get; set; }
         public Button JoinButton { get; set; }
         public Button CreditsButton { get; set; }
@@ -37,10 +37,6 @@ namespace UI
             this.ExitButton.onClick.AddListener(() =>
             {
                 Application.Quit();
-            });
-            this.TutoButton.onClick.AddListener(() =>
-            {
-                SceneManager.LoadScene("Tutorial");
             });
         }
 
