@@ -14,7 +14,7 @@ namespace Physic
         public GameSpeed(float initSpeed)
         {
             this.ScrollingSpeed = initSpeed;
-            this.PlayerSpeedFactor = 1f;
+            this.PlayerSpeedFactor = 0.6f;
         }
 
         public void Increment(float timeDelta)

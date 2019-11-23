@@ -47,11 +47,7 @@ namespace Players
 
                 if (Input.GetButtonDown("Sprint"))
                 {
-                    this.AttractableBody.MultiplyPlayerSpeedFactor(2.0f);
-                }
-                else if (Input.GetButtonUp("Sprint"))
-                {
-                    this.AttractableBody.MultiplyPlayerSpeedFactor(1 / 2f);
+                    StartCoroutine(this.AttractableBody.Sprint());                    
                 }
             }
         }
