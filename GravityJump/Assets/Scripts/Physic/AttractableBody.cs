@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Physic
@@ -15,7 +16,7 @@ namespace Physic
         private float WalkSpeed => 2.7f * GameSpeed.PlayerSpeed;
         private const float jumpForce = 10f;
         private const float groundedDistance = 0.1f;
-        private const float inertiaForce = 0.8f;
+        private const float inertiaForce = 0.6f;
         private const float gravityForce = 10f;
 
         // State variables
@@ -23,12 +24,14 @@ namespace Physic
         public PlayerMovingState PlayerMovingState { get; private set; }
         public float HorizontalSpeed { get; private set; }
         protected float horizontalInertia;
+        private bool isSprintAvailable;
 
         protected void Awake()
         {
             this.rb2D = GetComponent<Rigidbody2D>();
             this.attractableBodyCollider = GetComponent<Collider2D>();
             this.PlayerMovingState = new PlayerMovingState();
+            this.isSprintAvailable = true;
         }
 
         protected void FixedUpdate()
@@ -75,7 +78,7 @@ namespace Physic
             if (this.PlayerMovingState.CanMoveHorizontally())
             {
                 var moveAlongGround = new Vector2(groundNormal.y, -groundNormal.x);
-                float horizontalMove = horizontalMoveValue * time * groundToNormalDistance / (groundToNormalDistance + attractableToAttractiveBodyNormalDistance.distance);
+                float horizontalMove = horizontalMoveValue * time * groundToNormalDistance / (groundToNormalDistance + Mathf.Sqrt(attractableToAttractiveBodyNormalDistance.distance));
                 Vector2 horizontalPositionMove = ((1 - inertiaForce) * horizontalMove + inertiaForce * this.horizontalInertia) * moveAlongGround;
 
                 this.rb2D.position += horizontalPositionMove;
@@ -141,9 +144,21 @@ namespace Physic
             this.PlayerMovingState.Throw();
         }
 
-        public void MultiplyPlayerSpeedFactor(float factor)
+        public IEnumerator Sprint()
         {
-            this.GameSpeed.PlayerSpeedFactor *= factor;
+            if (this.isSprintAvailable)
+            {
+                // Start sprint
+                this.isSprintAvailable = false;
+                this.GameSpeed.PlayerSpeedFactor *= 2;
+                yield return new WaitForSeconds(3);
+                // End sprint
+                this.GameSpeed.PlayerSpeedFactor /= 2;
+                yield return new WaitForSeconds(5);
+                // Restore sprint
+                this.gameObject.GetComponent<ParticleSystem>().Play();
+                this.isSprintAvailable = true;
+            }
         }
     }
 }
