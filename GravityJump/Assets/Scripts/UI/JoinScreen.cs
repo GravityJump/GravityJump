@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Net;
-using System;
 
 namespace UI
 {
+    // JoinScreen allows a player to reach out to the host by specifying its IP address.
     public class JoinScreen : BasicScreen
     {
         public Button Back { get; set; }

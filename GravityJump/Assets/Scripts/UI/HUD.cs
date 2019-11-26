@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
+    // HUD displays the score during a game.
     public class HUD : MonoBehaviour
     {
         public float Distance { get; set; }

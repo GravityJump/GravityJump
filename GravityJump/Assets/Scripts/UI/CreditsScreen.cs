@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 namespace UI
 {
+    // CreditsScreen simply displays the game credits.
     public class CreditsScreen : BasicScreen
     {
         public Button Back { get; set; }

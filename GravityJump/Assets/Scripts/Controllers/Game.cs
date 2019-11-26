@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using System;
 
 namespace Controllers
 {
+    // Game wraps the game state machine.
     public class Game : BaseController
     {
         private UI.HUD HUD { get; set; }
@@ -17,7 +17,7 @@ namespace Controllers
         private List<ObjectManagement.Spawner> Spawners { get; set; }
         public Physic.GameSpeed GameSpeed { get; private set; }
         private bool IsHost { get; set; }
-        private float PositionSendingFrequency { get; set; } // The number of position message sent per second
+        private float PositionSendingFrequency { get; set; } // The number of position message sent per second.
         private float TimeSinceLastPositionSending { get; set; }
         private bool IsGameOver { get; set; }
 

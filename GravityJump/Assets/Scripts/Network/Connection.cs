@@ -1,13 +1,12 @@
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
 using System;
 using System.Text;
 
 namespace Network
 {
+    // Connection is a wrapper around TcpClient, enabling to write and read Payload over a NetworkStream.
     public class Connection : TcpConfig
     {
         private readonly int buffer_size = 4096;

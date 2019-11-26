@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace UI
 {
+    // GameModeSelectionScreen displays the different options to start a game.
     public class GameModeSelectionScreen : BasicScreen
     {
         private Button SoloButton { get; set; }
