@@ -43,7 +43,7 @@ namespace Controllers
             this.PositionSendingFrequency = 10f;
             this.TimeSinceLastPositionSending = 0f;
 
-            this.GameSpeed = new Physic.GameSpeed(1f);
+            this.GameSpeed = new Physic.GameSpeed(1.3f);
             this.IsGameOver = false;
 
             base.Awake();
