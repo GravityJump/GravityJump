@@ -37,17 +37,13 @@ namespace ObjectManagement
         {
             return this.transform.position.x >= this.Position.x;
         }
-        public Network.SpawnerPayload GetNextAssetPayload()
-        {
-            return new Network.SpawnerPayload(this.SpawnerType, this.AssetId, this.Position, this.Rotation, this.ScaleRatio);
-        }
-        public void Spawn(Network.SpawnerPayload payload)
+        public void Spawn()
         {
             GameObject generatedObject = Instantiate(
-                this.AvailablePrefabs[payload.assetId],
-                payload.position,
-                Quaternion.Euler(0, 0, payload.rotation));
-            generatedObject.transform.localScale *= payload.scaleRatio;
+                this.AvailablePrefabs[this.AssetId],
+                this.Position,
+                Quaternion.Euler(0, 0, this.Rotation));
+            generatedObject.transform.localScale *= this.ScaleRatio;
         }
         protected void SetRandomAssetId()
         {

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Controllers
 {
@@ -7,7 +6,6 @@ namespace Controllers
     public abstract class BaseController : MonoBehaviour
     {
         protected Audio.MusicPlayer MusicPlayer { get; set; }
-        protected Network.Connection Connection { get; set; }
 
         protected void Awake()
         {

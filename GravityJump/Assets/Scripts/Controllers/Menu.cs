@@ -1,8 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System;
-using System.Text;
 
 namespace Controllers
 {
@@ -30,7 +26,6 @@ namespace Controllers
             this.HelpScreen = GameObject.Find("Canvas/HelpScreen").GetComponent<UI.HelpScreen>();
 
             this.Screens = new UI.Stack();
-            this.Connection = null;
             this.Ready = false;
             this.OtherPlayerReady = false;
 
@@ -90,41 +85,21 @@ namespace Controllers
             });
             this.JoinScreen.Join.onClick.AddListener(() =>
             {
-                try
-                {
-                    this.Connection = new Network.Connection(this.JoinScreen.Ip);
-                    this.Screens.Push(this.ChatScreen);
-                }
-                catch
-                {
-                    Debug.Log($"Could not establish a connection with {this.JoinScreen.Ip}");
-                }
+                Debug.Log($"Could not establish a connection");
             });
             this.ChatScreen.Send.onClick.AddListener(() =>
             {
-                try
-                {
-                    this.Connection.Write(new Network.Message(this.ChatScreen.Input.text));
-                    // TODO: add messages to existing history
-                    this.ChatScreen.Conversation.text = $"[Me] {this.ChatScreen.Input.text}";
-                    this.ChatScreen.Input.text = "";
-                }
-                catch
-                {
-                    Debug.Log("Connection lost");
-                    this.Screens.Pop();
-                }
+                Debug.Log("Connection lost");
+                this.Screens.Pop();
             });
             this.ChatScreen.Quit.onClick.AddListener(() =>
             {
-                this.Connection.Close();
-                this.Connection = null;
                 this.Screens.Pop();
             });
             this.ChatScreen.Start.onClick.AddListener(() =>
             {
                 this.Ready = true;
-                this.Connection.Write(new Network.Ready());
+                // this.Connection.Write(new Network.Ready());
                 this.ChatScreen.Start.interactable = false;
             });
             this.CreditsScreen.Back.onClick.AddListener(() =>
@@ -146,42 +121,6 @@ namespace Controllers
                     {
                         this.Screens.Push(this.GameModeSelectionScreen);
                     }
-                    break;
-                case UI.Names.Menu.Host:
-                    if (this.Connection == null && this.HostScreen.GetConnection() != null)
-                    {
-                        this.Connection = this.HostScreen.GetConnection();
-                        this.Screens.Push(this.ChatScreen);
-                    }
-                    break;
-                case UI.Names.Menu.Chat:
-                    Network.BasePayload payload = this.Connection.Read();
-                    if (payload != null)
-                    {
-                        this.HandleMessage(payload);
-                    }
-
-                    if (this.Ready && this.OtherPlayerReady)
-                    {
-                        Data.Storage.Connection = this.Connection;
-                        SceneManager.LoadScene("GameScene");
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void HandleMessage(Network.BasePayload payload)
-        {
-            switch (payload.Code)
-            {
-                case Network.OpCode.Message:
-                    this.ChatScreen.Conversation.text = $"[The Stranger] {((Network.Message)payload).Text}\n";
-                    break;
-                case Network.OpCode.Ready:
-                    this.OtherPlayerReady = true;
-                    this.ChatScreen.OtherPlayerReadyText.SetActive(this.OtherPlayerReady);
                     break;
                 default:
                     break;

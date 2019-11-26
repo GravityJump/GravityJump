@@ -49,21 +49,7 @@ namespace UI
 
         private void CheckNetworkAvailability()
         {
-            if (Network.Utils.IsInternetAvailable())
-            {
-                try
-                {
-                    this.Ip.text = $"IP {Network.Utils.GetHostIpAddress()}";
-                }
-                catch
-                {
-                    this.DisableMultiplayer("No IP address");
-                }
-            }
-            else
-            {
-                this.DisableMultiplayer("No Internet connection");
-            }
+            this.DisableMultiplayer("Multiplayer mode disabled on web.");
         }
 
         private void DisableMultiplayer(string reason)
