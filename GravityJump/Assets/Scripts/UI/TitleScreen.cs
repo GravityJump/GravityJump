@@ -5,6 +5,7 @@ using System.Collections;
 
 namespace UI
 {
+    // TitleScreen just displays the game title.
     public class TitleScreen : BasicScreen
     {
         public override void Awake()

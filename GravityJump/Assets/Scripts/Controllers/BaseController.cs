@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Controllers
 {
-    // This abstract class implements the commun logic of all controllers
+    // BaseController defines a music and connection property.
     public abstract class BaseController : MonoBehaviour
     {
         protected Audio.MusicPlayer MusicPlayer { get; set; }

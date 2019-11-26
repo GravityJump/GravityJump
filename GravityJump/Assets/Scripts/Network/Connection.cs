@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Network
 {
+    // Connection is a wrapper around TcpClient, enabling to write and read Payload over a NetworkStream.
     public class Connection : TcpConfig
     {
         private readonly int buffer_size = 4096;

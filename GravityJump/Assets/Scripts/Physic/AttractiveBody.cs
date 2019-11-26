@@ -44,7 +44,7 @@ namespace Physic
         // Give a random size for the spawner
         public float GetRandomSize()
         {
-            return default_size * (Random.value + 3f);
+            return default_size * (Random.value * 6f + 1.2f);
         }
         // For a given size, return Minimal distance an adjacent planet can be
         public float GetMinimalDistance(float size)

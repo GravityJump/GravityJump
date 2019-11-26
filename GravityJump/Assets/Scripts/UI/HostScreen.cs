@@ -4,6 +4,7 @@ using System;
 
 namespace UI
 {
+    // HostScreen starts a TcpListener waiting for connections.
     public class HostScreen : BasicScreen
     {
         public Button Back { get; set; }

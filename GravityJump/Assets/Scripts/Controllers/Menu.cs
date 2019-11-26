@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Controllers
 {
+    // Menu wraps the menu state machine.
     public class Menu : BaseController
     {
         private UI.Stack Screens { get; set; }
@@ -139,6 +140,7 @@ namespace Controllers
 
         private void Update()
         {
+            // Following the active screen, it handles different inputs.
             switch (((UI.BasicScreen)this.Screens.Top()).Name)
             {
                 case UI.Names.Menu.Title:

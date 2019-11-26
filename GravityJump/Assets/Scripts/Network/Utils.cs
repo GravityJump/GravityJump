@@ -8,6 +8,7 @@ namespace Network
 {
     public class Utils
     {
+        // GetHostIpAddress returns the IP address of the local host.
         public static string GetHostIpAddress()
         {
             if (SystemInfo.operatingSystem.Contains("Mac"))
@@ -39,6 +40,7 @@ namespace Network
             throw new Exception("No network adapters with an IPv4 address in the system");
         }
 
+        // IsInternetAvailable performs a ping to the Cloudflare DNS server to check that Internet is accessible.
         public static bool IsInternetAvailable()
         {
             System.Net.NetworkInformation.Ping pinger = new System.Net.NetworkInformation.Ping();
