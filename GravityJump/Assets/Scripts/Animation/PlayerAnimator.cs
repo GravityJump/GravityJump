@@ -1,10 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Animation
 {
     public class PlayerAnimator : Animator
     {
         private Physic.AttractableBody AttractableBody;
+
+        // Sprites for each animation
+        public Sprite[] Idle;
+        public Sprite[] Walking;
+        public Sprite[] Jumping;
+        public Sprite[] InFlight;
+        public Sprite[] Falling;
+        public Sprite[] Landing;
+
         // This enum represent animation types. They must be named after the animation name in the dictionary (and the folder name in file system).
         private enum AnimationType
         {
@@ -18,12 +28,19 @@ namespace Animation
         private AnimationType currentAnimationPlayed;
         protected override float SecondPerImage => 1 / 12f * 1 / this.AttractableBody.GameSpeed.PlayerSpeed;
 
-        protected override string GameObjectAnimationsDirectoryName => "Player";
-
         private new void Awake()
         {
             AttractableBody = this.gameObject.GetComponent<Physic.AttractableBody>();
-            base.Awake();
+            // Load Sprites
+            this.Animations = new Dictionary<string, Sprite[]>
+            {
+                { "Idle", Idle },
+                { "Walking", Walking },
+                { "Jumping", Jumping },
+                { "InFlight", InFlight },
+                { "Falling", Falling },
+                { "Landing", Landing }
+            };
         }
 
         private void Update()
