@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7587937021885771595}
   - component: {fileID: 7587937021885771591}
   - component: {fileID: 7587937021885771588}
+  - component: {fileID: 4809835695195023286}
+  - component: {fileID: 2626894007815532694}
   - component: {fileID: 6944833943218186208}
   - component: {fileID: 3394709449716490249}
   - component: {fileID: 6339534166120502604}
@@ -122,6 +124,49 @@ CapsuleCollider2D:
   m_Offset: {x: -0.07488322, y: 0.10455561}
   m_Size: {x: 4.8408875, y: 10.039111}
   m_Direction: 0
+--- !u!114 &4809835695195023286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7587937021885771592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e610d4f1d94fbfc7b956f9e8f212cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2626894007815532694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7587937021885771592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f948e08e55ec241adbb00b2049455e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Idle:
+  - {fileID: 21300000, guid: 2bd13b51acc254a37b4611a237963c04, type: 3}
+  Walking:
+  - {fileID: 21300000, guid: a3fef745143f94972b921760c0703baa, type: 3}
+  - {fileID: 21300000, guid: 5d281eb55570c413dbdd77abf538b3e7, type: 3}
+  - {fileID: 21300000, guid: 1bc9659955f37492ea628f451de9fba3, type: 3}
+  - {fileID: 21300000, guid: e09510baad6cc45cd9942156aa96ba7a, type: 3}
+  - {fileID: 21300000, guid: 5b566b73ebd744529b59ee0608fa8392, type: 3}
+  - {fileID: 21300000, guid: 51a6b4a70b1c344d5b90c4fd5f8f70ac, type: 3}
+  - {fileID: 21300000, guid: 216fcf9ef3df345e487f75a24cbbf956, type: 3}
+  - {fileID: 21300000, guid: 73d3581a5aedd44129da93c6bdb8d3d6, type: 3}
+  Jumping:
+  - {fileID: 21300000, guid: 66a0fba800c5943cdb142fe4a401a449, type: 3}
+  InFlight:
+  - {fileID: 21300000, guid: 4a8b360bf9a7f4f25aaff81ca45a9534, type: 3}
+  Falling:
+  - {fileID: 21300000, guid: bf912a6a17b5749bd924d738b70a769b, type: 3}
+  Landing:
+  - {fileID: 21300000, guid: ef2afcc4527834f8ab7983030e6f6ec6, type: 3}
 --- !u!198 &6944833943218186208
 ParticleSystem:
   m_ObjectHideFlags: 0

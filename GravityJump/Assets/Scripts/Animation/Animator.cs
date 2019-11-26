@@ -27,7 +27,7 @@ namespace Animation
         // Store the different animation names and their sprites in a key value pair data structure
         // Note: the animation name will be the name of the folder containing the animation sprites, in Resources
         protected Dictionary<string, Sprite[]> Animations;
-
+       
         protected virtual float SecondPerImage => 1 / 12f;
         protected float TimeSinceLastImage;
         protected int currentFrameIndex;
@@ -35,15 +35,6 @@ namespace Animation
         protected void Awake()
         {
             this.Animations = new Dictionary<string, Sprite[]>();
-
-            // Load sprites
-            foreach (string animationDirectory in Directory.GetDirectories($"Assets/Resources/Animation/{GameObjectAnimationsDirectoryName}/"))
-            {
-                // Get the name of the directory, without the path
-                string animationType = new DirectoryInfo(animationDirectory).Name;
-                string path = $"Animation/{GameObjectAnimationsDirectoryName}/{animationType}";
-                this.Animations.Add(animationType, Resources.LoadAll<Sprite>(path));
-            }
         }
 
         protected void DisplaySprite(Sprite sprite)
