@@ -4,9 +4,9 @@ Gravity Jump is a 2D space platformer. You play as Eudes, a friendly alien who j
 
 ## Run
 
-To run the game:
-Go in the `Build` folder
-Run `gravity_jump.exe`, `gravity_jump.app` or <> depending on your platform
+To run the game, after build:
+- On Windows, in the `gravity_jump` folder, run `GravityJump.exe`
+- On macOS: run `gravity_jump.app`
 
 ### Multiplayer
 
