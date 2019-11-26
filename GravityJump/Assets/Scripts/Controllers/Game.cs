@@ -208,19 +208,20 @@ namespace Controllers
                 this.HUD.GameOver(didWin);
                 this.LocalPlayerSpawner.FreezeInput();
                 StartCoroutine(this.BackToMenu());
-
-                if (this.Connection != null)
-                {
-                    this.Connection.Close();
-                    Data.Storage.Connection = null;
-                    Data.Storage.IsHost = false;
-                }
             }
         }
 
         private System.Collections.IEnumerator BackToMenu()
         {
             yield return new WaitForSeconds(4.5f);
+
+            if (this.Connection != null)
+            {
+                this.Connection.Close();
+                Data.Storage.Connection = null;
+                Data.Storage.IsHost = false;
+            }
+
             SceneManager.LoadScene("Menu");
         }
     }
