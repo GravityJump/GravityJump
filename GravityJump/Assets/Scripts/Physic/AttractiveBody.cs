@@ -8,7 +8,7 @@ namespace Physic
     **/
     public class AttractiveBody : PhysicBody
     {
-        public float default_size;
+        private float DefaultSize = 0.5f;
         public float Frequency;
 
         // All following colliders are attached to children of the current gameObject.
@@ -20,7 +20,7 @@ namespace Physic
         // Give a random size for the spawner
         public float GetRandomSize()
         {
-            return default_size * (Random.value * 6f + 1.2f);
+            return DefaultSize * (Random.value * 6f + 1.2f);
         }
         // For a given size, return Minimal distance an adjacent planet can be
         public float GetMinimalDistance()
