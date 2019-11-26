@@ -21,11 +21,7 @@ namespace Animation
     //
     public abstract class Animator : MonoBehaviour
     {
-        // The name of the directory in Resources/Animations that stores the object animations folder.
-        // Example: "Player", in the example above.
-        protected abstract string GameObjectAnimationsDirectoryName { get; }
         // Store the different animation names and their sprites in a key value pair data structure
-        // Note: the animation name will be the name of the folder containing the animation sprites, in Resources
         protected Dictionary<string, Sprite[]> Animations;
        
         protected virtual float SecondPerImage => 1 / 12f;
