@@ -17,6 +17,10 @@ When starting the game, go to the `Host` menu.
 
 The other player can go to the `Join` menu and enter the host IP in the input field. After clicking `Join`, both players should be redirected to the lobby and be able to start a new game.
 
+See demo in `doc` folder:
+
+[demo](doc/DemoMultiplayer.m4v)
+
 ## Build
 
 Requirements:
