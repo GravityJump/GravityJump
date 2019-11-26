@@ -5,6 +5,7 @@ using System;
 
 namespace UI
 {
+    // ChatScreen displays the lobby, and handles the chat system between the players before a game is started.
     public class ChatScreen : BasicScreen
     {
         public Button Send { get; set; }

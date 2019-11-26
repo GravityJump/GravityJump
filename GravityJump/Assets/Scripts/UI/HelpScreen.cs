@@ -4,6 +4,7 @@ using System;
 
 namespace UI
 {
+    // HelpScreen displays the help panel.
     public class HelpScreen : BasicScreen
     {
         public Button Back { get; set; }

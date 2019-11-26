@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Network
 {
+    // OpCode is an enumeration of the possible payload types.
     public enum OpCode : byte
     {
         Raw,
@@ -15,12 +16,14 @@ namespace Network
         Death,
     }
 
+    // Payload is an interface that can be serialized and deserialized into an array of bytes.
     public interface Payload
     {
         byte[] GetBytes();
         int Length();
     }
 
+    // BasicPayload is a virtual class implementing Payload with no data.
     public abstract class BasePayload : Payload
     {
         public OpCode Code { get; protected set; }
@@ -41,6 +44,7 @@ namespace Network
         }
     }
 
+    // Message implements Payload, to encode an UTF-8 string of arbitrary length. It is used to send messages on the game chat.
     public class Message : BasePayload
     {
         public string Text { get; set; }
@@ -66,6 +70,7 @@ namespace Network
         }
     }
 
+    // Ready implements Payload, to send a start signal to the other player.
     public class Ready : BasePayload
     {
         public Ready()
@@ -84,6 +89,7 @@ namespace Network
         }
     }
 
+    // PlayerCoordinates implements Payload, to send the local player position.
     public class PlayerCoordinates : BasePayload
     {
         public Physic.Coordinates2D coordinates2D;
@@ -116,6 +122,7 @@ namespace Network
         }
     }
 
+    // SpawnerPayload implements Payload, to send randomly generated objects to the non-host player.
     public class SpawnerPayload : BasePayload
     {
         public Vector3 position;
@@ -154,6 +161,7 @@ namespace Network
         }
     }
 
+    // Death implements Payload, to send a game over signal to the other player.
     public class Death : BasePayload
     {
         public Death()

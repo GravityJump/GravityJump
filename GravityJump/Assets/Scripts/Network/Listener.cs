@@ -5,6 +5,7 @@ using System.Threading;
 
 namespace Network
 {
+    // Listener is a wrapper around TcpListener, waiting for TCP connections at start, and returning the associate TcpClient on demand.
     public class Listener : TcpConfig
     {
         private TcpListener TCPListener { get; set; }
