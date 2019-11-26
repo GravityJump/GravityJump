@@ -35,7 +35,7 @@ namespace Physic
         public float HorizontalSpeed { get; private set; }
         protected float horizontalInertia;
         private bool isSprintAvailable;
-      
+
         protected void Awake()
         {
             this.rb2D = GetComponent<Rigidbody2D>();
