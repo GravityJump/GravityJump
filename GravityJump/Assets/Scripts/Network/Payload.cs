@@ -139,7 +139,7 @@ namespace Network
             List<byte> payload = new List<byte>();
             payload.Add((byte)this.Code);
             payload.Add((byte)this.spawnerType);
-            payload.Add((byte)this.assetId);
+            payload.AddRange(BitConverter.GetBytes(this.assetId));
             payload.AddRange(BitConverter.GetBytes(this.position.x));
             payload.AddRange(BitConverter.GetBytes(this.position.y));
             payload.AddRange(BitConverter.GetBytes(this.position.z));
@@ -150,7 +150,7 @@ namespace Network
 
         public override int Length()
         {
-            return 3 + 5 * 4;
+            return 2 + 6 * 4;
         }
     }
 

@@ -73,14 +73,14 @@ namespace Network
                         float zAnglePlayer = BitConverter.ToSingle(this.Buffer, 8);
                         return new PlayerCoordinates(xPlayer, yPlayer, zAnglePlayer);
                     case (byte)OpCode.Spawn:
-                        this.Stream.Read(this.Buffer, 0, 23);
+                        this.Stream.Read(this.Buffer, 0, 25);
                         ObjectManagement.SpawnerType spawnerType = (ObjectManagement.SpawnerType)this.Buffer[0];
-                        int assetId = (int)this.Buffer[1];
-                        float x = BitConverter.ToSingle(this.Buffer, 2);
-                        float y = BitConverter.ToSingle(this.Buffer, 6);
-                        float z = BitConverter.ToSingle(this.Buffer, 10);
-                        float rotation = BitConverter.ToSingle(this.Buffer, 14);
-                        float scaleRatio = BitConverter.ToSingle(this.Buffer, 18);
+                        int assetId = BitConverter.ToInt32(this.Buffer, 1);
+                        float x = BitConverter.ToSingle(this.Buffer, 5);
+                        float y = BitConverter.ToSingle(this.Buffer, 9);
+                        float z = BitConverter.ToSingle(this.Buffer, 13);
+                        float rotation = BitConverter.ToSingle(this.Buffer, 17);
+                        float scaleRatio = BitConverter.ToSingle(this.Buffer, 21);
                         return new SpawnerPayload(spawnerType, assetId, new Vector3(x, y, z), rotation, scaleRatio);
                     case (byte)OpCode.Death:
                         return new Death();
