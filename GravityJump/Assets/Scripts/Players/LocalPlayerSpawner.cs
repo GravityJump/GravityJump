@@ -47,7 +47,7 @@ namespace Players
 
                 if (Input.GetButtonDown("Sprint"))
                 {
-                    StartCoroutine(this.AttractableBody.Sprint());                    
+                    StartCoroutine(this.AttractableBody.Sprint());
                 }
             }
         }

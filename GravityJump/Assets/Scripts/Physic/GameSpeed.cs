@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Physic
 {
     public class GameSpeed
