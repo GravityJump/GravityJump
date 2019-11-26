@@ -54,8 +54,8 @@ namespace Planets
             GameObject nextPlanet = this.AvailablePrefabs[this.AssetId];
             float r = nextPlanet.GetComponent<Physic.AttractiveBody>().GetRandomSize();
             // Deducing minimal and maximal distance to the next planet
-            float d_min = Mathf.Max(nextPlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r), activePlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(r_last));
-            float d_max = Mathf.Min(nextPlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r), activePlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(r_last));
+            float d_min = Mathf.Max(nextPlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance(), activePlanet.GetComponent<Physic.AttractiveBody>().GetMinimalDistance());
+            float d_max = Mathf.Min(nextPlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance(), activePlanet.GetComponent<Physic.AttractiveBody>().GetMaximalDistance());
             // Deciding next planet distance to previous one
             float d = d_min + (d_max - d_min) * Random.value;
             // Defining constraints for next planet's position
