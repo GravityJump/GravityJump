@@ -10,6 +10,7 @@ namespace Physic
     public class AttractableBody : PhysicBody
     {
         private Collider2D attractableBodyCollider;
+        private TrailRenderer trailRenderer;
 
         // Physics values and constants
         public GameSpeed GameSpeed { get; set; }
@@ -25,11 +26,12 @@ namespace Physic
         public float HorizontalSpeed { get; private set; }
         protected float horizontalInertia;
         private bool isSprintAvailable;
-
+      
         protected void Awake()
         {
             this.rb2D = GetComponent<Rigidbody2D>();
             this.attractableBodyCollider = GetComponent<Collider2D>();
+            this.trailRenderer = GetComponent<TrailRenderer>();
             this.PlayerMovingState = new PlayerMovingState();
             this.isSprintAvailable = true;
         }
@@ -151,9 +153,11 @@ namespace Physic
                 // Start sprint
                 this.isSprintAvailable = false;
                 this.GameSpeed.PlayerSpeedFactor *= 2;
+                this.trailRenderer.emitting = true;
                 yield return new WaitForSeconds(3);
                 // End sprint
                 this.GameSpeed.PlayerSpeedFactor /= 2;
+                this.trailRenderer.emitting = false;
                 yield return new WaitForSeconds(5);
                 // Restore sprint
                 this.gameObject.GetComponent<ParticleSystem>().Play();
