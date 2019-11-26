@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System;
-using System.Text;
 
 namespace Controllers
 {

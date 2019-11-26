@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Animation
 {
@@ -18,7 +16,7 @@ namespace Animation
             Landing,
         }
         private AnimationType currentAnimationPlayed;
-        protected override float SecondPerImage => 1/12f * 1/this.AttractableBody.GameSpeed.PlayerSpeed;
+        protected override float SecondPerImage => 1 / 12f * 1 / this.AttractableBody.GameSpeed.PlayerSpeed;
 
         protected override string GameObjectAnimationsDirectoryName => "Player";
 
@@ -66,7 +64,8 @@ namespace Animation
             if (currentAnimationPlayed == type)
             {
                 this.DisplayNextSprite(animationSprites);
-            } else
+            }
+            else
             {
                 // Set the animation to new type and display it from the beginning
                 currentAnimationPlayed = type;

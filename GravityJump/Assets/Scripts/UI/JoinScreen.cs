@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Net;
-using System;
 
 namespace UI
 {
