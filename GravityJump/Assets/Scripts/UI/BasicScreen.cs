@@ -1,8 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
+    // BasicScreen implements an IGameState that just hide its elements when stopped or paused, and show them when started or resumed.
     public abstract class BasicScreen : MonoBehaviour, IGameState
     {
         protected GameObject Panel { get; set; }

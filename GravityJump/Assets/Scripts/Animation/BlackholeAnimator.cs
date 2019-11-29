@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Animation
 {
     public class BlackholeAnimator : Animator
     {
-        protected override string GameObjectAnimationsDirectoryName => "Blackhole";
+        // Sprites for each animation
+        public Sprite[] Rotation;
+
+        private new void Awake()
+        {
+            // Load Sprites
+            this.Animations = new Dictionary<string, Sprite[]>
+            {
+                { "Rotation", Rotation },
+            };
+        }
 
         private void Update()
         {

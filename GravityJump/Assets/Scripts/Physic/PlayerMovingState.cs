@@ -82,7 +82,7 @@ namespace Physic
 
         public void Stop()
         {
-            if(this.movingState == MovingState.Walking)
+            if (this.movingState == MovingState.Walking)
             {
                 this.movingState = MovingState.Idle;
             }

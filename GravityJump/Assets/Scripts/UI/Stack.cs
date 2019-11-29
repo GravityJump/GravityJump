@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
 namespace UI
 {
+    // Stack is a state machine manager of IGameState objects.
+    // It works as a stack calling lifecycles functions of IGameState that are pushed or popped on/of the stack.
     public class Stack
     {
         private System.Collections.Generic.Stack<IGameState> InternalStack { get; set; }

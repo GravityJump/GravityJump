@@ -49,7 +49,7 @@ MonoBehaviour:
   Frequency: 0.3
   ground: {fileID: 6487332731546155901}
   normalShape: {fileID: 3769064155989517076}
-  default_size: 1
+  default_size: 0.5
 --- !u!1 &529907940725769827
 GameObject:
   m_ObjectHideFlags: 0

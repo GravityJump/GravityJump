@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Physic
 {
     public class GameSpeed
@@ -14,7 +12,7 @@ namespace Physic
         public GameSpeed(float initSpeed)
         {
             this.ScrollingSpeed = initSpeed;
-            this.PlayerSpeedFactor = 0.6f;
+            this.PlayerSpeedFactor = 0.4f;
         }
 
         public void Increment(float timeDelta)

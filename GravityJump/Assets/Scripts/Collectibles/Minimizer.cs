@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Collectibles
 {
     public class Minimizer : Collectible
