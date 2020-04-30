@@ -264,7 +264,7 @@ Clara Clement
 
 ### Music
 
-Quentin Verlhac
+Quentin Verlhac (soundtrack available [here](https://soundcloud.com/quentinverlhac/sets/gravity-jump))
 
 ### Development
 
