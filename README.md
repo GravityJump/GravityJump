@@ -2,9 +2,30 @@
 
 Gravity Jump is a 2D space platformer. You play as Eudes, a friendly alien who jumps from planet to planet to avoid a dangerous black hole.
 
-## Run
+Gravity Jump is available online [here](https://gravityjump.github.io/GravityJump/).
+Note that multiplayer is not available when the game is played in the browser.
 
-To run the game, after build:
+## Build and play
+
+### Build
+
+Requirements:
+`Unity 2019.2.6f1`
+
+To build the game from its source code:
+
+- Open `Unity Hub`
+- Add new project
+- Select `GravityJump` folder in this project directory
+- Open the `GravityJump` project in Unity
+- Open the build options with `File / Build Settings`
+- Select your current OS in `PC, Mac & Linux standalone`
+- Build project by clicking on `Build` (or `Build and Run` if you want to play immediately)
+
+### Play
+
+Then, to run the game:
+
 - On Windows, in the `gravity_jump` folder, run `GravityJump.exe`
 - On macOS: run `gravity_jump.app`
 
@@ -20,21 +41,6 @@ The other player can go to the `Join` menu and enter the host IP in the input fi
 See demo in `doc` folder:
 
 [demo](doc/DemoMultiplayer.m4v)
-
-## Build
-
-Requirements:
-`Unity 2019.2.6f1`
-
-To build the game from its source code:
-
-- Open `Unity Hub`
-- Add new project
-- Select `GravityJump` folder in this project directory
-- Open the `GravityJump` project in Unity
-- Open the build options with `File / Build Settings`
-- Select your current OS in `PC, Mac & Linux standalone`
-- Build project by clicking on `Build` (or `Build and Run` if you want to play immediately)
 
 ## Assets
 
