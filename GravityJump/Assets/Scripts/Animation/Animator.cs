@@ -8,7 +8,7 @@ namespace Animation
     // It provides logic that load sprites from the Resources folder and store them grouped by type in a Dictionary.
     // Each animated gameObject must have its own folder in Resources/Animations. This folder contains one subfolder per animation type. Each subfolder contains the animation sprites.
     // Example:
-    // 
+    //
     // Player
     // ├── Walk
     // │    ├── 1.png
@@ -23,7 +23,7 @@ namespace Animation
     {
         // Store the different animation names and their sprites in a key value pair data structure
         protected Dictionary<string, Sprite[]> Animations;
-       
+
         protected virtual float SecondPerImage => 1 / 12f;
         protected float TimeSinceLastImage;
         protected int currentFrameIndex;

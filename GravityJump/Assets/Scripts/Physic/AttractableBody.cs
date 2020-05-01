@@ -12,7 +12,7 @@ namespace Physic
      * - Orbit switching (when jumping from one planet to another)
      * - Walking and sprinting
      * - Jumping
-     * 
+     *
      * AttractableBody provides action methods that can be used to apply physical effects on the body (example: add a force to throw it away).
      * It also triggers updates on PlayerMovingState.
     **/
