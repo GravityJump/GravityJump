@@ -24,7 +24,7 @@ See demo in `doc` folder:
 ## Build
 
 Requirements:
-`Unity 2019.2.6f1`
+`Unity 2019.3.12f1`
 
 To build the game from its source code:
 
