@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using UnityEngine.Networking;
 
 namespace UI
 {
@@ -44,26 +46,21 @@ namespace UI
         public override void OnStart()
         {
             this.Panel.SetActive(true);
-            this.Ip.gameObject.SetActive(true);
-            this.CheckNetworkAvailability();
+            this.Ip.gameObject.SetActive(false);
+            // StartCoroutine(this.CheckNetworkAvailability());
         }
 
-        private void CheckNetworkAvailability()
+        // Check for Internet connection by querying a google web page.
+        // This does not work from a browser because of CORS policies.
+        private IEnumerator CheckNetworkAvailability()
         {
-            if (Network.Utils.IsInternetAvailable())
-            {
-                try
-                {
-                    this.Ip.text = $"IP {Network.Utils.GetHostIpAddress()}";
-                }
-                catch
-                {
-                    this.DisableMultiplayer("No IP address");
-                }
-            }
-            else
+            UnityWebRequest req = UnityWebRequest.Get("https://google.com");
+            yield return req.SendWebRequest();
+
+            if (req.isNetworkError || req.isHttpError)
             {
                 this.DisableMultiplayer("No Internet connection");
+
             }
         }
 
@@ -72,6 +69,7 @@ namespace UI
             this.HostButton.interactable = false;
             this.JoinButton.interactable = false;
             this.Ip.text = reason;
+            this.Ip.gameObject.SetActive(true);
         }
     }
 }
